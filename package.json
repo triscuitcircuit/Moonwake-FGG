@@ -1,0 +1,22 @@
+{
+  "name": "FrogGames",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/triscuitcircuit/Moonwake-DnD.git",
+  "author": "triscuitcircuit <54428989+Triscuit-circuit@users.noreply.github.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@shopify/shopify-api": "^5.1.0",
+    "ngrok": "^4.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.23",
+    "dotenv": "^16.0.3",
+    "typescript": "^4.8.4"
+  },
+  "scripts": {
+    "build": "npx tsc",
+    "prestart": "yarn run build",
+    "start": "node dist/index.js"
+  }
+}
