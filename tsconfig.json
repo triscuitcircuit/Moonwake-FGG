@@ -10,7 +10,8 @@
     "baseUrl": "./src",
     "paths": {
       "*": ["node_modules/*"]
-    }
+    },
+    "jsx": "react-jsx"
   },
   "include": ["src/**/*"]
 }
