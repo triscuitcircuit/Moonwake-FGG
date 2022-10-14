@@ -1,32 +1,37 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
     Button,
     Navbar,
-    Input,Dropdown,Grid,
+    Input, Dropdown, Grid, Collapse, Pagination, Checkbox,
     Text,
     Link,
     NextUIProvider,
     createTheme,
     Container,
-    Spacer
+    Spacer, Avatar, Modal, Row
 } from '@nextui-org/react';
 import {Layout} from "./Layout";
 import { Card1, Card2, Card3, Card4 } from './Card';
+import { LoginModalWindow,handler } from './LoginWindow';
 
 const theme = createTheme({
     type: 'dark'
 });
 const collapseItems = [
     "Creature Creator",
+    "Creature Database",
     "Books",
     "Help & Feedback",
     "Login",
     "Sign Up",
 ];
 
+
 function App() {
     const [count, setCount] = useState(0);
 
+
+    // @ts-ignore
     return (
 
         <NextUIProvider theme={theme}>
@@ -88,13 +93,13 @@ function App() {
                     </Navbar.Item>
                 </Navbar.Content>
                 <Navbar.Content>
-                    <Navbar.Link color="inherit" href="#">
-                        Login
-                    </Navbar.Link>
                     <Navbar.Item>
-                        <Button auto flat as={Link} href="#">
-                            Sign Up
-                        </Button>
+                        {/*<Button auto as={Link} href="#">*/}
+                        <Button.Group color="gradient">
+                            <Button >Login</Button>
+                            {/*<LoginModalWindow />*/}
+                            <Button>Sign Uo</Button>
+                        </Button.Group>
                     </Navbar.Item>
                 </Navbar.Content>
                 <Navbar.Collapse>
@@ -113,6 +118,7 @@ function App() {
                     ))}
                 </Navbar.Collapse>
             </Navbar> </Layout>
+            <Container justify="center">
             <Grid.Container gap={2} justify="center">
                 <Grid xs={12} sm={4}>
                     <Card1 />
@@ -120,13 +126,37 @@ function App() {
                 <Grid xs={12} sm={4}>
                     <Card2 />
                 </Grid>
-                <Grid xs={12} sm={4}>
-                    <Card3 />
-                </Grid>
             </Grid.Container>
-            );
+            </Container>
+            <Container justify="center">
+            <Collapse.Group>
+                <Collapse title="Recently Created Creatures"
+                          subtitle="Logged in User"
+                          contentLeft={
+                    <Avatar
+                        size="lg"
+                        color="secondary"
+                        text="User"
+                        bordered
+                        squared
+                        />
+                          }
+                          expanded >
+                    <Grid.Container gap={2} justify="center">
+                        <Grid xs={12} sm={4}>
+                            <Card3 />
+                        </Grid>
+                        <Grid>
+                            <Container justify="flex-end">
+                                <Pagination total={14} initialPage={6} />
+                            </Container>
+                        </Grid>
+                    </Grid.Container>
+                </Collapse>
+            </Collapse.Group>
+            </Container>
     </NextUIProvider>
-);
+)
 }
 
 export default App;
