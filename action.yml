@@ -1,0 +1,6 @@
+name: "Moonkwake"
+description: "Test"
+author: "triscuitcircuit"
+runs:
+  using: "node16"
+  main: "dist/index.js"

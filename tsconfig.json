@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "esModuleInterop": true,
-    "target": "es6",
+    "target": "es2022",
     "noImplicitAny": true,
     "moduleResolution": "node",
     "sourceMap": true,
@@ -10,7 +10,8 @@
     "baseUrl": "./src",
     "paths": {
       "*": ["node_modules/*"]
-    }
+    },
+    "jsx": "react-jsx"
   },
   "include": ["src/**/*"]
 }
