@@ -5,7 +5,7 @@ Connects to creature database to allow creation, distribution and sharing of cus
 
 # Requirements for Demo
 
-- [npm](https://www.npmjs.com/)
+- [npm](https://nodejs.org/en/download/)
 - [Vite](https://www.npmjs.com/package/vite)
 - [Sequalize](https://www.npmjs.com/package/sequelize)
 - [React](https://www.npmjs.com/package/react)
