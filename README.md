@@ -1,6 +1,6 @@
 # Moonwake-FGG
 
-Frontend development for Dungeons and Dragons creature database capstone project.
+Frontend development for FrogGodGames creature database capstone project.
 Connects to creature database to allow creation, distribution and sharing of custom user creatures.
 
 # Requirements for Demo
