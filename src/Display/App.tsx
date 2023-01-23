@@ -36,7 +36,6 @@ const collapseItems = [
 
 function App() {
   const [count, setCount] = useState(0);
-
   // @ts-ignore
   return (
     <NextUIProvider theme={theme}>
