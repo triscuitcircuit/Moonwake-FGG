@@ -6,7 +6,7 @@ import url from "url";
 // @ts-ignore
 import querystring from "querystring";
 import Shopify, { ApiVersion } from "@shopify/shopify-api";
-require("dotenv").config();
+
 
 const { API_KEY, API_SECRET_KEY, SCOPES, SHOP, HOST, HOST_SCHEME } =
   process.env;

@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "esnext",
     "esModuleInterop": true,
     "target": "es2022",
+    "types": ["vite/client"],
     "noImplicitAny": true,
     "moduleResolution": "node",
     "sourceMap": true,
