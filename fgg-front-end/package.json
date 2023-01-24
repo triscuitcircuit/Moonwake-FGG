@@ -11,15 +11,17 @@
     "@vitejs/plugin-react": "^2.1.0",
     "ngrok": "^4.3.3",
     "node-polyfill-webpack-plugin": "^2.0.1",
-    "oracledb": "file:drivers/mac-arm/oracledb-5.5.0.tgz",
+    "oracledb": "file:../drivers/mac-arm/oracledb-5.5.0.tgz",
     "pg-hstore": "^2.3.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sequelize": "^6.28.0",
-    "vite": "^3.1.4"
+    "vite": "^3.1.4",
+    "vite-plugin-package-version": "^1.0.2"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",
+    "@types/oracledb": "^5.2.3",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.48.2",
