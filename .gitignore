@@ -1,2 +1,2 @@
-.env
-.env.*.local
+../FGG-back-end/.env
+../FGG-back-end/.env.*.local

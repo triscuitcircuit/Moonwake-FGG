@@ -3,14 +3,16 @@
 Frontend development for FrogGodGames creature database capstone project.
 Connects to creature database to allow creation, distribution and sharing of custom user creatures.
 
-# Requirements for Demo
+# Requirements for Projects
 
 - [npm](https://nodejs.org/en/download/)
-- [Vite](https://www.npmjs.com/package/vite)
-- [Sequalize](https://www.npmjs.com/package/sequelize)
-- [React](https://www.npmjs.com/package/react)
-- [npx](https://www.npmjs.com/package/npx)
 
+Then run the `npm install` command associated with the selected project
+
+# Project Structure
+ This project is split into two parts: `fgg-back-end` and `fgg-front-end`.
+- `fgg-back-end` is a NodeJS project for a containerized API webserver for front-end database interactions.
+- `fgg-front-end` is the project for 
 # Development and Building
 
 `oracledb` needs to be installed for Sequalize to connect to the hosted database.
