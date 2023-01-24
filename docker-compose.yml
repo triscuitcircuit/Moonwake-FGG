@@ -1,0 +1,7 @@
+services:
+  back-end:
+    build: ./fgg-back-end/
+    ports:
+      - "8080:8080"
+  front-end:
+    build: ./fgg-front-end/

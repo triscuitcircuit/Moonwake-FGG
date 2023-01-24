@@ -14,5 +14,7 @@
     },
     "jsx": "react-jsx"
   },
-  "include": ["src/**/*"]
+  "include": [
+    "Front-end/src/**/*"
+  ]
 }
