@@ -21,7 +21,7 @@ import {
 import { Layout } from "./Layout";
 import { Card1, Card2, Card3, Card4 } from "./Card";
 import { LoginModalWindow, handler } from "./LoginWindow";
-import {conTest} from "../Database/Connection";
+// import {conTest} from "../Database/Connection";
 
 const theme = createTheme({
   type: "dark",
@@ -37,7 +37,7 @@ const collapseItems = [
 
 function App() {
   const [count, setCount] = useState(0);
-  conTest();
+  // conTest();
   // @ts-ignore
   return (
     <NextUIProvider theme={theme}>
