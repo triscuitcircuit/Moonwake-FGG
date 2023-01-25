@@ -45,7 +45,7 @@
     "prestart": "yarn run build",
     "start": "vite",
     "preview": "npx tsc && vite build && vite preview",
-    "prepare": "husky install",
+    "prepare": "cd .. && husky install fgg-front-end/.husky",
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
