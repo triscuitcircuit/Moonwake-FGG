@@ -47,5 +47,5 @@ then proceed with installing the Sequalize drivers:
 npm install --save oracledb
 ```
 
-#DevOps
+# DevOps
 This project makes use of Typescript pre-commit hooks with the `husky` package
