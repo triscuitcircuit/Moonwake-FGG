@@ -1,0 +1,38 @@
+{
+  "name": "fgg-back-end",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "scripts": {
+    "server": "node src/server.js",
+    "pre-commit": "lint-staged",
+    "prettier:check": "prettier --config .prettierrc --check \"src/**/*.{ts,css,html}\"",
+    "prepare": "cd .. && husky install fgg-back-end/.husky"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "oracledb": "file:../drivers/mac-arm/oracledb-5.5.0_x64.tgz",
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
+    "process": "^0.11.10",
+    "sequelize": "^6.28.0"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.0",
+    "prettier": "^2.8.3"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,html,css}": "npm run prettier:check"
+  }
+}
