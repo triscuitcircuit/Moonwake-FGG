@@ -21,7 +21,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "husky": "^8.0.3",
+    "find-config": "^1.0.0",
     "oracledb": "file:../drivers/mac-arm/oracledb-5.5.0_x64.tgz",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
@@ -29,9 +29,9 @@
     "sequelize": "^6.28.0"
   },
   "devDependencies": {
+    "husky": "^8.0.3",
     "lint-staged": "^13.1.0",
-    "prettier": "^2.8.3",
-    "husky": "^8.0.0"
+    "prettier": "^2.8.3"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,html,css}": "npm run prettier:check"
