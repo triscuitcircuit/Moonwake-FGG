@@ -1,2 +1,3 @@
 ../fgg-back-end/.env
 ../fgg-back-end/.env.*.local
+../fgg-back-end/src/Database/config/config.env
