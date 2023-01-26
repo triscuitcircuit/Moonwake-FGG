@@ -1,12 +1,12 @@
 const dbConfig = require("./config/db.config");
 const Sequelize = require("sequelize");
-require('dotenv').config({path:__dirname+'/./../../.env'});
+const ck = require("ckey");
 
 const sequelize = new Sequelize(
-    'orcl',process.env.USERNAME_FGG,
-    process.env.PASSWORD_FGG,{
+    'orcl',ck.USERNAME_FGG,
+    ck.PASSWORD_FGG,{
         port: 1521,
-        host: process.env.HOST,
+        host: ck.HOST,
         dialect: dbConfig.dialect,
         operatorsAliases: false,
         logging: console.log,
