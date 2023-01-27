@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes)=>{
         {
             sequelize,
             modelName: 'FGGDATA',
-            tableName: 'MOAK_MOSTER_ATTACK',
+            tableName: 'MOAK_MONSTER_ATTACK',
             createdAt: 'LAST_MODIFIED_DATE',
             updatedAt: 'LAST_MODIFIED_BY',
         }
