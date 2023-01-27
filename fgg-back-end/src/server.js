@@ -17,7 +17,7 @@ app.use(express.urlencoded({extended: true}));
 //     res.json({ message: "back-end" });
 // });
 
-require("./routes/AB_ATTR_routes")(app);
+require("./routes/routes")(app);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
