@@ -1,6 +1,6 @@
 const {Model, DataTypes} = require('sequelize');
 module.exports = (sequelize, DataTypes)=>{
-    class MOAK_MOSTER_ATTACK extends Model{
+    class MOAK_MONSTER_ATTACK extends Model{
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
