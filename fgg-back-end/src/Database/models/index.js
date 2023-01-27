@@ -44,6 +44,10 @@ db.list = [
     require("./AKTY_ATTACK_TYPE")(sequelize, Sequelize),
     require("./AL_ALIGNMENT")(sequelize, Sequelize),
     require("./AT_ACTION")(sequelize, Sequelize),
+    require("./ATCL_ACTION_CLASS")(sequelize, Sequelize),
+    require("./ATDE_ACTION_DETAIL")(sequelize, Sequelize),
+    require("./ATTG_ACTION_TAG")(sequelize, Sequelize),
+
 ];
 db.list.forEach(model=>{
    console.log("Generated routes for table: "+
