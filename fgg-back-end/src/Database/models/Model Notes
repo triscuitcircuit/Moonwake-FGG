@@ -1,9 +1,6 @@
 USRO_USER_ROLE.js:
 Has enabled and retired datakey. Is it nessecary to pull the retired key? It is "null"
 
-ST_STATUS.js:
-Only as a "invalid identifier" message
-
 USAS_USER_ACCESS.js:
 Only as a "invalid identifier" message
 
