@@ -1,6 +1,6 @@
 const {Model, DataTypes} = require('sequelize');
 module.exports = (sequelize, DataTypes)=>{
-    class ST_STATUS extends Model{
+    class USGASYMO_USER_GAME_SYS_MONSTER extends Model{
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -10,24 +10,29 @@ module.exports = (sequelize, DataTypes)=>{
             // associated models go here
         }
     }
-    ST_STATUS.init({
-            ST_ID:{
+    USGASYMO_USER_GAME_SYS_MONSTER.init({
+            USGASYMO_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            ST_NAME: DataTypes.STRING,
-            ST_DETAIL: DataTypes.STRING,
+            GASYMO_ID: DataTypes.INTEGER(8),
+            USGASYMO_IS_CREATOR_FLAG: DataTypes.STRING,
+            USGASYMO_FOR_PUBLIC_FLAG: DataTypes.STRING,
+            USGASYMO_DETAIL: DataTypes.STRING,
+            US_ID: DataTypes.INTEGER(8),
+            ST_CODE: DataTypes.STRING,
             LAST_MODIFIED_DATE: DataTypes.DATE,
             LAST_MODIFIED_BY: DataTypes.DATE,
+            USGASYMO_CAN_BE_EDITED: DataTypes.STRING,
         },
         {
             sequelize,
             modelName: 'FGGDATA',
-            tableName: 'ST_STATUS',
+            tableName: 'USGASYMO_USER_GAME_SYS_MONSTER',
             createdAt: 'LAST_MODIFIED_DATE',
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return ST_STATUS;
+    return USGASYMO_USER_GAME_SYS_MONSTER;
 }
