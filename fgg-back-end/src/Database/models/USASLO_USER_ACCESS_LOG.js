@@ -1,6 +1,6 @@
 const {Model, DataTypes} = require('sequelize');
 module.exports = (sequelize, DataTypes)=>{
-    class ST_STATUS extends Model{
+    class USASLO_USER_ACCESS_LOG extends Model{
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -10,24 +10,30 @@ module.exports = (sequelize, DataTypes)=>{
             // associated models go here
         }
     }
-    ST_STATUS.init({
-            ST_ID:{
+    USASLO_USER_ACCESS_LOG.init({
+            USASLO_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            ST_NAME: DataTypes.STRING,
-            ST_DETAIL: DataTypes.STRING,
+            US_ID: DataTypes.INTEGER(8),
+            USAS_LOGIN_DATEKEY: DataTypes.INTEGER(8),
+            USAS_LOGIN_DATETIMEKEY: DataTypes.INTEGER(16),
+            USAS_LOGOUT_DATEKEY: DataTypes.INTEGER(8),
+            USAS_LOGOUT_DATETIMEKEY: DataTypes.INTEGER(16),
+            USAS_LOGGED_IN_FLAG: DataTypes.STRING,
+            USAS_LOGIN_ISSUE_COUNT:  DataTypes.INTEGER(4),
+            ST_CODE: DataTypes.STRING,
             LAST_MODIFIED_DATE: DataTypes.DATE,
             LAST_MODIFIED_BY: DataTypes.DATE,
         },
         {
             sequelize,
             modelName: 'FGGDATA',
-            tableName: 'ST_STATUS',
+            tableName: 'USASLO_USER_ACCESS_LOG',
             createdAt: 'LAST_MODIFIED_DATE',
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return ST_STATUS;
+    return USASLO_USER_ACCESS_LOG;
 }

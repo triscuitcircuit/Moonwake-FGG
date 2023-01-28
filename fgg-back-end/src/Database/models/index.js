@@ -10,10 +10,10 @@ const basename = path.basename(__filename);
 
 const sequelize = new Sequelize(
     'orcl',
-    ck.USERNAME_FGG,
-    ck.PASSWORD_FGG,{
+    "fggdata",
+    "m00nwak3data",{
       port: 1521,
-      host: ck.HOST,
+      host: "fggdb2.cpdlwkeahawx.us-east-2.rds.amazonaws.com",
       dialect: dbConfig.dialect,
       operatorsAliases: false,
       logging: console.log,
@@ -47,6 +47,17 @@ db.list = [
     require("./ATCL_ACTION_CLASS")(sequelize, Sequelize),
     require("./ATDE_ACTION_DETAIL")(sequelize, Sequelize),
     require("./ATTG_ACTION_TAG")(sequelize, Sequelize),
+    require("./MOAK_MONSTER_ATTACK")(sequelize, Sequelize),
+    require("./ST_STATUS")(sequelize, Sequelize),
+    require("./RO_ROLE")(sequelize, Sequelize),
+    require("./USRO_USER_ROLE")(sequelize, Sequelize),
+    require("./USASLO_USER_ACCESS_LOG")(sequelize, Sequelize),
+    require("./MOAK_TEMP_SAVE")(sequelize, Sequelize),
+    require("./USAS_USER_ACCESS")(sequelize, Sequelize),
+    require("./LOAD_SPELL")(sequelize, Sequelize),
+    require("./US_USER")(sequelize, Sequelize),
+    require("./USGASYMO_USER_GAME_SYS_MONSTER")(sequelize, Sequelize),
+
 
 ];
 db.list.forEach(model=>{
