@@ -1,6 +1,6 @@
 const {Model, DataTypes} = require('sequelize');
 module.exports = (sequelize, DataTypes)=>{
-    class ST_STATUS extends Model{
+    class USRO_USER_ROLE extends Model{
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -10,24 +10,28 @@ module.exports = (sequelize, DataTypes)=>{
             // associated models go here
         }
     }
-    ST_STATUS.init({
-            ST_ID:{
+    USRO_USER_ROLE.init({
+            USRO_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            ST_NAME: DataTypes.STRING,
-            ST_DETAIL: DataTypes.STRING,
+            US_ID: DataTypes.INTEGER(8),
+            RO_ID: DataTypes.INTEGER(8),
+            USRO_CREATED_DATEKEY: DataTypes.INTEGER(8),
+            USRO_ENABLED_DATEKEY: DataTypes.INTEGER(8),
+            USRO_RETIRED_DATEKEY: DataTypes.INTEGER(8),
+            ST_CODE: DataTypes.STRING,
             LAST_MODIFIED_DATE: DataTypes.DATE,
             LAST_MODIFIED_BY: DataTypes.DATE,
         },
         {
             sequelize,
             modelName: 'FGGDATA',
-            tableName: 'ST_STATUS',
+            tableName: 'USRO_USER_ROLE',
             createdAt: 'LAST_MODIFIED_DATE',
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return ST_STATUS;
+    return USRO_USER_ROLE;
 }
