@@ -23,5 +23,6 @@ module.exports = app =>{
                 gen_findOne(req,res,model)
             })
     });
+
     app.use('/api/',router);
 }
