@@ -17,8 +17,6 @@ module.exports = (sequelize, DataTypes)=>{
             sequelize,
             modelName: 'FGGDATA',
             tableName: 'LOAD_TRAIT',
-            createdAt: 'LAST_MODIFIED_DATE',
-            updatedAt: 'CEDRIC',
         }
     )
     return LOAD_TRAIT;

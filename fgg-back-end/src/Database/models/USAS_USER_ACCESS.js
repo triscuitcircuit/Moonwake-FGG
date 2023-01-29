@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes)=>{
         }
     }
     USAS_USER_ACCESS.init({
-            USAS_ID:{
+            US_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
