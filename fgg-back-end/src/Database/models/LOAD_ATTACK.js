@@ -1,6 +1,7 @@
+// LOAD_ATTACK
 const {Model, DataTypes} = require('sequelize');
 module.exports = (sequelize, DataTypes)=>{
-    class ST_STATUS extends Model{
+    class LOAD_ATTACK extends Model{
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -10,24 +11,27 @@ module.exports = (sequelize, DataTypes)=>{
             // associated models go here
         }
     }
-    ST_STATUS.init({
-            ST_CODE:{
+    LOAD_ATTACK.init({
+            LOAD_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            ST_NAME: DataTypes.STRING,
-            ST_DETAIL: DataTypes.STRING,
-            LAST_MODIFIED_DATE: DataTypes.DATE,
-            LAST_MODIFIED_BY: DataTypes.DATE,
+            //: DataTypes.STRING,
+            //: DataTypes.INTEGER(8),
+            ATTACK_NAME: DataTypes.STRING,
+            ATTACK_DISPLAY_NAME: DataTypes.STRING,
+            ATTACK_TYPE: DataTypes.STRING,
+            ACTION_CLASS: DataTypes.STRING,
+            ATTACK_CATEGORY: DataTypes.STRING,
         },
         {
             sequelize,
             modelName: 'FGGDATA',
-            tableName: 'ST_STATUS',
+            tableName: 'LOAD_ATTACK',
             createdAt: 'LAST_MODIFIED_DATE',
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return ST_STATUS;
+    return LOAD_ATTACK;
 }

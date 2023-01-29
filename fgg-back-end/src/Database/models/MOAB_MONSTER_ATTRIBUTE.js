@@ -1,6 +1,7 @@
+// MOAB_MONSTER_ATTRIBUTE
 const {Model, DataTypes} = require('sequelize');
 module.exports = (sequelize, DataTypes)=>{
-    class ST_STATUS extends Model{
+    class MOAB_MONSTER_ATTRIBUTE extends Model{
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -10,24 +11,33 @@ module.exports = (sequelize, DataTypes)=>{
             // associated models go here
         }
     }
-    ST_STATUS.init({
-            ST_CODE:{
+    MOAB_MONSTER_ATTRIBUTE.init({
+            MOAB_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            ST_NAME: DataTypes.STRING,
-            ST_DETAIL: DataTypes.STRING,
+            //: DataTypes.STRING,
+            //: DataTypes.INTEGER(8),
+            GASYMO_ID: DataTypes.INTEGER(8),
+            AB_ID: DataTypes.INTEGER(8),
+            MOAB_VALUE: DataTypes.INTEGER(4),
+            MOAB_BONUS_VALUE: DataTypes.INTEGER(4),
+            MOAB_DISPLAY_TEXT: DataTypes.STRING,
+            MOAB_TAGGED_DISPLAY_TEXT: DataTypes.STRING,
+            MOAB_ORDER_VALUE: DataTypes.INTEGER(2),
+
+            ST_CODE: DataTypes.STRING,
             LAST_MODIFIED_DATE: DataTypes.DATE,
             LAST_MODIFIED_BY: DataTypes.DATE,
         },
         {
             sequelize,
             modelName: 'FGGDATA',
-            tableName: 'ST_STATUS',
+            tableName: 'MOAB_MONSTER_ATTRIBUTE',
             createdAt: 'LAST_MODIFIED_DATE',
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return ST_STATUS;
+    return MOAB_MONSTER_ATTRIBUTE;
 }

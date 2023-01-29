@@ -1,8 +1,30 @@
-USRO_USER_ROLE.js:
-Has enabled and retired datakey. Is it nessecary to pull the retired key? It is "null"
 
+                                                         GOOD NOTES
+GACO_GAME_COMPANY.js:
+Lists data as FGG, WoC, or "My Own Data"
+
+GASY_GAME_SYSTEM.js:
+Lists Games system. I think products?
+EX: "D&D 5E" and "Swords and Wizardry"
+
+GASYMO_GAME_SYSTEM_MONSTER.js:
+Primary Table for Monsters.
+
+                                                         BAD NOTES
 USAS_USER_ACCESS.js:
 Only as a "invalid identifier" message
 
-LOAD_SPELL.js:
-Only as a "invalid identifier" message
+ERPMCH_ERROR_PARAMETER_CHECK.js:
+Requires ERPMCH_DATA(Timestamp variable).
+IDK what to do about it.
+
+LOAD_SPELL.js, LOAD_ATTACK.js, LOAD_TRAIT.js, LOAD_TRAIT2.js :
+"LAST_MODIFIED_BY\": invalid identifier" (In Browser)
+
+                                                         IDK NOTES
+
+GASYMODS_GAME_SYS_MONSTER_DESC.js:
+BLANK
+
+USRO_USER_ROLE.js:
+Has enabled and retired datakey. Is it nessecary to pull the retired key? It is "null"
