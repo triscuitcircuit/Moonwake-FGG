@@ -1,6 +1,7 @@
+// MOAG_MONSTER_AGGREGATION
 const {Model, DataTypes} = require('sequelize');
 module.exports = (sequelize, DataTypes)=>{
-    class ST_STATUS extends Model{
+    class MOAG_MONSTER_AGGREGATION extends Model{
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -10,24 +11,35 @@ module.exports = (sequelize, DataTypes)=>{
             // associated models go here
         }
     }
-    ST_STATUS.init({
-            ST_CODE:{
+    MOAG_MONSTER_AGGREGATION.init({
+            MOAG_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            ST_NAME: DataTypes.STRING,
-            ST_DETAIL: DataTypes.STRING,
+            //: DataTypes.STRING,
+            //: DataTypes.INTEGER(8),
+            GASYMO_ID: DataTypes.INTEGER(8),
+            MOAG_LINE_NUMBER: DataTypes.INTEGER(4),
+            MOAG_COLUMN_NUMBER: DataTypes.INTEGER(4),
+            MOAG_TABLE: DataTypes.STRING,
+            MOAG_KEY_COLUMN: DataTypes.STRING,
+            MOAG_DISPLAY_COLUMN_NAME: DataTypes.STRING,
+            MOAG_JOINED_DISPLAY_COLUMN: DataTypes.STRING,
+            MOAG_FUNCTION_NAME: DataTypes.STRING,
+            MOAG_HIDE_RULE: DataTypes.STRING,
+
+            ST_CODE: DataTypes.STRING,
             LAST_MODIFIED_DATE: DataTypes.DATE,
             LAST_MODIFIED_BY: DataTypes.DATE,
         },
         {
             sequelize,
             modelName: 'FGGDATA',
-            tableName: 'ST_STATUS',
+            tableName: 'MOAG_MONSTER_AGGREGATION',
             createdAt: 'LAST_MODIFIED_DATE',
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return ST_STATUS;
+    return MOAG_MONSTER_AGGREGATION;
 }

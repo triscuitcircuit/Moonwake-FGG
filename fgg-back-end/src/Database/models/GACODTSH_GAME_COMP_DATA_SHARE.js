@@ -1,6 +1,7 @@
+// GACODTSH_GAME_COMP_DATA_SHARE
 const {Model, DataTypes} = require('sequelize');
 module.exports = (sequelize, DataTypes)=>{
-    class ST_STATUS extends Model{
+    class GACODTSH_GAME_COMP_DATA_SHARE extends Model{
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -10,24 +11,32 @@ module.exports = (sequelize, DataTypes)=>{
             // associated models go here
         }
     }
-    ST_STATUS.init({
-            ST_CODE:{
+    GACODTSH_GAME_COMP_DATA_SHARE.init({
+            GACODTSH_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            ST_NAME: DataTypes.STRING,
-            ST_DETAIL: DataTypes.STRING,
+            //: DataTypes.STRING,
+            //: DataTypes.INTEGER(8),
+            GRANTOR_GACO_ID: DataTypes.INTEGER(8),
+            GRANTEE_GACO_ID: DataTypes.INTEGER(8),
+            GACODTSH_ENTITY_NAME: DataTypes.STRING,
+            GACODTSH_ALLOWED_FLAG: DataTypes.STRING,
+            GACODTSH_ALLOWED_START_DATEKEY: DataTypes.INTEGER(8),
+            GACODTSH_DETAIL: DataTypes.STRING,
+
+            ST_CODE: DataTypes.STRING,
             LAST_MODIFIED_DATE: DataTypes.DATE,
             LAST_MODIFIED_BY: DataTypes.DATE,
         },
         {
             sequelize,
             modelName: 'FGGDATA',
-            tableName: 'ST_STATUS',
+            tableName: 'GACODTSH_GAME_COMP_DATA_SHARE',
             createdAt: 'LAST_MODIFIED_DATE',
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return ST_STATUS;
+    return GACODTSH_GAME_COMP_DATA_SHARE;
 }

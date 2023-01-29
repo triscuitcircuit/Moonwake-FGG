@@ -1,6 +1,6 @@
 const {Model, DataTypes} = require('sequelize');
 module.exports = (sequelize, DataTypes)=>{
-    class ST_STATUS extends Model{
+    class FAUSAS_FAILED_USER_ACCESS extends Model{
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -10,24 +10,30 @@ module.exports = (sequelize, DataTypes)=>{
             // associated models go here
         }
     }
-    ST_STATUS.init({
-            ST_CODE:{
+    FAUSAS_FAILED_USER_ACCESS.init({
+            FAUSAS_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            ST_NAME: DataTypes.STRING,
-            ST_DETAIL: DataTypes.STRING,
+            //: DataTypes.STRING,
+            //: DataTypes.INTEGER(8),
+            FAUSAS_LOGIN_ID: DataTypes.STRING,
+            FAUSAS_PASSWORD: DataTypes.STRING,
+            FAUSAS_ATTEMPT_DATEKEY: DataTypes.INTEGER(8),
+            FAUSAS_DETAIL: DataTypes.STRING,
+
+            ST_CODE: DataTypes.STRING,
             LAST_MODIFIED_DATE: DataTypes.DATE,
             LAST_MODIFIED_BY: DataTypes.DATE,
         },
         {
             sequelize,
             modelName: 'FGGDATA',
-            tableName: 'ST_STATUS',
+            tableName: 'FAUSAS_FAILED_USER_ACCESS',
             createdAt: 'LAST_MODIFIED_DATE',
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return ST_STATUS;
+    return FAUSAS_FAILED_USER_ACCESS;
 }
