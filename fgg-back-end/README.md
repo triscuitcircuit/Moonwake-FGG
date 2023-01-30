@@ -1,5 +1,5 @@
  # FGG Database Node Backend
-This is the NodeJS code for the `express` connection beteween the front-end and the database.
+This is the NodeJS code for the `express` connection between the front-end and the database.
 # Requirements
 - [Oracle Instant Client](https://www.oracle.com/database/technologies/instant-client.html) (not ARM Mac compatible)
 - [oracledb](https://www.npmjs.com/package/oracledb)
