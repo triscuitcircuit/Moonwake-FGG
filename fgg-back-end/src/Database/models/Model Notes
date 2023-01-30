@@ -1,4 +1,3 @@
-
                                                          GOOD NOTES
 GACO_GAME_COMPANY.js:
 Lists data as FGG, WoC, or "My Own Data"
@@ -10,6 +9,10 @@ EX: "D&D 5E" and "Swords and Wizardry"
 GASYMO_GAME_SYSTEM_MONSTER.js:
 Primary Table for Monsters.
 
+PBRE_PUBLISHED_REFERENCE.js:
+Book referance for the FGG product
+Only one so far. Makes me wonder.
+
                                                          BAD NOTES
 USAS_USER_ACCESS.js:
 Only as a "invalid identifier" message
@@ -18,13 +21,39 @@ ERPMCH_ERROR_PARAMETER_CHECK.js:
 Requires ERPMCH_DATA(Timestamp variable).
 IDK what to do about it.
 
-LOAD_SPELL.js, LOAD_ATTACK.js, LOAD_TRAIT.js, LOAD_TRAIT2.js :
+LOAD_SPELL.js, LOAD_ATTACK.js, LOAD_ATTACK2.js LOAD_TRAIT.js, LOAD_TRAIT2.js, TEST_TABLE.js:
 "LAST_MODIFIED_BY\": invalid identifier" (In Browser)
 
-                                                         IDK NOTES
+SK_SPELL.js:
+message	"ORA-00942: table or view does not exist"
 
+                                                         IDK NOTES
 GASYMODS_GAME_SYS_MONSTER_DESC.js:
 BLANK
 
+MOSRTG_MONSTER_SEARCH_TAG.js:
+BLANK
+
+MOTGAK_MONSTER_TRIGGER_ATTACK.js:
+BLANK
+
+RR_RARITY.js
+BLANK
+
+SPCMTY_SPELL_COMPONENT_TYPE.js
+BLANK
+
+SPTY_SPELL_TYPE.js
+BLANK
+
+SVTH_SAVING_THROW.js
+BLANK
+
+TGTY_TAG_TYPE.js
+BLANK
+
 USRO_USER_ROLE.js:
-Has enabled and retired datakey. Is it nessecary to pull the retired key? It is "null"
+Has enabled and retired datakey. Is it necessary to pull the retired key? It is "null"
+
+MODI_MONSTER_DISPLAY.js:
+HUGE FILE. 16526 tables.

@@ -1,6 +1,7 @@
+// MOMV_MONSTER_MOVEMENT
 const {Model, DataTypes} = require('sequelize');
 module.exports = (sequelize, DataTypes)=>{
-    class USAS_USER_ACCESS extends Model{
+    class MOMV_MONSTER_MOVEMENT extends Model{
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -10,27 +11,32 @@ module.exports = (sequelize, DataTypes)=>{
             // associated models go here
         }
     }
-    USAS_USER_ACCESS.init({
-            US_ID:{
+    MOMV_MONSTER_MOVEMENT.init({
+            MOMV_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            USAS_LOGIN_ID: DataTypes.STRING,
-            USAS_PASSWORD: DataTypes.STRING,
-            USAS_CREATED_DATEKEY: DataTypes.INTEGER(8),
-            USAS_RETIRED_DATEKEY: DataTypes.INTEGER(8),
+            //: DataTypes.STRING,
+            //: DataTypes.INTEGER(8),
+            GASYMO_ID: DataTypes.INTEGER(8),
+            MVTY_ID: DataTypes.INTEGER(8),
+            MOMV_ORDER_VALUE: DataTypes.INTEGER(2),
+            MOMV_SPECIAL_DISPLAY_TEXT: DataTypes.STRING,
+            MOMV_DISTANCE_VALUE: DataTypes.INTEGER(4),
+
             ST_CODE: DataTypes.STRING,
             LAST_MODIFIED_DATE: DataTypes.DATE,
             LAST_MODIFIED_BY: DataTypes.DATE,
+
         },
         {
             sequelize,
             modelName: 'FGGDATA',
-            tableName: 'USAS_USER_ACCESS',
+            tableName: 'MOMV_MONSTER_MOVEMENT',
             createdAt: 'LAST_MODIFIED_DATE',
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return USAS_USER_ACCESS;
+    return MOMV_MONSTER_MOVEMENT;
 }
