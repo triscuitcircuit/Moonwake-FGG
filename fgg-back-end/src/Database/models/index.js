@@ -22,14 +22,14 @@ const sequelize = new Sequelize(
             min: dbConfig.pool.min,
             acquire: dbConfig.pool.acquire,
             idle: dbConfig.pool.idle,
-      }
+        }
     }
 );
 
 Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
+    if (db[modelName].associate) {
+        db[modelName].associate(db);
+    }
 });
 
 db.sequelize = sequelize;
@@ -113,8 +113,8 @@ db.list = [
 
 ];
 db.list.forEach(model=>{
-   console.log("Generated routes for table: "+
-       model.tableName);
+    console.log("Generated routes for table: "+
+        model.tableName);
 });
 
 module.exports = db;
