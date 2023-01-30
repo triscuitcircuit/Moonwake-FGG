@@ -7,8 +7,10 @@ import url from "url";
 import querystring from "querystring";
 import Shopify, { ApiVersion } from "@shopify/shopify-api";
 
+//note: lots of unused variables / imports in this file
 
-const { API_KEY, API_SECRET_KEY, SCOPES, SHOP, HOST, HOST_SCHEME } =
+//below commented to prevent errors - not in use yet
+/*const { API_KEY, API_SECRET_KEY, SCOPES, SHOP, HOST, HOST_SCHEME } =
   process.env;
 
 Shopify.Context.initialize({
@@ -19,7 +21,7 @@ Shopify.Context.initialize({
   HOST_SCHEME,
   IS_EMBEDDED_APP: true,
   API_VERSION: ApiVersion.April22, // all supported versions are available, as well as "unstable" and "unversioned"
-});
+});*/
 
 // Storing the currently active shops in memory will force them to re-login when your server restarts. You should
 // persist this object in your app.
@@ -34,7 +36,8 @@ async function onRequest(
   const queryString: string = String(url.parse(req_url).query);
   const query: Record<string, any> = querystring.parse(queryString);
 
-  switch (pathName) {
+  //below commented to prevent errors - not in use yet
+  /*switch (pathName) {
     default:
       // This shop hasn't been seen yet, go through OAuth to create a session
       if (ACTIVE_SHOPIFY_SHOPS[SHOP] === undefined) {
@@ -46,7 +49,7 @@ async function onRequest(
         // Load your app skeleton page with App Bridge, and do something amazing!
       }
       return;
-  } // end of default path
+  } // end of default path*/
 } // end of onRequest()
 
 http.createServer(onRequest).listen(3000);
