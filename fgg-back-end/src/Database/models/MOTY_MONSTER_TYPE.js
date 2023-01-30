@@ -1,6 +1,8 @@
+// MOTY_MONSTER_TYPE
+
 const {Model, DataTypes} = require('sequelize');
 module.exports = (sequelize, DataTypes)=>{
-    class USAS_USER_ACCESS extends Model{
+    class MOTY_MONSTER_TYPE extends Model{
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -10,27 +12,33 @@ module.exports = (sequelize, DataTypes)=>{
             // associated models go here
         }
     }
-    USAS_USER_ACCESS.init({
-            US_ID:{
+    MOTY_MONSTER_TYPE.init({
+            MOTY_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            USAS_LOGIN_ID: DataTypes.STRING,
-            USAS_PASSWORD: DataTypes.STRING,
-            USAS_CREATED_DATEKEY: DataTypes.INTEGER(8),
-            USAS_RETIRED_DATEKEY: DataTypes.INTEGER(8),
+            //: DataTypes.STRING,
+            //: DataTypes.INTEGER(8),
+            GASY_ID: DataTypes.INTEGER(8),
+            MOTY_NAME: DataTypes.STRING,
+            MOTY_DETAIL: DataTypes.STRING,
+            MOTY_DISPLAY_NAME: DataTypes.STRING,
+
             ST_CODE: DataTypes.STRING,
             LAST_MODIFIED_DATE: DataTypes.DATE,
             LAST_MODIFIED_BY: DataTypes.DATE,
+
+            MOTY_PRIM_SEC_CATEGORY: DataTypes.STRING,
+
         },
         {
             sequelize,
             modelName: 'FGGDATA',
-            tableName: 'USAS_USER_ACCESS',
+            tableName: 'MOTY_MONSTER_TYPE',
             createdAt: 'LAST_MODIFIED_DATE',
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return USAS_USER_ACCESS;
+    return MOTY_MONSTER_TYPE;
 }

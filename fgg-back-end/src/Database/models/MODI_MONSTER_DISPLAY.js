@@ -1,6 +1,7 @@
+// MODI_MONSTER_DISPLAY
 const {Model, DataTypes} = require('sequelize');
 module.exports = (sequelize, DataTypes)=>{
-    class USAS_USER_ACCESS extends Model{
+    class MODI_MONSTER_DISPLAY extends Model{
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -10,27 +11,35 @@ module.exports = (sequelize, DataTypes)=>{
             // associated models go here
         }
     }
-    USAS_USER_ACCESS.init({
-            US_ID:{
+    MODI_MONSTER_DISPLAY.init({
+            MODI_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true,
             },
-            USAS_LOGIN_ID: DataTypes.STRING,
-            USAS_PASSWORD: DataTypes.STRING,
-            USAS_CREATED_DATEKEY: DataTypes.INTEGER(8),
-            USAS_RETIRED_DATEKEY: DataTypes.INTEGER(8),
+            //: DataTypes.STRING,
+            //: DataTypes.INTEGER(8),
+            GASYMO_ID: DataTypes.INTEGER(8),
+            MODI_SECTION_NUMBER: DataTypes.INTEGER(2),
+            MODI_LINE_NUMBER: DataTypes.INTEGER(4),
+            MODI_COLUMN_NUMBER: DataTypes.INTEGER(2),
+            MODI_TEXT: DataTypes.STRING,
+            MODI_HTML_TAGGED_TEXT: DataTypes.STRING,
+            MODI_XML_TAGGED_TEXT: DataTypes.STRING,
+
             ST_CODE: DataTypes.STRING,
             LAST_MODIFIED_DATE: DataTypes.DATE,
             LAST_MODIFIED_BY: DataTypes.DATE,
+
+            MODI_PRINT_TEXT: DataTypes.STRING,
         },
         {
             sequelize,
             modelName: 'FGGDATA',
-            tableName: 'USAS_USER_ACCESS',
+            tableName: 'MODI_MONSTER_DISPLAY',
             createdAt: 'LAST_MODIFIED_DATE',
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return USAS_USER_ACCESS;
+    return MODI_MONSTER_DISPLAY;
 }
