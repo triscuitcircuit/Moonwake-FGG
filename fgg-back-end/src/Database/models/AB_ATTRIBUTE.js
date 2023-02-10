@@ -1,4 +1,5 @@
 const {Model, DataTypes} = require('sequelize');
+const db = require("./index");
 module.exports = (sequelize, DataTypes)=>{
     class AB_ATTRIBUTE extends Model{
         /**
@@ -7,6 +8,9 @@ module.exports = (sequelize, DataTypes)=>{
          * The `models/index` file will call this method automatically.
          */
         static associate(models){
+            this.hasMany(models.MOAB_MONSTER_ATTRIBUTE,{
+                foreignKey: "AB_ID"
+            })
             // associated models go here
         }
     }

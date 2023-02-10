@@ -1,5 +1,7 @@
 // MOAB_MONSTER_ATTRIBUTE
+const AB_ATTRIBUTE = require('./AB_ATTRIBUTE');
 const {Model, DataTypes} = require('sequelize');
+const db = require("./index");
 module.exports = (sequelize, DataTypes)=>{
     class MOAB_MONSTER_ATTRIBUTE extends Model{
         /**
@@ -8,7 +10,6 @@ module.exports = (sequelize, DataTypes)=>{
          * The `models/index` file will call this method automatically.
          */
         static associate(models){
-            // associated models go here
         }
     }
     MOAB_MONSTER_ATTRIBUTE.init({
