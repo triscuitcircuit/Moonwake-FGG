@@ -8,6 +8,7 @@ const db = require("../index");
 const basename = path.basename(__filename);
 
 
+
 const sequelize = new Sequelize(
     'orcl',
     ck.USERNAME_FGG,
@@ -109,7 +110,6 @@ db.list = [
     require("./USASLO_USER_ACCESS_LOG")(sequelize, Sequelize),
     require("./USGASYMO_USER_GAME_SYS_MONSTER")(sequelize, Sequelize),
     require("./USRO_USER_ROLE")(sequelize, Sequelize),
-
 
 ];
 db.list.forEach(model=>{
