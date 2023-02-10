@@ -94,3 +94,78 @@ describe('Shows all akca-attack-category', () => {
         })
     })
 })
+
+describe('Shows all akty-attack-type', () => {
+    it('should show akty-attack-type', async () => {
+        await request('/api/akty_attack_type', function (response) {
+            expect(response.statusCode).toEqual(200)
+
+            expect(response.body).toHaveProperty('AKTY_ID')
+            expect(response.body).toHaveProperty('GASY_ID')
+            expect(response.body).toHaveProperty('AKTY_NAME')
+            expect(response.body).toHaveProperty('AKTY_DETAIL')
+            expect(response.body).toHaveProperty('AKTY_DISPLAY_NAME')
+            expect(response.body).toHaveProperty('ST_CODE')
+            expect(response.body).toHaveProperty('LAST_MODIFIED_DATE')
+            expect(response.body).toHaveProperty('LAST_MODIFIED_BY')
+            expect(response.body).toHaveProperty('AKTY_ORDER_VALUE')
+        })
+    })
+})
+
+describe('Shows all al_alignment', () => {
+    it('should show al_alignment', async () => {
+        await request('/api/al_alignment', function (response) {
+            expect(response.statusCode).toEqual(200)
+            expect(response.body).toHaveProperty('AL_ID')
+            expect(response.body).toHaveProperty('GASY_ID')
+            expect(response.body).toHaveProperty('AL_NAME')
+            expect(response.body).toHaveProperty('AL_DETAIL')
+            expect(response.body).toHaveProperty('AL_DISPLAY_NAME')
+            expect(response.body).toHaveProperty('AL_DOMAIN_VALUE')
+            expect(response.body).toHaveProperty('ST_CODE')
+            expect(response.body).toHaveProperty('LAST_MODIFIED_DATE')
+            expect(response.body).toHaveProperty('LAST_MODIFIED_BY')
+            expect(response.body).toHaveProperty('AL_SUBDOMAIN_VALUE')
+        })
+    })
+})
+
+describe('Shows all at_action', () => {
+    it('should show at_action', async () => {
+        await request('/api/at_action', function (response) {
+            expect(response.statusCode).toEqual(200)
+            expect(response.body).toHaveProperty('AT_ID')
+            expect(response.body).toHaveProperty('ATCL_ID')
+            expect(response.body).toHaveProperty('GASY_ID')
+            expect(response.body).toHaveProperty('AT_NAME')
+            expect(response.body).toHaveProperty('AT_DETAIL')
+            expect(response.body).toHaveProperty('AT_DISPLAY_NAME')
+            expect(response.body).toHaveProperty('AT_DYNAMIC_TEXT')
+            expect(response.body).toHaveProperty('ST_CODE')
+            expect(response.body).toHaveProperty('LAST_MODIFIED_DATE')
+            expect(response.body).toHaveProperty('LAST_MODIFIED_BY')
+            expect(response.body).toHaveProperty('AT_EXPECTED_DETAIL_COLUMNS')
+            expect(response.body).toHaveProperty('AT_ORDER_VALUE')
+            expect(response.body).toHaveProperty('GACO_ID')
+        })
+    })
+})
+
+describe('Shows all atcl_action_class', () => {
+    it('should show atcl_action_class', async () => {
+        await request('/api/atcl_action_class', function (response) {
+            expect(response.statusCode).toEqual(200)
+
+            expect(response.body).toHaveProperty('ATCL_ID')
+            expect(response.body).toHaveProperty('GASY_ID')
+            expect(response.body).toHaveProperty('ATCL_NAME')
+            expect(response.body).toHaveProperty('ATCL_DETAIL')
+            expect(response.body).toHaveProperty('ATCL_DISPLAY_NAME')
+            expect(response.body).toHaveProperty('ATCL_ORDER_VALUE')
+            expect(response.body).toHaveProperty('ST_CODE')
+            expect(response.body).toHaveProperty('LAST_MODIFIED_DATE')
+            expect(response.body).toHaveProperty('LAST_MODIFIED_BY')
+        })
+    })
+})
