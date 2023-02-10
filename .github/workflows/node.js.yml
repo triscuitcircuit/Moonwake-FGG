@@ -13,7 +13,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./fgg-back-end/
     strategy:
       matrix:
         node-version: [14.x, 16.x, 18.x]
@@ -26,7 +28,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: cd fgg-back-end
+        cache-dependency-path: './fgg-back-end/package-lock.json'
     - run: npm uninstall oracledb && npm install oracledb
     - run: npm ci
     - run: npm run build --if-present
