@@ -22,7 +22,6 @@ import {
 import { Layout } from "./Layout";
 import { Card1, Card2, Card3, Card4 } from "./Card";
 import { LoginModalWindow, handler } from "./LoginWindow";
-// import {conTest} from "../Database/Connection";
 import Nav from "../components/Navbar";
 import HomeDemo from "../components/Home-Demo";
 import CreatureCreator from "../pages/creature-creator";
@@ -31,7 +30,7 @@ import Books from "../pages/books";
 import HelpFeedback from "../pages/help-feedback";
 import Login from "../pages/login";
 import SignUp from "../pages/sign-up";
-import Connection from "../Database/Connection";
+import {Connection} from "../Database/Connection";
 
 const theme = createTheme({
   type: "dark",
@@ -39,8 +38,6 @@ const theme = createTheme({
 
 function App() {
   const [count, setCount] = useState(0);
-  console.log(Connection.getAB_ATTRIBUTE())
-  // @ts-ignore
   return (
     <Router>
       <Nav />

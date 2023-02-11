@@ -97,7 +97,7 @@ const Nav = () => {
                             <Button.Group color="gradient">
                                 <Button>Login</Button>
                                 {/*<LoginModalWindow />*/}
-                                <Button>Sign Uo</Button>
+                                <Button>Sign Up</Button>
                             </Button.Group>
                         </Navbar.Item>
                     </Navbar.Content>

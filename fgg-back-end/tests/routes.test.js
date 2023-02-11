@@ -1,5 +1,4 @@
 const request = require('supertest')
-const app = require('../src/server')
 const {response} = require("express");
 
 describe('Show all AB_ATTRIBUTE', () => {
@@ -163,6 +162,26 @@ describe('Shows all atcl_action_class', () => {
             expect(response.body).toHaveProperty('ATCL_DETAIL')
             expect(response.body).toHaveProperty('ATCL_DISPLAY_NAME')
             expect(response.body).toHaveProperty('ATCL_ORDER_VALUE')
+            expect(response.body).toHaveProperty('ST_CODE')
+            expect(response.body).toHaveProperty('LAST_MODIFIED_DATE')
+            expect(response.body).toHaveProperty('LAST_MODIFIED_BY')
+        })
+    })
+})
+
+describe('Shows all ATDE_ACTION_DETAIL', () => {
+    it('should show ATDE_ACTION_DETAIL', async () => {
+        await request('/api/ATDE_ACTION_DETAIL', function (response) {
+            expect(response.statusCode).toEqual(200)
+
+            expect(response.body).toHaveProperty('ATDE_ID')
+            expect(response.body).toHaveProperty('AT_ID')
+            expect(response.body).toHaveProperty('ATCL_ID')
+            expect(response.body).toHaveProperty('GASY_ID')
+            expect(response.body).toHaveProperty('ATDE_NAME')
+            expect(response.body).toHaveProperty('ATDE_DETAIL')
+            expect(response.body).toHaveProperty('ATDE_ORDER_VALUE')
+            expect(response.body).toHaveProperty('ATDE_DYNAMIC_TEXT')
             expect(response.body).toHaveProperty('ST_CODE')
             expect(response.body).toHaveProperty('LAST_MODIFIED_DATE')
             expect(response.body).toHaveProperty('LAST_MODIFIED_BY')

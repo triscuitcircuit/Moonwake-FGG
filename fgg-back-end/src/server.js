@@ -1,31 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 const db = require("./Database");
-const bodyParser = require('body-parser');
 const logger = require('morgan');
 
 
 const app = express();
 
-var corsOptions = {
-    origin: "http://localhost:8081"
-};
+app.use(cors());
+app.use(app.json());
 
-app.use((req,res,next)=>{
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:8080");
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    express.json();
-});
-
-app.use(express.urlencoded({extended: true}));
-
-// app.get("/", (req, res) => {
-//     res.json({ message: "back-end" });
-// });
-app.use(bodyParser.json())
 app.use(logger('dev'))
 
 require("./routes/routes")(app);

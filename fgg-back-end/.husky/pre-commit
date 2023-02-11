@@ -9,4 +9,4 @@ else
 fi
 . "$(dirname -- "$0")/_/husky.sh"
 
-#npm run server
+npm run test
