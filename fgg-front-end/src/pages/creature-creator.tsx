@@ -11,6 +11,9 @@ import {
     Dropdown,
 } from "@nextui-org/react";
 import { StartNew, Auto } from "../components/creature-creator-cards";
+import DoubleEndedRangeSlider from "../components/Double-Ended-Range-Slider";
+import VerticalRangeSlider from "../components/VerticalRangeSlider";
+import { StrengthCard, ConCard, CharCard, DexCard, WisCard, IntCard } from "../components/CreatorCards";
 
 const theme = createTheme({
     type: "dark",
@@ -21,6 +24,7 @@ interface StartNewProps {
 }
 
 const CreatureCreator: React.FC = () => {
+
     const [isClicked, setIsClicked] = useState(false);
 
     const handleButtonClick = () => {
@@ -76,7 +80,6 @@ const CreatureCreator: React.FC = () => {
             }
             {!isClicked &&
                 <Container>
-                    <Button onClick={handleButtonClick}>Go Back</Button>
                     <div
                         style={{
                             display: "flex",
@@ -86,10 +89,11 @@ const CreatureCreator: React.FC = () => {
                             alignItems: "center",
                             }}
                     >
+
                         <Input
+                            width="50%"
                             placeholder="Creature Name"
                             size="xl"
-                            width="50%"
                         />
                     </div>
                     <div
@@ -148,6 +152,27 @@ const CreatureCreator: React.FC = () => {
                             style={{
                                 display: "flex",
                                 width: "100%",
+                                border: "1px solid white",
+                                marginTop: "1%",
+                                justifyContent: "center",
+                                alignItems: "center"
+                            }}
+                        >
+                            <div
+                                style={{
+                                    display: "flex",
+                                    width: "50%",
+                                    border: "1px solid white"
+                                }}
+                            >
+                                <Text h4>Armor Class</Text>
+                                <DoubleEndedRangeSlider />
+                            </div>
+                        </div>
+                        <div
+                            style={{
+                                display: "flex",
+                                width: "100%",
                                 marginTop: "1%",
                                 justifyContent: "center",
                                 border: "1px solid white"
@@ -172,84 +197,55 @@ const CreatureCreator: React.FC = () => {
                         >
                             <Grid.Container gap={2} justify="space-evenly" css={{ width: "50%"}}>
                                 <Grid>
-                                    <Dropdown>
-                                        <Dropdown.Button flat>STR</Dropdown.Button>
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
+                                    <StrengthCard />
                                 </Grid>
                                 <Grid>
-                                    <Dropdown>
-                                        <Dropdown.Button flat>STR</Dropdown.Button>
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
+                                    <DexCard />
                                 </Grid>
                                 <Grid>
-                                    <Dropdown>
-                                        <Dropdown.Button flat>STR</Dropdown.Button>
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
+                                    <ConCard />
                                 </Grid>
                                 <Grid>
-                                    <Dropdown>
-                                        <Dropdown.Button flat>STR</Dropdown.Button>
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
+                                    <IntCard />
                                 </Grid>
                                 <Grid>
-                                    <Dropdown>
-                                        <Dropdown.Button flat>STR</Dropdown.Button>
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
+                                    <WisCard />
                                 </Grid>
                                 <Grid>
-                                    <Dropdown>
-                                        <Dropdown.Button flat>STR</Dropdown.Button>
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                            <Dropdown.Item>Example</Dropdown.Item>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
+                                    <CharCard />
                                 </Grid>
                             </Grid.Container>
+                        </div>
+                        <div
+                            style={{
+                                display: "flex",
+                                width: "100%",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                marginTop: "1%",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    display: "flex",
+                                    width: "50%",
+                                    justifyContent: "space-evenly",
+                                }}
+                            >
+                                <VerticalRangeSlider />
+                                <VerticalRangeSlider />
+                                <VerticalRangeSlider />
+                                <VerticalRangeSlider />
+                                <VerticalRangeSlider />
+                                <VerticalRangeSlider />
+                            </div>
+                        </div>
+                        <div
+                            style={{
+                                width: "100%"
+                            }}
+                        >
+                            <Button onClick={handleButtonClick}>Go Back</Button>
                         </div>
                     </div>
                 </Container>
