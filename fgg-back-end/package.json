@@ -32,7 +32,6 @@
     "express": "^4.18.2",
     "find-config": "^1.0.0",
     "morgan": "^1.10.0",
-    "oracledb": "file:../drivers/mac-arm/oracledb-5.5.0_x64.tgz",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
     "process": "^0.11.10",
@@ -43,6 +42,7 @@
     "husky": "^8.0.3",
     "jest": "^29.4.2",
     "lint-staged": "^13.1.0",
+    "oracledb": "https://github.com/oracle/node-oracledb/releases/download/v5.5.0/oracledb-src-5.5.0.tgz",
     "prettier": "^2.8.3",
     "sequelize-test-helpers": "^1.4.3",
     "supertest": "^6.3.3"

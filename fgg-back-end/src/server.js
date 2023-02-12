@@ -7,7 +7,7 @@ const logger = require('morgan');
 const app = express();
 
 app.use(cors());
-app.use(app.json());
+app.use(express.json());
 
 app.use(logger('dev'))
 
