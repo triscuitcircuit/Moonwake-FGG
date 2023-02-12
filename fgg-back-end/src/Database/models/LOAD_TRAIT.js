@@ -1,15 +1,6 @@
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class LOAD_TRAIT extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-        }
-    }
-    LOAD_TRAIT.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('LOAD_TRAIT',{
             TRAIT_NAME: DataTypes.STRING,
             TRAIT_DETAIL: DataTypes.STRING,
         },
@@ -19,5 +10,4 @@ module.exports = (sequelize, DataTypes)=>{
             tableName: 'LOAD_TRAIT',
         }
     )
-    return LOAD_TRAIT;
 }

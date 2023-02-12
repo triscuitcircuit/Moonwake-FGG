@@ -1,17 +1,7 @@
 // MOAT_MONSTER_ACTION
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class MOAT_MONSTER_ACTION extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-            // associated models go here
-        }
-    }
-    MOAT_MONSTER_ACTION.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('MOAT_MONSTER_ACTION', {
             MOAT_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -44,5 +34,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return MOAT_MONSTER_ACTION;
 }

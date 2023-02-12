@@ -1,17 +1,7 @@
 // PP_PROPERTY
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class PP_PROPERTY extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-            // associated models go here
-        }
-    }
-    PP_PROPERTY.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('PP_PROPERTY',{
             PP_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -40,5 +30,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return PP_PROPERTY;
 }

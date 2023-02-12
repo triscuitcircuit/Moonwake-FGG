@@ -1,17 +1,7 @@
 // MOST_MONSTER_STATUS
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class MOST_MONSTER_STATUS extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-            // associated models go here
-        }
-    }
-    MOST_MONSTER_STATUS.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('MOST_MONSTER_STATUS', {
             MOST_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -38,5 +28,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return MOST_MONSTER_STATUS;
 }
