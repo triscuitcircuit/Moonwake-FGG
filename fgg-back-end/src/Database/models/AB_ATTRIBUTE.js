@@ -1,20 +1,6 @@
-const {Model, DataTypes} = require('sequelize');
-const db = require("./index");
-module.exports = (sequelize, DataTypes)=>{
-    class AB_ATTRIBUTE extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-            this.hasMany(models.MOAB_MONSTER_ATTRIBUTE,{
-                foreignKey: "AB_ID"
-            })
-            // associated models go here
-        }
-    }
-    AB_ATTRIBUTE.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('AB_ATTRIBUTE',{
         AB_ID:{
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -38,5 +24,4 @@ module.exports = (sequelize, DataTypes)=>{
         updatedAt: 'LAST_MODIFIED_BY',
     }
     )
-    return AB_ATTRIBUTE;
 }

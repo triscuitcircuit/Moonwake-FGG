@@ -1,18 +1,8 @@
 // MOTT_MONSTER_TRAIT
 
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class MOTT_MONSTER_TRAIT extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-            // associated models go here
-        }
-    }
-    MOTT_MONSTER_TRAIT.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('MOTT_MONSTER_TRAIT', {
             MOTT_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -42,5 +32,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return MOTT_MONSTER_TRAIT;
 }

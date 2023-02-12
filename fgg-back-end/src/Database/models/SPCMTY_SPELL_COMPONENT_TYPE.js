@@ -1,16 +1,6 @@
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class SPCMTY_SPELL_COMPONENT_TYPE extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-            // associated models go here
-        }
-    }
-    SPCMTY_SPELL_COMPONENT_TYPE.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('SPCMTY_SPELL_COMPONENT_TYPE', {
             SPCMTY_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -37,5 +27,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return SPCMTY_SPELL_COMPONENT_TYPE;
 }

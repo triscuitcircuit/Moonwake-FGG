@@ -1,17 +1,7 @@
 // GACODTSH_GAME_COMP_DATA_SHARE
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class GACODTSH_GAME_COMP_DATA_SHARE extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-            // associated models go here
-        }
-    }
-    GACODTSH_GAME_COMP_DATA_SHARE.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('GACODTSH_GAME_COMP_DATA_SHARE',{
             GACODTSH_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -38,5 +28,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return GACODTSH_GAME_COMP_DATA_SHARE;
 }

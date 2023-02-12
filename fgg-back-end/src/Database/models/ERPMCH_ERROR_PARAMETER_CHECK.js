@@ -1,16 +1,6 @@
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class ERPMCH_ERROR_PARAMETER_CHECK extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-            // associated models go here
-        }
-    }
-    ERPMCH_ERROR_PARAMETER_CHECK.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('ERPMCH_ERROR_PARAMETER_CHECK', {
             ER_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -42,5 +32,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return ERPMCH_ERROR_PARAMETER_CHECK;
 }

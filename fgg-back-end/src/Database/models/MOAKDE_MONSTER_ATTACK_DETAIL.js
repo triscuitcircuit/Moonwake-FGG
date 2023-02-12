@@ -1,17 +1,7 @@
 // MOAKDE_MONSTER_ATTACK_DETAIL
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class MOAKDE_MONSTER_ATTACK_DETAIL extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-            // associated models go here
-        }
-    }
-    MOAKDE_MONSTER_ATTACK_DETAIL.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('MOAKDE_MONSTER_ATTACK_DETAIL', {
             MOAKDE_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -47,5 +37,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return MOAKDE_MONSTER_ATTACK_DETAIL;
 }

@@ -1,17 +1,7 @@
 // PPCA_PROPERTY_CATEGORY
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class PPCA_PROPERTY_CATEGORY extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-            // associated models go here
-        }
-    }
-    PPCA_PROPERTY_CATEGORY.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('PPCA_PROPERTY_CATEGORY', {
             PPCA_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -39,5 +29,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return PPCA_PROPERTY_CATEGORY;
 }
