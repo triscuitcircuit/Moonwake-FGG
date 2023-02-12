@@ -1,22 +1,26 @@
 import axios from "axios";
+import http from "http";
+import cors from 'cors';
 
-interface Data {
-    [key: string]: any;
+const options: cors.options={
+    origin: "http://localhost:8080"
 }
 
-export class Connection{
-   private baseURL: string;
+const instance = axios.create({
+    baseURL: "http://localhost:8080/api",
+    headers: {
+        "Content-type": "application/json"
+    }
+});
 
-   constructor(baseURL: string) {
-       this.baseURL = baseURL
-   }
-   public async getData(): Promise<Data>{
-       try {
-           const res = await axios.get(this.baseURL);
-           return res.data;
-       }catch(error){
-           console.error(error)
-           return {}
-       }
-       }
-   }
+export class Connection{
+    getAB_ATTRIBUTE(){
+        instance.get('/ab_attribute')
+            .then(response =>{
+                console.log(response.data)
+                return response.data
+            })
+    }
+}
+
+export default new Connection();
