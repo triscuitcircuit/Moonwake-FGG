@@ -38,7 +38,7 @@ const CreatureDatabase = () => {
             <div>
                 {data ? (
                     <Grid.Container gap={2} justify="center">
-                        // .map pulls the information out the table established above in connection
+                        {/* .map pulls the information out the table established above in connection */}
                         {data.map((item: { MODI_ID: React.Key; MODI_TEXT: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal; MODI_HTML_TAGGED_TEXT: any; }) => (
                             <Grid sm={12} md={5}>
                                 <Card css={{ mw: "330px" }} key={item.MODI_ID}>
