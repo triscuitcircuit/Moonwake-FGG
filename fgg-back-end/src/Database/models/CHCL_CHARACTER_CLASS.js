@@ -1,16 +1,6 @@
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class CHCL_CHARACTER_CLASS extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-            // associated models go here
-        }
-    }
-    CHCL_CHARACTER_CLASS.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('CHCL_CHARACTER_CLASS',{
             CHCL_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -35,5 +25,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return CHCL_CHARACTER_CLASS;
 }

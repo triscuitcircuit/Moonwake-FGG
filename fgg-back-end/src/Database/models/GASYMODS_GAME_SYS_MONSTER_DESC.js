@@ -1,17 +1,7 @@
 // GASYMODS_GAME_SYS_MONSTER_DESC
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class GASYMODS_GAME_SYS_MONSTER_DESC extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-            // associated models go here
-        }
-    }
-    GASYMODS_GAME_SYS_MONSTER_DESC.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('GASYMODS_GAME_SYS_MONSTER_DESC', {
             GASYMODS_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -37,5 +27,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return GASYMODS_GAME_SYS_MONSTER_DESC;
 }

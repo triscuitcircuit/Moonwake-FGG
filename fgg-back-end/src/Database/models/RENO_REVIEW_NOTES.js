@@ -1,17 +1,7 @@
 // RENO_REVIEW_NOTES
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class RENO_REVIEW_NOTES extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-            // associated models go here
-        }
-    }
-    RENO_REVIEW_NOTES.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('RENO_REVIEW_NOTES', {
             RENO_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -41,5 +31,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return RENO_REVIEW_NOTES;
 }

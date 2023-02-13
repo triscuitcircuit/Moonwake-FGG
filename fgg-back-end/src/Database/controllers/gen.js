@@ -2,9 +2,14 @@ const Sequelize = require('sequelize');
 const {Op} = require("sequelize");
 
 // generates findOne methods for sequelize database objects to use
-function gen_findOne(req, res, obj) {
+function gen_findOne(req, res, obj, associations) {
     const id = req.params.id;
-    obj.findByPk(id)
+    obj.findByPk(id,{
+        include:[{
+            model: associations[associations.toString()],
+            through:{attributes:[]}
+        }]
+    })
         .then(data=>{
             if (data){
                 res.send(data);

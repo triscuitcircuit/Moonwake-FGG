@@ -7,7 +7,7 @@ module.exports = app =>{
     // "findAll" path generator for each table
     // fullname of table for access
     // ie. "http://localhost:8080/api/abca_attribute_category"
-    db.list.forEach(model=>{
+    db.sequelize.modelManager.models.forEach(model=>{
         router.get("/"+model.tableName,
             (req,res)=>{
             gen_findAll(req,res,model);
@@ -17,10 +17,10 @@ module.exports = app =>{
     // "findOne" path generator for each table
     // fullname of table for access
     // ie. "http://localhost:8080/api/abca_attribute_category/10"
-    db.list.forEach(model=>{
+    db.sequelize.modelManager.models.forEach(model=>{
         router.get("/"+model.tableName+"/:id",
             (req,res)=>{
-                gen_findOne(req,res,model)
+                model.associations?gen_findOne(req,res,model,model.associations):gen_findOne(req,res,model);
             })
     });
 

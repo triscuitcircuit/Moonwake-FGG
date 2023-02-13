@@ -1,16 +1,6 @@
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class TGTY_TAG_TYPE extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-            // associated models go here
-        }
-    }
-    TGTY_TAG_TYPE.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('TGTY_TAG_TYPE', {
             TGTY_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -35,5 +25,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return TGTY_TAG_TYPE;
 }

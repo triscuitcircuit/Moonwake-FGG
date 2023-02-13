@@ -1,15 +1,7 @@
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class AK_ATTACK extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-        }
-    }
-    AK_ATTACK.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define("AK_ATTACK",
+    {
             AK_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -34,5 +26,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return AK_ATTACK;
 }

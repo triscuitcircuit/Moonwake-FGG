@@ -1,17 +1,7 @@
 // MODI_MONSTER_DISPLAY
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class MODI_MONSTER_DISPLAY extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-            // associated models go here
-        }
-    }
-    MODI_MONSTER_DISPLAY.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('MODI_MONSTER_DISPLAY', {
             MODI_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -41,5 +31,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return MODI_MONSTER_DISPLAY;
 }

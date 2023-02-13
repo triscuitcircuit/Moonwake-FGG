@@ -1,15 +1,6 @@
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class AKCA_ATTACK_CATEGORY extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-        }
-    }
-    AKCA_ATTACK_CATEGORY.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('AKCA_ATTACK_CATEGORY',{
             AKCA_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -31,5 +22,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return AKCA_ATTACK_CATEGORY;
 }
