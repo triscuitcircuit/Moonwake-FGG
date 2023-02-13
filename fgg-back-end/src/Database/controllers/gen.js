@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const {Op} = require("sequelize");
 
+// generates findOne methods for sequelize database objects to use
 function gen_findOne(req, res, obj) {
     const id = req.params.id;
     obj.findByPk(id)
@@ -20,7 +21,7 @@ function gen_findOne(req, res, obj) {
         });
 }
 
-
+// generates findAll methods for sequelize database objects to use
 function gen_findAll(req, res, obj, q_func){
     let temp = JSON.stringify(q_func);
     let test = req.query;
