@@ -1,3 +1,5 @@
+// This file defines cards for use in website design
+
 import { Card, Col, Text, Row, Button } from "@nextui-org/react";
 
 export const Card1 = () => (
