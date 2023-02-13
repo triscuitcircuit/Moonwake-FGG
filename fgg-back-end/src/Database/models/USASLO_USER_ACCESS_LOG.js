@@ -1,16 +1,6 @@
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class USASLO_USER_ACCESS_LOG extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-            // associated models go here
-        }
-    }
-    USASLO_USER_ACCESS_LOG.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('USASLO_USER_ACCESS_LOG', {
             USASLO_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -35,5 +25,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return USASLO_USER_ACCESS_LOG;
 }

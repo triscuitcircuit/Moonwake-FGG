@@ -1,18 +1,8 @@
 // MVTY_MOVEMENT_TYPE
 
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class MVTY_MOVEMENT_TYPE extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-            // associated models go here
-        }
-    }
-    MVTY_MOVEMENT_TYPE.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('MVTY_MOVEMENT_TYPE', {
             MVTY_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -40,5 +30,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return MVTY_MOVEMENT_TYPE;
 }

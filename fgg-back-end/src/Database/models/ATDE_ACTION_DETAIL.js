@@ -1,15 +1,6 @@
-const {Model, DataTypes} = require('sequelize');
-module.exports = (sequelize, DataTypes)=>{
-    class ATDE_ACTION_DETAIL extends Model{
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
-        static associate(models){
-        }
-    }
-    ATDE_ACTION_DETAIL.init({
+const {DataTypes} = require('sequelize');
+module.exports = (sequelize)=>{
+    sequelize.define('ATDE_ACTION_DETAIL',{
             ATDE_ID:{
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -33,5 +24,4 @@ module.exports = (sequelize, DataTypes)=>{
             updatedAt: 'LAST_MODIFIED_BY',
         }
     )
-    return ATDE_ACTION_DETAIL;
 }
