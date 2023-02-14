@@ -10,10 +10,12 @@ import {
     Card,
     Dropdown,
 } from "@nextui-org/react";
-import { StartNew, Auto } from "../components/creature-creator-cards";
-import DoubleEndedRangeSlider from "../components/Double-Ended-Range-Slider";
+
+import { StartNew, Auto, StrengthCard, ConCard, CharCard, DexCard, WisCard, IntCard } from "../components/creature-creator-cards";
 import VerticalRangeSlider from "../components/VerticalRangeSlider";
-import { StrengthCard, ConCard, CharCard, DexCard, WisCard, IntCard } from "../components/CreatorCards";
+
+// @ts-ignore
+import { HorizontalSlider, VerticalSlider } from "../components/Sliders.jsx";
 
 const theme = createTheme({
     type: "dark",
@@ -153,20 +155,77 @@ const CreatureCreator: React.FC = () => {
                                 display: "flex",
                                 width: "100%",
                                 border: "1px solid white",
-                                marginTop: "1%",
                                 justifyContent: "center",
-                                alignItems: "center"
+                                alignItems: "center",
+                                marginTop: "1%",
+                                }}
+                        >
+                            <div
+                                style={{
+                                    display: "flex",
+                                    width: "50%",
+                                    border: "1px solid white",
+                                    marginTop: "1%",
+                                    justifyContent: "center",
+                                    alignItems: "center"
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        flex: "1",
+                                        border: "1px solid white",
+                                        alignItems: "center",
+                                        justifyContent: "flex-start",
+                                    }}
+                                >
+                                    <Text h3>Armor Class: </Text>
+                                </div>
+                                <div
+                                    style={{
+                                        flex: "4",
+                                    }}
+                                >
+                                    <HorizontalSlider />
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            style={{
+                                display: "flex",
+                                width: "100%",
+                                border: "1px solid white",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                marginTop: "1%",
                             }}
                         >
                             <div
                                 style={{
                                     display: "flex",
                                     width: "50%",
-                                    border: "1px solid white"
+                                    border: "1px solid white",
+                                    marginTop: "1%",
+                                    justifyContent: "center",
+                                    alignItems: "center"
                                 }}
                             >
-                                <Text h4>Armor Class</Text>
-                                <DoubleEndedRangeSlider />
+                                <div
+                                    style={{
+                                        flex: "1",
+                                        border: "1px solid white",
+                                        alignItems: "center",
+                                        justifyContent: "flex-start",
+                                    }}
+                                >
+                                    <Text h3>Health Points: </Text>
+                                </div>
+                                <div
+                                    style={{
+                                        flex: "4",
+                                    }}
+                                >
+                                    <HorizontalSlider />
+                                </div>
                             </div>
                         </div>
                         <div
@@ -195,7 +254,7 @@ const CreatureCreator: React.FC = () => {
                                 border: "1px solid white"
                             }}
                         >
-                            <Grid.Container gap={2} justify="space-evenly" css={{ width: "50%"}}>
+                            <Grid.Container gap={2} justify="space-around" css={{ width: "50%"}}>
                                 <Grid>
                                     <StrengthCard />
                                 </Grid>
@@ -220,6 +279,8 @@ const CreatureCreator: React.FC = () => {
                             style={{
                                 display: "flex",
                                 width: "100%",
+                                height: "100%",
+                                border: "1px solid white",
                                 justifyContent: "center",
                                 alignItems: "center",
                                 marginTop: "1%",
@@ -229,15 +290,19 @@ const CreatureCreator: React.FC = () => {
                                 style={{
                                     display: "flex",
                                     width: "50%",
-                                    justifyContent: "space-evenly",
+                                    height: "100%",
+                                    border: "1px solid white",
+                                    marginTop: "1%",
+                                    justifyContent: "space-around",
+                                    alignItems: "center"
                                 }}
                             >
-                                <VerticalRangeSlider />
-                                <VerticalRangeSlider />
-                                <VerticalRangeSlider />
-                                <VerticalRangeSlider />
-                                <VerticalRangeSlider />
-                                <VerticalRangeSlider />
+                                <VerticalSlider />
+                                <VerticalSlider />
+                                <VerticalSlider />
+                                <VerticalSlider />
+                                <VerticalSlider />
+                                <VerticalSlider />
                             </div>
                         </div>
                         <div
