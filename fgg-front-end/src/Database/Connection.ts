@@ -1,3 +1,5 @@
+// This file establishes the connection with the back end
+
 import axios from "axios";
 
 interface Data {

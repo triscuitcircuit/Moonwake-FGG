@@ -1,3 +1,5 @@
+// This application and its routes to other pages
+
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
@@ -41,7 +43,7 @@ function App() {
   return (
     <Router>
       <Nav />
-      <Routes>
+      <Routes>                                       // paths to other pages defined in /pages
         <Route path="/" element={<HomeDemo />} />
         <Route path="/creature-creator" element={<CreatureCreator />} />
         <Route path="/creature-database" element={<CreatureDatabase />} />

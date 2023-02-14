@@ -1,3 +1,5 @@
+// Defines tests to test that each table's attributes can be fetched and viewed
+
 const request = require('supertest')
 const {response} = require("express");
 
