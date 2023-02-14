@@ -1,3 +1,5 @@
+// Defines the look and style of the home page
+
 import React from "react";
 import {
     Avatar,

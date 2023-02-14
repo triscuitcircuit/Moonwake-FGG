@@ -15,7 +15,8 @@ const CreatureDatabase = () => {
     const [data, setData] = React.useState<any>(null);
 
     useEffect(() => {
-        // any localhost connection should work, try different ones. make sure the keys work, however
+        // any localhost connection should work, try different ones. make sure the keys work
+        // Establishes connection to database, in this case the largest table - only an example
         const connection = new Connection("http://localhost:8080/api/modi_monster_display");
         connection.getData().then(data => setData(data));
     }, []);
@@ -37,6 +38,7 @@ const CreatureDatabase = () => {
             <div>
                 {data ? (
                     <Grid.Container gap={2} justify="center">
+                        {/* .map pulls the information out the table established above in connection */}
                         {data.map((item: { MODI_ID: React.Key; MODI_TEXT: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal; MODI_HTML_TAGGED_TEXT: any; }) => (
                             <Grid sm={12} md={5}>
                                 <Card css={{ mw: "330px" }} key={item.MODI_ID}>
