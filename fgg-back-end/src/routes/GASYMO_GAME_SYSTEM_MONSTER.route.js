@@ -3,13 +3,23 @@ const db = require("../Database/models");
 const { getIdParam } = require('../Database/config/helpers');
 
 async function getAll(req, res) {
-    const GASYMO_GAME_SYSTEM_MONSTER = await db.sequelize.models.GASYMO_GAME_SYSTEM_MONSTER.findAll();
+    const GASYMO_GAME_SYSTEM_MONSTER =
+        await db.sequelize.models.GASYMO_GAME_SYSTEM_MONSTER.findAll(
+             {include: [
+                    { all: true, nested: true}
+                ]
+            }
+        );
     res.status(200).json(GASYMO_GAME_SYSTEM_MONSTER);
 }
 
 async function getById(req, res) {
     const id = getIdParam(req);
-    const GASYMO_GAME_SYSTEM_MONSTER = await db.sequelize.models.GASYMO_GAME_SYSTEM_MONSTER.findByPk(id);
+    const GASYMO_GAME_SYSTEM_MONSTER = await db.sequelize.models.GASYMO_GAME_SYSTEM_MONSTER.findByPk(id,
+        {include: [
+            { all: true, nested: true}
+            ]
+        });
     if (GASYMO_GAME_SYSTEM_MONSTER) {
         res.status(200).json(GASYMO_GAME_SYSTEM_MONSTER);
     } else {

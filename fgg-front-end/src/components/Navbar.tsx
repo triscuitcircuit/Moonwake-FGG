@@ -65,31 +65,6 @@ const Nav = () => {
                                 placeholder="Search Creatures..."
                             />
                         </Navbar.Item>
-                        <Navbar.Item
-                            css={{
-                                "@xsMax": {
-                                    w: "100%",
-                                    jc: "center",
-                                },
-                            }}
-                        >
-                            <Input
-                                clearable
-                                contentLeftStyling={false}
-                                css={{
-                                    w: "100%",
-                                    "@xsMax": {
-                                        mw: "800px",
-                                    },
-                                    "& .nextui-input-content--left": {
-                                        h: "100%",
-                                        ml: "$4",
-                                        dflex: "center",
-                                    },
-                                }}
-                                placeholder="Search Tags..."
-                            />
-                        </Navbar.Item>
                     </Navbar.Content>
                     <Navbar.Content>
                         <Navbar.Item>

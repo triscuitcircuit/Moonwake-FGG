@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {
     Text,
     NextUIProvider,
-    createTheme, Progress, Grid, Card, Container,
+    createTheme, Progress, Grid, Card, Container, Row,
 } from "@nextui-org/react";
 import {Connection} from "../Database/Connection";
 
@@ -17,7 +17,7 @@ const CreatureDatabase = () => {
     useEffect(() => {
         // any localhost connection should work, try different ones. make sure the keys work
         // Establishes connection to database, in this case the largest table - only an example
-        const connection = new Connection("http://localhost:8080/api/modi_monster_display");
+        const connection = new Connection("http://localhost:8080/api/gasymo_game_system_monster");
         connection.getData().then(data => setData(data));
     }, []);
 
@@ -39,18 +39,28 @@ const CreatureDatabase = () => {
                 {data ? (
                     <Grid.Container gap={2} justify="center">
                         {/* .map pulls the information out the table established above in connection */}
-                        {data.map((item: { MODI_ID: React.Key; MODI_TEXT: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal; MODI_HTML_TAGGED_TEXT: any; }) => (
+                        {data.map((item: { GASYMO_ID: React.Key; GASYMO_DISPLAY_NAME: string;
+                            GACO_GAME_COMPANY: any; MOAB_MONSTER_ATTRIBUTEs: any}) => (
                             <Grid sm={12} md={5}>
-                                <Card css={{ mw: "330px" }} key={item.MODI_ID}>
+                                <Card css={{ mw: "330px" }} key={item.GASYMO_ID}
+                                      variant="bordered" isPressable>
                                     <Card.Header>
-                                        <Text b>{item.MODI_TEXT}</Text>
+                                        <Text b>{item.GASYMO_DISPLAY_NAME}</Text>
                                     </Card.Header>
                                     <Card.Divider />
                                     <Card.Body css={{ py: "$10" }}>
                                         <Text>
-                {<div dangerouslySetInnerHTML={{ __html: item.MODI_HTML_TAGGED_TEXT }} />}
+                                            {item.MOAB_MONSTER_ATTRIBUTEs.map(
+                                                (item_as:{MOAB_ID:React.Key; MOAB_DISPLAY_TEXT: string })=>(
+                                               <Text>{item_as.MOAB_DISPLAY_TEXT}</Text>
+                                            ))}
                                         </Text>
                                     </Card.Body>
+                                    <Card.Footer>
+                                        <Row justify="flex-end">
+                                            <Text>{item.GACO_GAME_COMPANY.GACO_NAME}</Text>
+                                        </Row>
+                                    </Card.Footer>
                                     <Card.Divider />
 
                                 </Card>
