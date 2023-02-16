@@ -5,7 +5,7 @@ import http from "http";
 import url from "url";
 // @ts-ignore
 import querystring from "querystring";
-import Shopify, { ApiVersion } from "@shopify/shopify-api";
+//import Shopify, { ApiVersion } from "@shopify/shopify-api";
 
 //note: lots of unused variables / imports in this file
 
@@ -25,7 +25,7 @@ Shopify.Context.initialize({
 
 // Storing the currently active shops in memory will force them to re-login when your server restarts. You should
 // persist this object in your app.
-const ACTIVE_SHOPIFY_SHOPS: { [key: string]: string | undefined } = {};
+//const ACTIVE_SHOPIFY_SHOPS: { [key: string]: string | undefined } = {};
 
 async function onRequest(
   request: http.IncomingMessage,

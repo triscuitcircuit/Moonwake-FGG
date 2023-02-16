@@ -1,30 +1,39 @@
-import React from "react"
-import {
-    Text,
-    NextUIProvider,
-    createTheme,
-} from "@nextui-org/react";
-
-const theme = createTheme({
-    type: "dark",
-});
-
+import { useGoogleLogin } from "@react-oauth/google"
+import { useNavigate } from "react-router-dom"
+import { Card, Spacer, Button, Text, Container } from "@nextui-org/react"
+// import icons folder for google as well if we want icons
 const Login = () => {
-    return (
-        <NextUIProvider theme={theme}>
-            <Text
-                h1
-                size={60}
-                css={{
-                    textGradient: "45deg, $blue600 -20%, $pink600 50%",
-                    marginLeft: "50"
-                }}
-                weight="bold"
-            >
-                Login Page
-            </Text>
-        </NextUIProvider>
-    );
-};
+    const navigate = useNavigate()
 
-export default Login;
+    const loginToGoogle = useGoogleLogin({
+        onSuccess: tokenResponse => {
+            localStorage.setItem("loginWith", "Google")
+            localStorage.setItem("accessToken", tokenResponse.access_token)
+            navigate("/home")
+        },
+    })
+
+    return (
+        <Container display='flex' alignItems='center' justify='center' css={{ minHeight: "100vh" }}>
+            <Card css={{ mw: "420px", p: "20px" }}>
+                <Text
+                    size={24}
+                    weight='bold'
+                    css={{
+                        as: "center",
+                        mb: "20px",
+                    }}
+                >
+                    Login with
+                </Text>
+                <Button color='gradient' auto ghost onClick={() => loginToGoogle()}>
+                    {/*<IconGoogle />*/}
+                    <Spacer x={0.5} />
+                    Google
+                </Button>
+            </Card>
+        </Container>
+    )
+}
+
+export default Login

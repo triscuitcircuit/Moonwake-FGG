@@ -1,4 +1,4 @@
-// This file defines cards for use in website design
+// Defines cards for use in Home-Demo (components folder) page
 
 import { Card, Col, Text, Row, Button } from "@nextui-org/react";
 
