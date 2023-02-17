@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {
     Text,
     NextUIProvider,
-    createTheme, Progress, Grid, Card, Container, Row,
+    createTheme, Progress, Grid, Card, Container, Row, Badge,
 } from "@nextui-org/react";
 import {Connection} from "../Database/Connection";
 
@@ -40,12 +40,15 @@ const CreatureDatabase = () => {
                     <Grid.Container gap={2} justify="center">
                         {/* .map pulls the information out the table established above in connection */}
                         {data.map((item: { GASYMO_ID: React.Key; GASYMO_DISPLAY_NAME: string;
-                            GACO_GAME_COMPANY: any; MOAB_MONSTER_ATTRIBUTEs: any}) => (
+                            GACO_GAME_COMPANY: any; MOAB_MONSTER_ATTRIBUTEs: any; GASYMO_ARMOR_CLASS: number;
+                            GASYMO_HIT_DICE_TYPE: number; GASYMO_HIT_DICE_NUM: number; GASYMO_XP_VALUE: number
+                            GASYMO_AC_TYPE_DETAIL: string; SZ_SIZE: any; MOTY_MONSTER_TYPE: any}) => (
                             <Grid sm={12} md={5}>
                                 <Card css={{ mw: "330px" }} key={item.GASYMO_ID}
                                       variant="bordered" isPressable>
                                     <Card.Header>
-                                        <Text b>{item.GASYMO_DISPLAY_NAME}</Text>
+                                        <Text b>{item.GASYMO_DISPLAY_NAME}</Text><br></br>
+                                        <Text size="$xs">({item.MOTY_MONSTER_TYPE.MOTY_DETAIL})</Text>
                                     </Card.Header>
                                     <Card.Divider />
                                     <Card.Body css={{ py: "$10" }}>
@@ -55,6 +58,18 @@ const CreatureDatabase = () => {
                                                <Text>{item_as.MOAB_DISPLAY_TEXT}</Text>
                                             ))}
                                         </Text>
+                                    </Card.Body>
+                                    <Card.Divider />
+                                    <Card.Body>
+                                        <Text>
+                                            Armor Class: <Badge>{item.GASYMO_ARMOR_CLASS}</Badge> <br></br>
+                                            Hit Dice: <b>d</b><Badge>{item.GASYMO_HIT_DICE_TYPE}</Badge>x<Badge>{item.GASYMO_HIT_DICE_NUM}</Badge>
+                                            <br></br>
+                                            XP: <Badge>{item.GASYMO_XP_VALUE}</Badge><br></br>
+                                            AC Type: <Badge isSquared>{item.GASYMO_AC_TYPE_DETAIL}</Badge>
+                                            Size: <Badge isSquared>{item.SZ_SIZE.SZ_NAME}</Badge>
+                                        </Text>
+                                    <Card.Divider />
                                     </Card.Body>
                                     <Card.Footer>
                                         <Row justify="flex-end">
