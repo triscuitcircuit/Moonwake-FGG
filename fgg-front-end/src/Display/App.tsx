@@ -28,6 +28,7 @@ import Nav from "../components/Navbar";
 import HomeDemo from "../components/Home-Demo";
 import CreatureCreator from "../pages/creature-creator";
 import CreatureDatabase from "../pages/creature-database";
+import SearchAndFilter from "../pages/search_and_filter";
 import Books from "../pages/books";
 import HelpFeedback from "../pages/help-feedback";
 import Login from "../pages/login";
@@ -47,6 +48,7 @@ function App() {
         <Route path="/" element={<HomeDemo />} />
         <Route path="/creature-creator" element={<CreatureCreator />} />
         <Route path="/creature-database" element={<CreatureDatabase />} />
+        <Route path="/search_and_filter" element={<SearchAndFilter />} />
         <Route path="/books" element={<Books />} />
         <Route path="/help-feedback" element={<HelpFeedback />} />
         <Route path="/login" element={<Login />} />
