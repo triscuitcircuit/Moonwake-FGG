@@ -17,6 +17,7 @@ const collapseItems = [
     { text: "Home", href: "/" },
     { text: "Creature Creator", href: "/creature-creator" },
     { text: "Creature Database", href: "/creature-database" },
+    { text: "Search & Filter", href: "/search_and_filter" },
     { text: "Books", href: "/books" },
     { text: "Help & Feedback", href: "/help-feedback" },
     { text: "Login", href: "/login" },
