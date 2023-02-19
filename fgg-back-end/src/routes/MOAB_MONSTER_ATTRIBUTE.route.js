@@ -5,8 +5,12 @@ const { getIdParam } = require('../Database/config/helpers');
 async function getAll(req, res) {
     const MOAB_MONSTER_ATTRIBUTE =
         await db.sequelize.models.MOAB_MONSTER_ATTRIBUTE.findAll(
-            {include: db.sequelize.models.AB_ATTRIBUTE}
-        );
+            {include: [
+                    { all: true, nested: true}
+                ]
+            }
+
+            );
     res.status(200).json(MOAB_MONSTER_ATTRIBUTE);
 }
 

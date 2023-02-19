@@ -190,3 +190,22 @@ describe('Shows all ATDE_ACTION_DETAIL', () => {
         })
     })
 })
+
+describe('Shows all ATDE_ACTION_TAG', () => {
+    it('should show ATDE_ACTION_TAG', async () => {
+        await request('/api/ATDE_ACTION_TAG', function (response) {
+            expect(response.statusCode).toEqual(200)
+
+            expect(response.body).toHaveProperty('ATTG_ID')
+            expect(response.body).toHaveProperty('AT_ID')
+            expect(response.body).toHaveProperty('ATTG_TEXT')
+            expect(response.body).toHaveProperty('ATTG_TABLE')
+            expect(response.body).toHaveProperty('ATTG_TABLE_KEY')
+            expect(response.body).toHaveProperty('ATTG_TABLE_KEY_TYPE')
+            expect(response.body).toHaveProperty('ATTG_TABLE_KEY_VALUE')
+            expect(response.body).toHaveProperty('ST_CODE')
+            expect(response.body).toHaveProperty('LAST_MODIFIED_DATE')
+            expect(response.body).toHaveProperty('LAST_MODIFIED_BY')
+        })
+    })
+})
