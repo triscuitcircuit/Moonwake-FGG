@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 function applyExtraSetup(sequelize) {
     const { AB_ATTRIBUTE, CHLE_CHALLENGE_LEVEL,
         GASYMO_GAME_SYSTEM_MONSTER, MOTY_MONSTER_TYPE, SZ_SIZE, ABCA_ATTRIBUTE_CATEGORY
-        , GACO_GAME_COMPANY, MOAB_MONSTER_ATTRIBUTE, MO_MONSTER} = sequelize.models;
+        , GACO_GAME_COMPANY, MOAB_MONSTER_ATTRIBUTE, MO_MONSTER, ST_STATUS} = sequelize.models;
 
 
     AB_ATTRIBUTE.hasOne(ABCA_ATTRIBUTE_CATEGORY,{
@@ -52,6 +52,14 @@ function applyExtraSetup(sequelize) {
                 allowNull: false
             },
             sourceKey: 'SZ_ID'
+        })
+
+    GASYMO_GAME_SYSTEM_MONSTER.hasOne(ST_STATUS,
+        {foreignKey: {
+                name:"ST_CODE",
+                allowNull: false
+            },
+            sourceKey: 'ST_CODE'
         })
 
 // Saw in GASYMO_ID
