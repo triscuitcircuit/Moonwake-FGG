@@ -5,7 +5,8 @@ const { getIdParam } = require('../Database/config/helpers');
 async function getAll(req, res) {
     const AB_ATTRIBUTE =
         await db.sequelize.models.AB_ATTRIBUTE.findAll(
-            {include: [
+            { where: {ST_CODE: "active"},
+                include: [
                     { all: true, nested: true}
                 ]
             })
