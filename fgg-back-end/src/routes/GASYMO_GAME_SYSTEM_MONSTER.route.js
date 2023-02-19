@@ -5,7 +5,10 @@ const { getIdParam } = require('../Database/config/helpers');
 async function getAll(req, res) {
     const GASYMO_GAME_SYSTEM_MONSTER =
         await db.sequelize.models.GASYMO_GAME_SYSTEM_MONSTER.findAll(
-             {include: [
+             {
+                 // limit: 10,
+                 where: {ST_CODE: "active"},
+                 include: [
                     { all: true, nested: true}
                 ]
             }
@@ -16,9 +19,11 @@ async function getAll(req, res) {
 async function getById(req, res) {
     const id = getIdParam(req);
     const GASYMO_GAME_SYSTEM_MONSTER = await db.sequelize.models.GASYMO_GAME_SYSTEM_MONSTER.findByPk(id,
-        {include: [
-            { all: true, nested: true}
-            ]
+        {
+            where: {ST_CODE: "active"},
+            include: [
+                { all: true, nested: true}
+            ],
         });
     if (GASYMO_GAME_SYSTEM_MONSTER) {
         res.status(200).json(GASYMO_GAME_SYSTEM_MONSTER);
