@@ -1,8 +1,18 @@
 import React from "react";
-import { Card, Text, Col, Row, Button } from "@nextui-org/react";
+import {Card, Text, Col, Row, Button, Input, Dropdown} from "@nextui-org/react";
 
 interface Props {
     onButtonClick: () => void;
+}
+
+interface AttributeInputProps {
+    name: string;
+    value: string;
+    setSelection: (selection: string) => void;
+}
+
+interface SpeedInputProps {
+    name: string;
 }
 
 export const StartNew: React.FC<Props> = ({ onButtonClick }) => (
@@ -172,4 +182,58 @@ export const CharCard = () => (
             </Text>
         </Card.Body>
     </Card>
+);
+
+export const SpeedInput: React.FC<SpeedInputProps> = ({name}) => (
+    <div
+        style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "10px",
+            }}
+    >
+        <Text h5>{name}</Text>
+        <Input
+            type="number"
+            placeholder="----"
+            size="lg"
+        />
+    </div>
+);
+
+export const AttributeInput: React.FC<AttributeInputProps> = ({name, value, setSelection}) => (
+    <div
+        style={{
+            display: "flex",
+            flex: "1",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "10px",
+            width: "100%",
+            }}
+    >
+        <Text h5>{name}</Text>
+        <Dropdown>
+            <Dropdown.Button flat css={{ width: "100%"}}>
+                {value}
+            </Dropdown.Button>
+            <Dropdown.Menu
+                aria-label="${name} attribute menu"
+                disallowEmptySelection
+                selectionMode="single"
+                css={{ maxHeight: "400px", overflow: "auto" }}
+                // @ts-ignore
+                onSelectionChange={setSelection}
+            >
+                {[...Array(100)].map((_, i) => (
+                    <Dropdown.Item key={i}>
+                        {i}
+                    </Dropdown.Item>
+                ))}
+            </Dropdown.Menu>
+        </Dropdown>
+    </div>
 );
