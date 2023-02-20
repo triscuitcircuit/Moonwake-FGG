@@ -3,3 +3,4 @@
 ./fgg-back-end/node_modules/
 ./fgg-front-end/node_modules/
 ./fgg-front-end/dist/
+/fgg-back-end/env
