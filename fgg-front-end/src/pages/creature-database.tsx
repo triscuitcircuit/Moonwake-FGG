@@ -1,8 +1,9 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
+
 import {
     Text,
     NextUIProvider,
-    createTheme, Progress, Grid, Card, Container, Row, Badge,
+    createTheme, Progress, Grid, Card, Container, Row, Badge, Pagination, Loading,
 } from "@nextui-org/react";
 import {Connection} from "../Database/Connection";
 
@@ -10,14 +11,28 @@ const theme = createTheme({
     type: "dark",
 });
 
-const CreatureDatabase = () => {
+const baseURL = "http://localhost:8080/api/gasymo_game_system_monster";
+const connection = new Connection(baseURL);
 
+
+const CreatureDatabase = () => {
     const [data, setData] = React.useState<any>(null);
+    const [pageCount, setPageCount] = useState(1);
+    const [page, setCurrentPage] = useState(1);
+    const [loading, setLoading] = useState(false);
+
+    const fetchPage = async (page: React.SetStateAction<number>) =>{
+        setLoading(true);
+        const res = await fetch(baseURL+"?page="+page);
+        const data = await res.json();
+        setData(data);
+        setCurrentPage(page);
+        setLoading(false);
+    }
+
+
 
     useEffect(() => {
-        // any localhost connection should work, try different ones. make sure the keys work
-        // Establishes connection to database, in this case the largest table - only an example
-        const connection = new Connection("http://localhost:8080/api/gasymo_game_system_monster");
         connection.getData().then(data => setData(data));
     }, []);
 
@@ -38,49 +53,35 @@ const CreatureDatabase = () => {
             <div>
                 {data ? (
                     <Grid.Container gap={2} justify="center">
-                        {/* .map pulls the information out the table established above in connection */}
-                        {data.map((item: { GASYMO_ID: React.Key; GASYMO_DISPLAY_NAME: string;
+                        {data.monsters.map((item:{GASYMO_ID: React.Key; GASYMO_DISPLAY_NAME: string;
                             GACO_GAME_COMPANY: any; MOAB_MONSTER_ATTRIBUTEs: any; GASYMO_ARMOR_CLASS: number;
                             GASYMO_HIT_DICE_TYPE: number; GASYMO_HIT_DICE_NUM: number; GASYMO_XP_VALUE: number
-                            GASYMO_AC_TYPE_DETAIL: string; SZ_SIZE: any; MOTY_MONSTER_TYPE: any}) => (
-                            <Grid sm={12} md={5}>
-                                <Card css={{ mw: "330px" }} key={item.GASYMO_ID}
-                                      variant="bordered" isPressable>
-                                    <Card.Header>
-                                        <Text b>{item.GASYMO_DISPLAY_NAME}</Text><br></br>
-                                        <Text size="$xs">({item.MOTY_MONSTER_TYPE.MOTY_DETAIL})</Text>
-                                    </Card.Header>
-                                    <Card.Divider />
-                                    <Card.Body css={{ py: "$10" }}>
-                                        <Text>
-                                            {item.MOAB_MONSTER_ATTRIBUTEs.map(
-                                                (item_as:{MOAB_ID:React.Key; MOAB_DISPLAY_TEXT: string })=>(
-                                               <Text>{item_as.MOAB_DISPLAY_TEXT}</Text>
-                                            ))}
-                                        </Text>
-                                    </Card.Body>
-                                    <Card.Divider />
-                                    <Card.Body>
-                                        <Text>
-                                            Armor Class: <Badge>{item.GASYMO_ARMOR_CLASS}</Badge> <br></br>
-                                            Hit Dice: <b>d</b><Badge>{item.GASYMO_HIT_DICE_TYPE}</Badge>x<Badge>{item.GASYMO_HIT_DICE_NUM}</Badge>
-                                            <br></br>
-                                            XP: <Badge>{item.GASYMO_XP_VALUE}</Badge><br></br>
-                                            AC Type: <Badge isSquared>{item.GASYMO_AC_TYPE_DETAIL}</Badge>
-                                            Size: <Badge isSquared>{item.SZ_SIZE.SZ_NAME}</Badge>
-                                        </Text>
-                                    <Card.Divider />
-                                    </Card.Body>
-                                    <Card.Footer>
-                                        <Row justify="flex-end">
-                                            <Text>{item.GACO_GAME_COMPANY.GACO_NAME}</Text>
-                                        </Row>
-                                    </Card.Footer>
-                                    <Card.Divider />
-
-                                </Card>
-                            </Grid>
-                        ))}
+                            GASYMO_AC_TYPE_DETAIL: string; SZ_SIZE: any; MOTY_MONSTER_TYPE: any})=>(
+                                <Grid sm={12} md={5}>
+                                        <Card css={{ mw: "330px" }} key={item.GASYMO_ID}
+                                          variant="bordered" isPressable>
+                                        <Card.Header>
+                                            <Text b>{item.GASYMO_DISPLAY_NAME}</Text><br></br>
+                                        </Card.Header>
+                                         <Card.Divider />
+                                        <Card.Body css={{ py: "$10" }}>
+                                            <Text>
+                                                {item.MODI_MONSTER_DISPLAYs.map(
+                                                    (item_as:{GASYMO_ID:React.Key; MODI_HTML_TAGGED_TEXT: string })=>(
+                                                        <Text>{<div dangerouslySetInnerHTML={{ __html: item_as.MODI_HTML_TAGGED_TEXT }} />}</Text>
+                                                ))}
+                                            </Text>
+                                        </Card.Body>
+                                    </Card>
+                                </Grid>
+                            ))}
+                        {/*{console.log(data)}*/}
+                        <Grid>
+                            <Container justify="center">
+                                {loading && <Loading type="points"/>}
+                                <Pagination total={data.totalPages} initialPage={1} page={page} onChange={fetchPage}/>
+                            </Container>
+                        </Grid>
                     </Grid.Container>
                 ) : (
                     <div>

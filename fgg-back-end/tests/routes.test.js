@@ -209,3 +209,20 @@ describe('Shows all ATDE_ACTION_TAG', () => {
         })
     })
 })
+
+describe('Shows all CD_CONDITION', () => {
+    it('should show CD_CONDITION', async () => {
+        await request('/api/CD_CONDITION', function (response) {
+            expect(response.statusCode).toEqual(200)
+
+            expect(response.body).toHaveProperty('CD_ID')
+            expect(response.body).toHaveProperty('GASY_ID')
+            expect(response.body).toHaveProperty('CD_NAME')
+            expect(response.body).toHaveProperty('CD_DETAIL')
+            expect(response.body).toHaveProperty('CD_DISPLAY_NAME')
+            expect(response.body).toHaveProperty('ST_CODE')
+            expect(response.body).toHaveProperty('LAST_MODIFIED_DATE')
+            expect(response.body).toHaveProperty('LAST_MODIFIED_BY')
+        })
+    })
+})

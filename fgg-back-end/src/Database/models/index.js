@@ -115,8 +115,6 @@ for (const modelDefiner of modelDefines){
     modelDefiner(sequelize)
 }
 
-// TODO: move this to models?
-
 
 applyExtraSetup(sequelize)
 
