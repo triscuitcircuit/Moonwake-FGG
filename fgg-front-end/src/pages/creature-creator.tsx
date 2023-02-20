@@ -15,40 +15,66 @@ import {
     Card,
     Dropdown,
 } from "@nextui-org/react";
-import { StartNew, Auto, StrengthCard, ConCard, CharCard, DexCard, WisCard, IntCard } from "../components/creature-creator-cards";
-// The sliders come from a package that is imported in the Sliders.jsx file.
-// @ts-ignore
-import { HorizontalSlider, VerticalSlider } from "../components/Sliders.jsx";
+import {
+    StartNew,
+    Auto,
+    SpeedInput,
+    AttributeInput,
+} from "../components/creature-creator-cards";
 import {Connection} from "../Database/Connection";
 
 const theme = createTheme({
     type: "dark",
 });
 
-interface StartNewProps {
-    onButtonClick: () => void;
-}
-
 const CreatureCreator: React.FC = () => {
 
     const [isClicked, setIsClicked] = useState(false);
-    const [selectedSize, setSelectedSize] = useState(new Set(["Size"]));
-    const [selectedType, setSelectedType] = useState(new Set(["Type"]));
-    const [selectedSubtype, setSelectedSubtype] = useState(new Set(["Subtype"]));
-    const [selectedAlignment, setSelectedAlignment] = useState(new Set(["Alignment"]));
+    const [selectedSize, setSelectedSize] = useState(new Set(["----"]));
+    const [selectedType, setSelectedType] = useState(new Set(["----"]));
+    const [selectedSubtype, setSelectedSubtype] = useState(new Set(["----"]));
+    const [selectedAlignment, setSelectedAlignment] = useState(new Set(["----"]));
     const [selectedArmorClassValue, setSelectedArmorClassValue] = useState("----");
-    const [selectedArmorType, setSelectedArmorType] = useState(new Set(["Armor Type"]));
-    const [numHitDice, setNumHitDice] = useState(0);
-    const [hitDiceSize, setHitDiceSize] = useState(0);
+    const [selectedArmorType, setSelectedArmorType] = useState(new Set(["----"]));
+    const [numHitDice, setNumHitDice] = useState(1);
+    const [baseSpeed, setBaseSpeed] = useState(0);
+    const [flySpeed, setFlySpeed] = useState(0);
+    const [swimSpeed, setSwimSpeed] = useState(0);
+    const [climbSpeed, setClimbSpeed] = useState(0);
+    const [burrowSpeed, setBurrowSpeed] = useState(0);
 
     const [sizeData, setSizeData] = useState<any>(null);
     const [typeData, setTypeData] = useState<any>(null);
     const [subtypeData, setSubtypeData] = useState<any>(null);
     const [alignmentData, setAlignmentData] = useState<any>(null);
 
+    const [strength, setStrength] = useState<string>("0");
+    const [strengthMod, setStrengthMod] = useState<string>("0");
+    const [dexterity, setDexterity] = useState<string>("0");
+    const [dexterityMod, setDexterityMod] = useState<string>("0");
+    const [constitution, setConstitution] = useState<string>("0");
+    const [constitutionMod, setConstitutionMod] = useState<string>("0");
+    const [intelligence, setIntelligence] = useState<string>("0");
+    const [intelligenceMod, setIntelligenceMod] = useState<string>("0");
+    const [wisdom, setWisdom] = useState<string>("0");
+    const [wisdomMod, setWisdomMod] = useState<string>("0");
+    const [charisma, setCharisma] = useState<string>("0");
+    const [charismaMod, setCharismaMod] = useState<string>("0");
+
     const handleButtonClick = () => {
         setIsClicked(!isClicked);
     };
+
+    const setModifier = (value: string, setMod: (mod: string) => void) => {
+        const mod = Math.floor((parseInt(value) - 10) / 2);
+        setMod(mod.toString());
+    }
+
+    const setSetters = (setValue: (value: string) => void, setMod: (mod: string) => void) => {
+        return (value: string) => {
+            setModifier(value, setMod);
+        }
+    }
 
     useEffect(() => {
 
@@ -64,7 +90,14 @@ const CreatureCreator: React.FC = () => {
         const alignmentConnection = new Connection("http://localhost:8080/api/AL_ALIGNMENT");
         alignmentConnection.getData().then(alignmentData => setAlignmentData(alignmentData));
 
-    }, []);
+        setModifier(strength, setStrengthMod);
+        setModifier(dexterity, setDexterityMod);
+        setModifier(constitution, setConstitutionMod);
+        setModifier(intelligence, setIntelligenceMod);
+        setModifier(wisdom, setWisdomMod);
+        setModifier(charisma, setCharismaMod);
+
+    }, [strength, dexterity, constitution, intelligence, wisdom, charisma]);
 
     //  Construct sizeItems from sizeData
     const sizeItems = sizeData ? sizeData.map((item: { SZ_ID: React.Key; SZ_NAME: string; SZ_DISPLAY_NAME: string; SZ_HIT_DICE_VALUE: number }) => (
@@ -204,8 +237,10 @@ const CreatureCreator: React.FC = () => {
                                 }}
                         >
                             <Input
+                                bordered
+                                color="primary"
                                 placeholder="Creature Name"
-                                size="md"
+                                size="lg"
                                 width="100%"
                             />
                         </div>
@@ -225,7 +260,7 @@ const CreatureCreator: React.FC = () => {
                                     alignItems: "center",
                                 }}
                             >
-                                    <Text h3 css={{ margin: "0", border: "1px solid white" }}>Tags:</Text>
+                                    <Text h3 css={{ margin: "10px", border: "1px solid white" }}>Tags:</Text>
                             </div>
                         </div>
                         <div
@@ -240,10 +275,13 @@ const CreatureCreator: React.FC = () => {
                             <div
                                 style={{
                                     display: "flex",
+                                    flexDirection: "column",
                                     flex: "1",
                                     margin: "10px",
+                                    alignItems: "center",
                                     }}
                             >
+                                <Text h5>Size</Text>
                                 <Dropdown>
                                     <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
                                         {selectedSizeValue + (sizeItems.find((item: { key: string; }) => item.key === selectedSizeValue)?.hitDiceValue ?
@@ -270,10 +308,13 @@ const CreatureCreator: React.FC = () => {
                             <div
                                 style={{
                                     display: "flex",
+                                    flexDirection: "column",
                                     flex: "1",
                                     margin: "10px",
+                                    alignItems: "center",
                                     }}
                             >
+                                <Text h5>Type</Text>
                                 <Dropdown>
                                     <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
                                         {selectedTypeValue}
@@ -300,10 +341,13 @@ const CreatureCreator: React.FC = () => {
                             <div
                                 style={{
                                     display: "flex",
+                                    flexDirection: "column",
                                     flex: "1",
                                     margin: "10px",
+                                    alignItems: "center",
                                     }}
                             >
+                                <Text h5>Subtype</Text>
                                 <Dropdown>
                                     <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
                                         {selectedSubtypeValue}
@@ -329,10 +373,13 @@ const CreatureCreator: React.FC = () => {
                             <div
                                 style={{
                                     display: "flex",
+                                    flexDirection: "column",
                                     flex: "1",
                                     margin: "10px",
+                                    alignItems: "center",
                                     }}
                             >
+                                <Text h5>Alignment</Text>
                                 <Dropdown>
                                     <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
                                         {selectedAlignmentValue}
@@ -366,7 +413,7 @@ const CreatureCreator: React.FC = () => {
                                 border: "1px solid white",
                             }}
                         >
-                            <Text css={{ flex: "1", margin: "10px" }}>Armor Class</Text>
+                            <Text h5 css={{ flex: "1", margin: "10px" }}>Armor Class</Text>
                             <Dropdown>
                                 <Dropdown.Button flat css={{ flex: "1", margin: "10px" }}>
                                     {selectedArmorClassValue}
@@ -421,12 +468,13 @@ const CreatureCreator: React.FC = () => {
                                 border: "1px solid white",
                             }}
                         >
-                            <Text css={{ flex: "1", margin: "10px" }}>Hit Points</Text>
+                            <Text h5 css={{ flex: "1", margin: "10px" }}>Hit Points</Text>
                             <Input
                                 bordered
                                 type="number"
                                 color="primary"
                                 labelPlaceholder={"No. of Hit Dice"}
+                                value={numHitDice}
                                 size="lg"
                                 width="100%"
                                 css={{ flex: "2", margin: "10px" }}
@@ -434,7 +482,76 @@ const CreatureCreator: React.FC = () => {
                                 onChange={hitDiceSizeChange}
                             />
                             {/* Total HP is No. of Hit Dice x Hit Dice size + Con Mod*/}
-                            <Text css={{ flex: "2", margin: "10px" }}>Total HP: {numHitDice}d({hitDiceValue}) + "con mod" </Text>
+                            <Text css={{ flex: "2", margin: "10px" }}>Total HP: {numHitDice}d({hitDiceValue}) + {constitutionMod} </Text>
+                        </div>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexWrap: "wrap",
+                                flexDirection: "column",
+                                width: "60%",
+                                marginTop: "2%",
+                                border: "1px solid white",
+                            }}
+                        >
+                            <Text h3 css={{ margin: "10px", border: "1px solid white" }}>Speed:</Text>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-around",
+                                    alignItems: "center",
+                                    width: "100%",
+                                    border: "1px solid white",
+                                }}
+                            >
+                                <SpeedInput name={"Base"} />
+                                <SpeedInput name={"Swim"} />
+                                <SpeedInput name={"Fly"} />
+                                <SpeedInput name={"Climb"} />
+                                <SpeedInput name={"Burrow"} />
+                            </div>
+                        </div>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexWrap: "wrap",
+                                flexDirection: "column",
+                                width: "60%",
+                                marginTop: "2%",
+                                border: "1px solid white",
+                            }}
+                        >
+                            <Text h3 css={{ margin: "10px", border: "1px solid white" }}>Attributes:</Text>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-around",
+                                    alignItems: "center",
+                                    width: "100%",
+                                    border: "1px solid white",
+                                }}
+                            >
+                                <Grid.Container justify="center">
+                                    <Grid sm={4}>
+                                        <AttributeInput name={"Strength"} value={strength} setSelection={setSetters(setStrength, setStrengthMod)} />
+                                    </Grid>
+                                    <Grid sm={4}>
+                                        <AttributeInput name={"Dexterity"} value={dexterity} setSelection={setSetters(setDexterity, setDexterityMod)} />
+                                    </Grid>
+                                    <Grid sm={4}>
+                                        <AttributeInput name={"Constitution"} value={constitution} setSelection={setSetters(setConstitution, setConstitutionMod)}/>
+                                    </Grid>
+                                    <Grid sm={4}>
+                                        <AttributeInput name={"Intelligence"} value={intelligence} setSelection={setSetters(setIntelligence, setIntelligenceMod)}/>
+                                    </Grid>
+                                    <Grid sm={4}>
+                                        <AttributeInput name={"Wisdom"} value={wisdom} setSelection={setSetters(setWisdom, setWisdomMod)}/>
+                                    </Grid>
+                                    <Grid sm={4}>
+                                        <AttributeInput name={"Charisma"} value={charisma} setSelection={setSetters(setCharisma, setCharismaMod)}/>
+                                    </Grid>
+                                </Grid.Container>
+                            </div>
                         </div>
                     </div>
                     <div
