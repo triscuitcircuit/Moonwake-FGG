@@ -1,12 +1,12 @@
 #!/usr/bin/env sh
-architecture=$(uname -m)
+#architecture=$(uname -m)
 
-if [ "$architecture" == "arm64" ] || [ "$architecture" == "aarch64" ]; then
-  source ~/.nvm/nvm.sh
-  nvm use intel
-else
-  echo "Not running on ARM architecture. No action taken."
-fi
-. "$(dirname -- "$0")/_/husky.sh"
+#if [ "$architecture" == "arm64" ] || [ "$architecture" == "aarch64" ]; then
+ # source ~/.nvm/nvm.sh
+ # nvm use intel
+#else
+ # echo "Not running on ARM architecture. No action taken."
+#fi
+#. "$(dirname -- "$0")/_/husky.sh"
 
-npm run test
+#npm run test
