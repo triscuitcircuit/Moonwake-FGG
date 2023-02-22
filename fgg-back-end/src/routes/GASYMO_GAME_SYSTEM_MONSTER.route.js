@@ -1,18 +1,17 @@
-
 const db = require("../Database/models");
-const { getIdParam, getPagination, getPagingData} = require('../Database/config/helpers');
+const {getIdParam, getPagination, getPagingData} = require('../Database/config/helpers');
 
 async function getAll(req, res) {
     const {page, size} = req.query;
-    const { limit, offset } = getPagination(page, size);
+    const {limit, offset} = getPagination(page, size);
 
     const GASYMO_GAME_SYSTEM_MONSTER =
         await db.sequelize.models.GASYMO_GAME_SYSTEM_MONSTER.findAndCountAll(
-             {
-                 limit, offset,
-                 where: {ST_CODE: "active"},
-                 include: [
-                    { all: true, nested: true}
+            {
+                limit, offset,
+                where: {ST_CODE: "active"},
+                include: [
+                    {all: true, nested: true}
                 ]
             }
         );
@@ -25,7 +24,7 @@ async function getById(req, res) {
         {
             where: {ST_CODE: "active"},
             include: [
-                { all: true, nested: true}
+                {all: true, nested: true}
             ],
         });
     if (GASYMO_GAME_SYSTEM_MONSTER) {
@@ -35,7 +34,7 @@ async function getById(req, res) {
     }
 }
 
-module.exports=[
+module.exports = [
     getAll,
     getById
 ]

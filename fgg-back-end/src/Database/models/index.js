@@ -9,17 +9,16 @@ const {applyExtraSetup} = require("../config/assoc");
 const basename = path.basename(__filename);
 
 
-
 const sequelize = new Sequelize(
     'orcl',
     ck.USERNAME_FGG,
-    ck.PASSWORD_FGG,{
+    ck.PASSWORD_FGG, {
         port: 1521,
         host: ck.HOST,
         dialect: dbConfig.dialect,
         operatorsAliases: false,
         logging: console.log,
-        pool:{
+        pool: {
             max: dbConfig.pool.max,
             min: dbConfig.pool.min,
             acquire: dbConfig.pool.acquire,
@@ -36,7 +35,7 @@ Object.keys(db).forEach(modelName => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-const modelDefines =[
+const modelDefines = [
     require("./AB_ATTRIBUTE"),
     require("./AB_TEMP_SAVE"),
     require("./ABCA_ATTRIBUTE_CATEGORY"),
@@ -111,15 +110,15 @@ const modelDefines =[
     require("./USRO_USER_ROLE")
 ]
 
-for (const modelDefiner of modelDefines){
+for (const modelDefiner of modelDefines) {
     modelDefiner(sequelize)
 }
 
 
 applyExtraSetup(sequelize)
 
-db.sequelize.modelManager.models.forEach(model=>{
-    console.log("Generated routes for table: "+
+db.sequelize.modelManager.models.forEach(model => {
+    console.log("Generated routes for table: " +
         model.tableName);
     console.log(model.associations);
 });

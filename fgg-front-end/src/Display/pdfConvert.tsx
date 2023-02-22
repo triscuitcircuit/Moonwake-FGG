@@ -4,7 +4,7 @@ import React from "react";
 
 
 
-const App = () => {
+const PDF = () => {
     const printRef = React.useRef();
 
     return (
