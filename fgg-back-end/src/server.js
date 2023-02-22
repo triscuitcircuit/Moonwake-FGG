@@ -4,7 +4,7 @@ const db = require("./Database");
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 
-routes={
+routes = {
     AB_ATTRIBUTE: require('./routes/AB_ATTRIBUTE.route'),
     AB_TEMP_SAVE: require('./routes/AB_TEMP_SAVE.route'),
     ABCA_ATTRIBUTE_CATEGORY: require('./routes/ABCA_ATTRIBUTE_CATEGORY.route'),
@@ -90,7 +90,7 @@ app.use(logger('dev'))
 
 // We create a wrapper to workaround async errors not being transmitted correctly.
 function makeHandlerAwareOfAsyncErrors(handle) {
-    return async function(req, res, next) {
+    return async function (req, res, next) {
         try {
             await handle(req, res);
         } catch (error) {
@@ -101,15 +101,15 @@ function makeHandlerAwareOfAsyncErrors(handle) {
 
 for (const [routeName, routeController] of Object.entries(routes)) {
 
-        app.get(
-            `/api/${routeName}`,
-            makeHandlerAwareOfAsyncErrors(routeController[0])
-        );
+    app.get(
+        `/api/${routeName}`,
+        makeHandlerAwareOfAsyncErrors(routeController[0])
+    );
 
-        app.get(
-            `/api/${routeName}/:id`,
-            makeHandlerAwareOfAsyncErrors(routeController[1])
-        );
+    app.get(
+        `/api/${routeName}/:id`,
+        makeHandlerAwareOfAsyncErrors(routeController[1])
+    );
 
 }
 
@@ -120,7 +120,8 @@ app.listen(PORT, () => {
 
 db.sequelize.authenticate()
     .then(() => {
-        console.log('Connection has been established successfully.');    })
+        console.log('Connection has been established successfully.');
+    })
     .catch((err) => {
         console.error('Unable to connect to the database: ', err);
     });
