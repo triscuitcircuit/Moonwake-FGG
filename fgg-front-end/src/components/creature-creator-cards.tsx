@@ -8,7 +8,7 @@ interface Props {
 interface AttributeInputProps {
     name: string;
     value: string;
-    setSelection: (selection: string) => void;
+    setValue: (value: string) => void;
 }
 
 interface SpeedInputProps {
@@ -203,37 +203,39 @@ export const SpeedInput: React.FC<SpeedInputProps> = ({name}) => (
     </div>
 );
 
-export const AttributeInput: React.FC<AttributeInputProps> = ({name, value, setSelection}) => (
-    <div
-        style={{
-            display: "flex",
-            flex: "1",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            margin: "10px",
-            width: "100%",
-            }}
-    >
-        <Text h5>{name}</Text>
-        <Dropdown>
-            <Dropdown.Button flat css={{ width: "100%"}}>
-                {value}
-            </Dropdown.Button>
-            <Dropdown.Menu
-                aria-label="${name} attribute menu"
-                disallowEmptySelection
-                selectionMode="single"
-                css={{ maxHeight: "400px", overflow: "auto" }}
-                // @ts-ignore
-                onSelectionChange={setSelection}
-            >
-                {[...Array(100)].map((_, i) => (
-                    <Dropdown.Item key={i}>
-                        {i}
-                    </Dropdown.Item>
-                ))}
-            </Dropdown.Menu>
-        </Dropdown>
-    </div>
-);
+export const AttributeInput: React.FC<AttributeInputProps> = ({name, value, setValue}) => {
+
+    return (
+        <div
+            style={{
+                display: "flex",
+                flex: "1",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "10px",
+                width: "100%",
+                }}
+        >
+            <Text h5>{name}</Text>
+            <Dropdown>
+                <Dropdown.Button flat css={{ width: "100%"}}>
+                    {value}
+                </Dropdown.Button>
+                <Dropdown.Menu
+                    aria-label="${name} attribute menu"
+                    disallowEmptySelection
+                    selectionMode="single"
+                    css={{ maxHeight: "400px", overflow: "auto" }}
+                    onAction={setValue}
+                >
+                    {[...Array(100)].map((_, i) => (
+                        <Dropdown.Item key={i}>
+                            {i}
+                        </Dropdown.Item>
+                    ))}
+                </Dropdown.Menu>
+            </Dropdown>
+        </div>
+    );
+};
