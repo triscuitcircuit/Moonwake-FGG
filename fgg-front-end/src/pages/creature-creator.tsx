@@ -29,12 +29,16 @@ const theme = createTheme({
 
 const CreatureCreator: React.FC = () => {
 
+    /* --------------------------- */
+    /* Creature creation variables */
+    /* --------------------------- */
+
     const [isClicked, setIsClicked] = useState(false);
     const [selectedSize, setSelectedSize] = useState(new Set(["----"]));
     const [selectedType, setSelectedType] = useState(new Set(["----"]));
     const [selectedSubtype, setSelectedSubtype] = useState(new Set(["----"]));
     const [selectedAlignment, setSelectedAlignment] = useState(new Set(["----"]));
-    const [selectedArmorClassValue, setSelectedArmorClassValue] = useState("----");
+    const [selectedArmorClass, setSelectedArmorClass] = useState(new Set(["----"]));
     const [selectedArmorType, setSelectedArmorType] = useState(new Set(["----"]));
     const [numHitDice, setNumHitDice] = useState(1);
     const [baseSpeed, setBaseSpeed] = useState(0);
@@ -43,40 +47,50 @@ const CreatureCreator: React.FC = () => {
     const [climbSpeed, setClimbSpeed] = useState(0);
     const [burrowSpeed, setBurrowSpeed] = useState(0);
 
+    /* ------------------------- */
+    /* Data connection variables */
+    /* ------------------------- */
+
     const [sizeData, setSizeData] = useState<any>(null);
     const [typeData, setTypeData] = useState<any>(null);
     const [subtypeData, setSubtypeData] = useState<any>(null);
     const [alignmentData, setAlignmentData] = useState<any>(null);
 
-    const [strength, setStrength] = useState<string>("0");
-    const [strengthMod, setStrengthMod] = useState<string>("0");
-    const [dexterity, setDexterity] = useState<string>("0");
-    const [dexterityMod, setDexterityMod] = useState<string>("0");
-    const [constitution, setConstitution] = useState<string>("0");
-    const [constitutionMod, setConstitutionMod] = useState<string>("0");
-    const [intelligence, setIntelligence] = useState<string>("0");
-    const [intelligenceMod, setIntelligenceMod] = useState<string>("0");
-    const [wisdom, setWisdom] = useState<string>("0");
-    const [wisdomMod, setWisdomMod] = useState<string>("0");
-    const [charisma, setCharisma] = useState<string>("0");
-    const [charismaMod, setCharismaMod] = useState<string>("0");
+    /* -------------------------------- */
+    /* Attribute and Modifier Variables */
+    /* -------------------------------- */
+
+    const [strength, setStrength] = useState<string>("0")
+    const [strengthMod, setStrengthMod] = useState<string>("Str Mod")
+    const [dexterity, setDexterity] = useState<string>("0")
+    const [dexterityMod, setDexterityMod] = useState<string>("Dex Mod")
+    const [constitution, setConstitution] = useState<string>("0")
+    const [constitutionMod, setConstitutionMod] = useState<string>("Con Mod")
+    const [intelligence, setIntelligence] = useState<string>("0")
+    const [intelligenceMod, setIntelligenceMod] = useState<string>("Int Mod")
+    const [wisdom, setWisdom] = useState<string>("0")
+    const [wisdomMod, setWisdomMod] = useState<string>("Wis Mod")
+    const [charisma, setCharisma] = useState<string>("0")
+    const [charismaMod, setCharismaMod] = useState<string>("Cha Mod")
 
     const handleButtonClick = () => {
         setIsClicked(!isClicked);
     };
 
-    const setModifier = (value: string, setMod: (mod: string) => void) => {
-        const mod = Math.floor((parseInt(value) - 10) / 2);
-        setMod(mod.toString());
-    }
+    /* ---------------------------------------------------------------------------------- */
+    /* setSetters is called by the attributeInput component to set the value and modifier */
+    /* ---------------------------------------------------------------------------------- */
 
-    const setSetters = (setValue: (value: string) => void, setMod: (mod: string) => void) => {
-        return (value: string) => {
-            setModifier(value, setMod);
-        }
+    const setSetters = (attribute: number, setter: (value: (((prevState: string) => string) | string)) => void, modifier: (value: (((prevState: string) => string) | string)) => void) => {
+        setter(attribute.toString());
+        modifier(Math.floor((attribute - 10) / 2).toString());
     }
 
     useEffect(() => {
+
+        /* ------------------------ */
+        /* Populate data connection */
+        /* ------------------------ */
 
         const sizeConnection = new Connection("http://localhost:8080/api/sz_size");
         sizeConnection.getData().then(sizeData => setSizeData(sizeData));
@@ -90,39 +104,32 @@ const CreatureCreator: React.FC = () => {
         const alignmentConnection = new Connection("http://localhost:8080/api/AL_ALIGNMENT");
         alignmentConnection.getData().then(alignmentData => setAlignmentData(alignmentData));
 
-        setModifier(strength, setStrengthMod);
-        setModifier(dexterity, setDexterityMod);
-        setModifier(constitution, setConstitutionMod);
-        setModifier(intelligence, setIntelligenceMod);
-        setModifier(wisdom, setWisdomMod);
-        setModifier(charisma, setCharismaMod);
-
-    }, [strength, dexterity, constitution, intelligence, wisdom, charisma]);
+    }, []);
 
     //  Construct sizeItems from sizeData
     const sizeItems = sizeData ? sizeData.map((item: { SZ_ID: React.Key; SZ_NAME: string; SZ_DISPLAY_NAME: string; SZ_HIT_DICE_VALUE: number }) => (
-        {key: item.SZ_NAME, name: item.SZ_DISPLAY_NAME, hitDiceValue: item.SZ_HIT_DICE_VALUE}
+        { key: item.SZ_NAME, name: item.SZ_DISPLAY_NAME, hitDiceValue: item.SZ_HIT_DICE_VALUE }
     )) : [];
 
     //  Construct typeItems from typeData
     const typeItems = typeData ? typeData.map((item: { MOTY_ID: React.Key; MOTY_NAME: string; MOTY_DISPLAY_NAME: string; }) => (
-        {key: item.MOTY_NAME, name: item.MOTY_DISPLAY_NAME}
+        { key: item.MOTY_NAME, name: item.MOTY_DISPLAY_NAME }
     )) : [];
 
     //  Construct subtypeItems from subtypeData
     const subtypeItems = subtypeData ? subtypeData.map((item: { DATY_ID: React.Key; DATY_NAME: string; DATY_DISPLAY_NAME: string; }) => (
-        {key: item.DATY_NAME, name: item.DATY_DISPLAY_NAME}
+        { key: item.DATY_NAME, name: item.DATY_DISPLAY_NAME }
     )) : [];
 
     //  Construct alignmentItems from alignmentData
     const alignmentItems = alignmentData ? alignmentData.map((item: { AL_ID: React.Key; AL_NAME: string; AL_DISPLAY_NAME: string; }) => (
-        {key: item.AL_NAME, name: item.AL_DISPLAY_NAME}
+        { key: item.AL_NAME, name: item.AL_DISPLAY_NAME }
     )) : [];
 
     const armorItems = [
-        {key: "Light", name: "Light"},
-        {key: "Medium", name: "Medium"},
-        {key: "Heavy", name: "Heavy"},
+        { key: "Light", name: "Light"},
+        { key: "Medium", name: "Medium"},
+        { key: "Heavy", name: "Heavy"},
     ];
 
     const selectedSizeValue = useMemo(
@@ -145,14 +152,18 @@ const CreatureCreator: React.FC = () => {
         [selectedAlignment]
     );
 
+    const selectedArmorClassValue = useMemo(
+        () => Array.from(selectedArmorClass).join(", ").replaceAll("_", " "),
+    [selectedArmorClass]
+    );
+
     const selectedSizeItem = sizeItems.find((item: { key: string; }) => item.key === selectedSizeValue);
     const hitDiceValue = selectedSizeItem?.hitDiceValue;
 
-    const hitDiceSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const hitDiceSizeChange  = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNumHitDice(Number(event.target.value));
     };
 
-    // @ts-ignore
     // @ts-ignore
     return (
         <NextUIProvider theme={theme}>
@@ -165,12 +176,16 @@ const CreatureCreator: React.FC = () => {
                         width: "100%",
                         border: "1px solid white",
                         marginTop: "5%",
-                    }}
+                        }}
                 >
                     <Text h1>Creature Creation Page</Text>
                 </div>
             </Container>
+
+            {/* ------------------------------------------------------------------------ */}
             {/*Conditionally renders the cards depending on whether the button is clicked*/}
+            {/* ------------------------------------------------------------------------ */}
+
             {!isClicked &&
                 <Container md>
                     <div
@@ -181,30 +196,34 @@ const CreatureCreator: React.FC = () => {
                             width: "100%",
                             border: "1px solid white",
                             marginTop: "5%",
-                        }}
+                            }}
                     >
                         <div
                             style={{
                                 display: "flex",
                                 flex: "1",
                                 marginRight: "5%",
-                            }}
+                                }}
                         >
-                            <StartNew onButtonClick={handleButtonClick}/>
+                            <StartNew onButtonClick={handleButtonClick} />
                         </div>
                         <div
                             style={{
                                 display: "flex",
                                 flex: "1",
                                 marginLeft: "5%",
-                            }}
+                                }}
                         >
-                            <Auto/>
+                            <Auto />
                         </div>
                     </div>
                 </Container>
             }
+
+            {/* ------------------------------------------------------------------ */}
             {/* If the button is clicked, then the creature creation form is shown */}
+            {/* ------------------------------------------------------------------ */}
+
             {isClicked &&
                 <Container md>
                     <div
@@ -215,7 +234,7 @@ const CreatureCreator: React.FC = () => {
                             alignItems: "center",
                             width: "100%",
                             border: "1px solid white",
-                        }}
+                            }}
                     >
                         <div
                             style={{
@@ -224,7 +243,7 @@ const CreatureCreator: React.FC = () => {
                                 alignItems: "center",
                                 width: "100%",
                                 border: "1px solid white",
-                            }}
+                                }}
                         >
                             <Text h2>Enter Creature Information</Text>
                         </div>
@@ -234,7 +253,7 @@ const CreatureCreator: React.FC = () => {
                                 justifyContent: "center",
                                 alignItems: "center",
                                 width: "60%",
-                            }}
+                                }}
                         >
                             <Input
                                 bordered
@@ -251,7 +270,7 @@ const CreatureCreator: React.FC = () => {
                                 alignItems: "center",
                                 width: "100%",
                                 border: "1px solid white",
-                            }}
+                                }}
                         >
                             <div
                                 style={{
@@ -260,7 +279,7 @@ const CreatureCreator: React.FC = () => {
                                     alignItems: "center",
                                 }}
                             >
-                                <Text h3 css={{margin: "10px", border: "1px solid white"}}>Tags:</Text>
+                                    <Text h3 css={{ margin: "10px", border: "1px solid white" }}>Tags:</Text>
                             </div>
                         </div>
                         <div
@@ -279,11 +298,16 @@ const CreatureCreator: React.FC = () => {
                                     flex: "1",
                                     margin: "10px",
                                     alignItems: "center",
-                                }}
+                                    }}
                             >
+
+                                {/* --------------------------- */}
+                                {/* Dropdown for selecting size */}
+                                {/* --------------------------- */}
+
                                 <Text h5>Size</Text>
                                 <Dropdown>
-                                    <Dropdown.Button flat css={{tt: "capitalize", width: "100%"}}>
+                                    <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
                                         {selectedSizeValue + (sizeItems.find((item: { key: string; }) => item.key === selectedSizeValue)?.hitDiceValue ?
                                             " (d" + sizeItems.find((item: { key: string; }) => item.key === selectedSizeValue)?.hitDiceValue + ")" : "")}
                                     </Dropdown.Button>
@@ -312,11 +336,16 @@ const CreatureCreator: React.FC = () => {
                                     flex: "1",
                                     margin: "10px",
                                     alignItems: "center",
-                                }}
+                                    }}
                             >
+
+                                {/* ------------------------------- */}
+                                {/* Dropdown for selecting the type */}
+                                {/* ------------------------------- */}
+
                                 <Text h5>Type</Text>
                                 <Dropdown>
-                                    <Dropdown.Button flat css={{tt: "capitalize", width: "100%"}}>
+                                    <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
                                         {selectedTypeValue}
                                     </Dropdown.Button>
                                     <Dropdown.Menu
@@ -327,7 +356,7 @@ const CreatureCreator: React.FC = () => {
                                         selectedKeys={selectedType}
                                         // @ts-ignore
                                         onSelectionChange={setSelectedType}
-                                        css={{maxHeight: "400px", overflow: "auto"}}
+                                        css={{ maxHeight: "400px", overflow: "auto" }}
                                     >
                                         {/*@ts-ignore*/}
                                         {({key, name}) => (
@@ -345,11 +374,16 @@ const CreatureCreator: React.FC = () => {
                                     flex: "1",
                                     margin: "10px",
                                     alignItems: "center",
-                                }}
+                                    }}
                             >
+
+                                {/* ---------------------------------- */}
+                                {/* Dropdown for selecting the subtype */}
+                                {/* ---------------------------------- */}
+
                                 <Text h5>Subtype</Text>
                                 <Dropdown>
-                                    <Dropdown.Button flat css={{tt: "capitalize", width: "100%"}}>
+                                    <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
                                         {selectedSubtypeValue}
                                     </Dropdown.Button>
                                     <Dropdown.Menu
@@ -359,7 +393,7 @@ const CreatureCreator: React.FC = () => {
                                         selectedKeys={selectedSubtype}
                                         // @ts-ignore
                                         onSelectionChange={setSelectedSubtype}
-                                        css={{maxHeight: "400px", overflow: "auto"}}
+                                        css={{ maxHeight: "400px", overflow: "auto" }}
                                     >
                                         {/*@ts-ignore*/}
                                         {({key, name}) => (
@@ -377,11 +411,16 @@ const CreatureCreator: React.FC = () => {
                                     flex: "1",
                                     margin: "10px",
                                     alignItems: "center",
-                                }}
+                                    }}
                             >
+
+                                {/* ------------------------------------ */}
+                                {/* Dropdown for selecting the alignment */}
+                                {/* ------------------------------------ */}
+
                                 <Text h5>Alignment</Text>
                                 <Dropdown>
-                                    <Dropdown.Button flat css={{tt: "capitalize", width: "100%"}}>
+                                    <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
                                         {selectedAlignmentValue}
                                     </Dropdown.Button>
                                     <Dropdown.Menu
@@ -392,7 +431,7 @@ const CreatureCreator: React.FC = () => {
                                         selectedKeys={selectedAlignment}
                                         // @ts-ignore
                                         onSelectionChange={setSelectedAlignment}
-                                        css={{maxHeight: "400px", overflow: "auto"}}
+                                        css={{ maxHeight: "400px", overflow: "auto" }}
                                     >
                                         {/*@ts-ignore*/}
                                         {({key, name}) => (
@@ -413,18 +452,23 @@ const CreatureCreator: React.FC = () => {
                                 border: "1px solid white",
                             }}
                         >
-                            <Text h5 css={{flex: "1", margin: "10px"}}>Armor Class</Text>
+
+                            {/* ---------------------------------------- */}
+                            {/* Dropdown to select the armor class value */}
+                            {/* ---------------------------------------- */}
+
+                            <Text h5 css={{ flex: "1", margin: "10px" }}>Armor Class</Text>
                             <Dropdown>
-                                <Dropdown.Button flat css={{flex: "1", margin: "10px"}}>
-                                    {selectedArmorClassValue}
+                                <Dropdown.Button flat css={{ flex: "1", margin: "10px" }}>
+                                    {selectedArmorClassValue + " + (" + dexterityMod + ")"}
                                 </Dropdown.Button>
                                 <Dropdown.Menu
                                     aria-label="Armor Class dropdown menu"
                                     disallowEmptySelection
                                     selectionMode="single"
                                     // @ts-ignore
-                                    onSelectionChange={setSelectedArmorClassValue}
-                                    css={{maxHeight: "400px", overflow: "auto"}}
+                                    onSelectionChange={setSelectedArmorClass}
+                                    css={{ maxHeight: "400px", overflow: "auto" }}
                                 >
                                     {/* loop 30 times creating a new dropdown item with the values 1-30*/}
                                     {[...Array(30)].map((x, i) => (
@@ -434,9 +478,14 @@ const CreatureCreator: React.FC = () => {
                                     ))}
                                 </Dropdown.Menu>
                             </Dropdown>
-                            <Text css={{flex: "1", margin: "10px"}}>Armor Type</Text>
+
+                            {/* --------------------------------------- */}
+                            {/* Dropdown to select the armor type value */}
+                            {/* --------------------------------------- */}
+
+                            <Text css={{ flex: "1", margin: "10px" }}>Armor Type</Text>
                             <Dropdown>
-                                <Dropdown.Button flat css={{flex: "1", margin: "10px"}}>
+                                <Dropdown.Button flat css={{ flex: "1", margin: "10px" }}>
                                     {selectedArmorType}
                                 </Dropdown.Button>
                                 <Dropdown.Menu
@@ -447,7 +496,7 @@ const CreatureCreator: React.FC = () => {
                                     selectedKeys={selectedArmorType}
                                     // @ts-ignore
                                     onSelectionChange={setSelectedArmorType}
-                                    css={{maxHeight: "400px", overflow: "auto"}}
+                                    css={{ maxHeight: "400px", overflow: "auto" }}
                                 >
                                     {/*@ts-ignore*/}
                                     {({key, name}) => (
@@ -468,7 +517,7 @@ const CreatureCreator: React.FC = () => {
                                 border: "1px solid white",
                             }}
                         >
-                            <Text h5 css={{flex: "1", margin: "10px"}}>Hit Points</Text>
+                            <Text h5 css={{ flex: "1", margin: "10px" }}>Hit Points</Text>
                             <Input
                                 bordered
                                 type="number"
@@ -477,13 +526,12 @@ const CreatureCreator: React.FC = () => {
                                 value={numHitDice}
                                 size="lg"
                                 width="100%"
-                                css={{flex: "2", margin: "10px"}}
+                                css={{ flex: "2", margin: "10px" }}
                                 // @ts-ignore
                                 onChange={hitDiceSizeChange}
                             />
                             {/* Total HP is No. of Hit Dice x Hit Dice size + Con Mod*/}
-                            <Text css={{flex: "2", margin: "10px"}}>Total HP: {numHitDice}d({hitDiceValue})
-                                + {constitutionMod} </Text>
+                            <Text css={{ flex: "2", margin: "10px" }}>Total HP: {numHitDice}d({hitDiceValue}) + {constitutionMod} </Text>
                         </div>
                         <div
                             style={{
@@ -495,7 +543,7 @@ const CreatureCreator: React.FC = () => {
                                 border: "1px solid white",
                             }}
                         >
-                            <Text h3 css={{margin: "10px", border: "1px solid white"}}>Speed:</Text>
+                            <Text h3 css={{ margin: "10px", border: "1px solid white" }}>Speed:</Text>
                             <div
                                 style={{
                                     display: "flex",
@@ -505,11 +553,11 @@ const CreatureCreator: React.FC = () => {
                                     border: "1px solid white",
                                 }}
                             >
-                                <SpeedInput name={"Base"}/>
-                                <SpeedInput name={"Swim"}/>
-                                <SpeedInput name={"Fly"}/>
-                                <SpeedInput name={"Climb"}/>
-                                <SpeedInput name={"Burrow"}/>
+                                <SpeedInput name={"Base"} />
+                                <SpeedInput name={"Swim"} />
+                                <SpeedInput name={"Fly"} />
+                                <SpeedInput name={"Climb"} />
+                                <SpeedInput name={"Burrow"} />
                             </div>
                         </div>
                         <div
@@ -522,7 +570,7 @@ const CreatureCreator: React.FC = () => {
                                 border: "1px solid white",
                             }}
                         >
-                            <Text h3 css={{margin: "10px", border: "1px solid white"}}>Attributes:</Text>
+                            <Text h3 css={{ margin: "10px", border: "1px solid white" }}>Attributes:</Text>
                             <div
                                 style={{
                                     display: "flex",
@@ -534,28 +582,34 @@ const CreatureCreator: React.FC = () => {
                             >
                                 <Grid.Container justify="center">
                                     <Grid sm={4}>
-                                        <AttributeInput name={"Strength"} value={strength}
-                                                        setSelection={setSetters(setStrength, setStrengthMod)}/>
+                                        <AttributeInput name={"Strength"} value={strength} setValue={(value) => {
+                                            setSetters(parseInt(value), setStrength, setStrengthMod)
+                                        }} />
                                     </Grid>
                                     <Grid sm={4}>
-                                        <AttributeInput name={"Dexterity"} value={dexterity}
-                                                        setSelection={setSetters(setDexterity, setDexterityMod)}/>
+                                        <AttributeInput name={"Dexterity"} value={dexterity} setValue={(value) => {
+                                            setSetters(parseInt(value), setDexterity, setDexterityMod)
+                                        }} />
                                     </Grid>
                                     <Grid sm={4}>
-                                        <AttributeInput name={"Constitution"} value={constitution}
-                                                        setSelection={setSetters(setConstitution, setConstitutionMod)}/>
+                                        <AttributeInput name={"Constitution"} value={constitution} setValue={(value) => {
+                                            setSetters(parseInt(value), setConstitution, setConstitutionMod)
+                                        }} />
                                     </Grid>
                                     <Grid sm={4}>
-                                        <AttributeInput name={"Intelligence"} value={intelligence}
-                                                        setSelection={setSetters(setIntelligence, setIntelligenceMod)}/>
+                                        <AttributeInput name={"Intelligence"} value={intelligence} setValue={(value) => {
+                                            setSetters(parseInt(value), setIntelligence, setIntelligenceMod)
+                                        }} />
                                     </Grid>
                                     <Grid sm={4}>
-                                        <AttributeInput name={"Wisdom"} value={wisdom}
-                                                        setSelection={setSetters(setWisdom, setWisdomMod)}/>
+                                        <AttributeInput name={"Wisdom"} value={wisdom} setValue={(value) => {
+                                            setSetters(parseInt(value), setWisdom, setWisdomMod)
+                                        }} />
                                     </Grid>
                                     <Grid sm={4}>
-                                        <AttributeInput name={"Charisma"} value={charisma}
-                                                        setSelection={setSetters(setCharisma, setCharismaMod)}/>
+                                        <AttributeInput name={"Charisma"} value={charisma} setValue={(value) => {
+                                            setSetters(parseInt(value), setCharisma, setCharismaMod)
+                                        }} />
                                     </Grid>
                                 </Grid.Container>
                             </div>
@@ -568,7 +622,7 @@ const CreatureCreator: React.FC = () => {
                             alignItems: "center",
                             width: "100%",
                             border: "1px solid white",
-                        }}
+                            }}
                     >
                         <Button onClick={handleButtonClick}>Go Back</Button>
                     </div>
