@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Parallax} from 'react-parallax';
+//import {Parallax} from 'react-parallax';
 import {
     Text,
     NextUIProvider,
@@ -15,6 +15,10 @@ const theme = createTheme({
 
 
 const CreatureDatabase = () => {
+    // name (and other attributes) will be determined by the user, so "name=Ape" would be a variable
+    // that is determined by whatever the user selects / types into the sliders on search_and_filter
+    // TODO
+    // change creature-database back to how it was, it searching for monsters named Ape is just a demo.
     const connection = new Connection("http://localhost:8080/api/gasymo_game_system_monster");
 
     const [data, setData] = React.useState<any>(null);
