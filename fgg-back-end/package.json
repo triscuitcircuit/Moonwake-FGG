@@ -6,7 +6,7 @@
   "scripts": {
     "server": "node src/server.js",
     "build": "tsc",
-    "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
+    "test": "NODE_ENV=test jest --testTimeout=10000",
     "pre-commit": "lint-staged",
     "prettier:check": "prettier --config .prettierrc --check \"src/**/*.{ts,css,html}\"",
     "prepare": "cd .. && husky install fgg-back-end/.husky"
