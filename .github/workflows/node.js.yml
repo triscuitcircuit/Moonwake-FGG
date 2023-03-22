@@ -10,28 +10,23 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-
+  build-frontend:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        dir: ['fgg-back-end']
-        node-version: [14.x, 16.x, 18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: fgg-back-end/package-lock.json
-    - name: Do something with the matrix value
-      working-directory: ${{ matrix.dir }}
-      run: pwd && ls
-
-    - run: npm uninstall oracledb && npm install oracledb
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: cd fgg-front-end && npm install
+      - name: Build frontend
+        run: cd fgg-front-end && npm run build
+  build-backend:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+        - name: Install dependencies
+          run: cd back-end
+        - name: Oracledb
+          run: cd fgg-back-end && npm uninstall oracledb && npm install oracledb && npm install
+        - name: Build backend
+          run: cd fgg-back-end && npm run build
