@@ -29,4 +29,4 @@ jobs:
         - name: Oracledb
           run: cd fgg-back-end && npm uninstall oracledb && npm install oracledb && npm install
         - name: Build backend
-          run: cd fgg-back-end && npm run build
+          run: cd fgg-back-end && npm run server
