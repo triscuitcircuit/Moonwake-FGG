@@ -16,7 +16,8 @@ export class Connection {
     public async getPage(page: number): Promise<Data> {
         try {
             const res =
-                await axios.get(this.baseURL + "?page=" + page);
+                await axios.get(this.baseURL +
+                    "?page=" + page);
             return res.data;
         } catch (error) {
             console.error(error)

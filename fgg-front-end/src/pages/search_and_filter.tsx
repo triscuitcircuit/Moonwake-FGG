@@ -13,7 +13,7 @@ const theme = createTheme({
 
 const SearchAndFilter: React.FC = () => {
 
-    const [width, setWidth] = React.useState(window.innerWidth);
+    const [width, setWidth] = React.useState(window.innerWidth * 1.5);
 
     useEffect(() => {
         const handleResize = () => setWidth(window.innerWidth);
@@ -39,7 +39,9 @@ const SearchAndFilter: React.FC = () => {
     // The list of attributes and the values the user gives them
     const [attbValPairs, setAVpairs] = useState([
         { key: "?name=", value: ""},
-        { key: "?xp_val=", value: ""}
+        { key: "?xp_val=", value: ""},
+        { key: "?m_size=", value:""},
+        { key: "?m_ac=", value:""}
     ]);
 
     // updates attbValPairs at key: string with string user passes in (called below in an Input)
@@ -121,6 +123,8 @@ const SearchAndFilter: React.FC = () => {
                         >
                             <Input
                                 placeholder="Armor Class"
+                                value={attbValPairs.find(item => item.key === "?m_ac=")?.value || ""}
+                                onChange={event => handleSpecificValueChange("?m_ac=", event.target.value)}
                                 size="xl"
                                 width="40%"
                             />

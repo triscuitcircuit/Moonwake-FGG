@@ -1,12 +1,18 @@
 const db = require("../Database/models");
 const {getIdParam, getPagination, getPagingData} = require('../Database/config/helpers');
-const {Op} = require("sequelize");
+const {Op, Sequelize} = require("sequelize");
+const {sequelize} = require("sequelize-test-helpers");
 
 
 async function getAll(req, res) {
-    var {page, size, name, xp_val} = req.query;
+    var {page, size,
+        name, xp_val, m_size, m_ac} = req.query;
     const {limit, offset} = getPagination(page, size);
     let where = {ST_CODE: "active"}
+
+    let s_include = [
+        {all: true, nested: true}
+    ]
 
     if (name){
         // TODO
@@ -14,19 +20,27 @@ async function getAll(req, res) {
         where.GASYMO_DISPLAY_NAME = {[Op.like]: '%'+name +"%"}
     }
 
+    if(m_size) {
+        s_include.push({
+            model: db.sequelize.models.SZ_SIZE,
+            where: {SZ_HIT_DICE_VALUE: m_size}})
+        }
+
+    if(m_ac)
+        where.GASYMO_ARMOR_CLASS = {[Op.eq]: m_ac}
+
+
     if(xp_val)
         // TODO
         // check type of xp_val, it needs to be string for this?
-        where.GASYMO_XP_VALUE = xp_val + "%"
+        where.GASYMO_XP_VALUE = {[Op.eq]: xp_val}
 
-    const GASYMO_GAME_SYSTEM_MONSTER =
+const GASYMO_GAME_SYSTEM_MONSTER =
         await db.sequelize.models.GASYMO_GAME_SYSTEM_MONSTER.findAndCountAll(
             {
                 limit, offset,
                 where,
-                include: [
-                    {all: true, nested: true}
-                ]
+                include: s_include,
             }
         );
     res.status(200).send(getPagingData(GASYMO_GAME_SYSTEM_MONSTER, page, limit))
