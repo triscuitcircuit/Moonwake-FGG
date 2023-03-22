@@ -1,13 +1,15 @@
-import {Container, Grid, Input, NextUIProvider, Text} from "@nextui-org/react";
+import {Button, Container, Grid, Input, NextUIProvider, Text, Modal} from "@nextui-org/react";
 // @ts-ignore
 import {HorizontalSlider, VerticalSlider} from "../components/Sliders";
 import {CharCard, ConCard, DexCard, IntCard, StrengthCard, WisCard} from "../components/creature-creator-cards";
 import React, {useEffect, useState} from "react";
 import {createTheme} from "@nextui-org/react";
+import CreatureDatabase from "../pages/creature-database";
 
 const theme = createTheme({
     type: "dark",
 });
+
 
 const SearchAndFilter: React.FC = () => {
 
@@ -22,6 +24,37 @@ const SearchAndFilter: React.FC = () => {
         };
     }, []);
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => {
+        // TODO
+        // Create a string like ?name=val etc based off attbValPairs and set searchQuery to it
+        const keys = attbValPairs.map(item => item.key);
+        const values = attbValPairs.map(item => item.value);
+        // have some kind of loop for this to get everything?
+        setSearchQuery(keys[0]+values[0]);
+        setIsModalOpen(true);
+    };
+
+    // The list of attributes and the values the user gives them
+    const [attbValPairs, setAVpairs] = useState([
+        { key: "?name=", value: ""},
+        { key: "?xp_val=", value: ""}
+    ]);
+
+    // updates attbValPairs at key: string with string user passes in (called below in an Input)
+    const handleSpecificValueChange = (key: string, newValue: string) => {
+        const itemIndex = attbValPairs.findIndex(item => item.key === key);
+        if (itemIndex !== -1) {
+            const newList = [...attbValPairs];
+            newList[itemIndex] = { ...newList[itemIndex], value: newValue };
+            setAVpairs(newList);
+        }
+    };
+
+    // searchQuery that will be passed to creature-database in the modal window
+    const [searchQuery, setSearchQuery] = useState('')
+
     return (
         <NextUIProvider theme={theme}>
             <Container>
@@ -34,12 +67,17 @@ const SearchAndFilter: React.FC = () => {
                         alignItems: "center",
                     }}
                 >
-
                     <Input
+                        value={attbValPairs.find(item => item.key === "?name=")?.value || ""}
+                        onChange={event => handleSpecificValueChange("?name=", event.target.value)}
                         width="50%"
                         placeholder="Creature Name"
                         size="xl"
                     />
+                    <Button onPress={openModal}>Go!</Button>
+                    <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                        <CreatureDatabase searchQuery={searchQuery} />
+                    </Modal>
                 </div>
                 <div
                     style={{

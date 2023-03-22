@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import { useLocation } from "react-router-dom"
 //import {Parallax} from 'react-parallax';
 import {
     Text,
@@ -12,14 +13,16 @@ const theme = createTheme({
     type: "dark",
 });
 
+// searchQuery will be given by search_and_filter when it generates
+// a modal window containing the creature-database with the filtered URL
+// will be '' on App.tsx so selecting database page directly will display all
+interface Props {
+    searchQuery: string;
+}
 
+const CreatureDatabase = ({ searchQuery }: Props) => {
 
-const CreatureDatabase = () => {
-    // name (and other attributes) will be determined by the user, so "name=Ape" would be a variable
-    // that is determined by whatever the user selects / types into the sliders on search_and_filter
-    // TODO
-    // change creature-database back to how it was, it searching for monsters named Ape is just a demo.
-    const connection = new Connection("http://localhost:8080/api/gasymo_game_system_monster");
+    const connection = new Connection("http://localhost:8080/api/gasymo_game_system_monster"+searchQuery);
 
     const [data, setData] = React.useState<any>(null);
     const [card, setCard] = useState(1);

@@ -9,11 +9,15 @@ async function getAll(req, res) {
     let where = {ST_CODE: "active"}
 
     if (name){
+        // TODO
+        // "Ape" and "ape" give different results ...
         where.GASYMO_DISPLAY_NAME = {[Op.like]: '%'+name +"%"}
     }
 
     if(xp_val)
-        where.GASYMO_XP_VALUE = {}
+        // TODO
+        // check type of xp_val, it needs to be string for this?
+        where.GASYMO_XP_VALUE = xp_val + "%"
 
     const GASYMO_GAME_SYSTEM_MONSTER =
         await db.sequelize.models.GASYMO_GAME_SYSTEM_MONSTER.findAndCountAll(
