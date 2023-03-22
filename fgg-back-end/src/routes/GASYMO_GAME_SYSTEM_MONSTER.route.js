@@ -4,13 +4,16 @@ const {Op} = require("sequelize");
 
 
 async function getAll(req, res) {
-    var {page, size, name} = req.query;
+    var {page, size, name, xp_val} = req.query;
     const {limit, offset} = getPagination(page, size);
     let where = {ST_CODE: "active"}
 
     if (name){
-        where.GASYMO_DISPLAY_NAME = {[Op.like]: '%'+name}
+        where.GASYMO_DISPLAY_NAME = {[Op.like]: '%'+name +"%"}
     }
+
+    if(xp_val)
+        where.GASYMO_XP_VALUE = {}
 
     const GASYMO_GAME_SYSTEM_MONSTER =
         await db.sequelize.models.GASYMO_GAME_SYSTEM_MONSTER.findAndCountAll(

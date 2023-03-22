@@ -5,6 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "server": "node src/server.js",
+    "build": "tsc",
     "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
     "pre-commit": "lint-staged",
     "prettier:check": "prettier --config .prettierrc --check \"src/**/*.{ts,css,html}\"",
