@@ -25,7 +25,7 @@ jobs:
         - name: Checkout code
           uses: actions/checkout@v2
         - name: Install dependencies
-          run: cd back-end
+          run: cd fgg-back-end
         - name: Oracledb
           run: cd fgg-back-end && npm uninstall oracledb && npm install oracledb && npm install
         - name: Build backend
