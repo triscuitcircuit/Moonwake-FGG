@@ -17,7 +17,7 @@ export class Connection {
         try {
             const res =
                 await axios.get(this.baseURL +
-                    "?page=" + page);
+                    "&page=" + page);
             return res.data;
         } catch (error) {
             console.error(error)

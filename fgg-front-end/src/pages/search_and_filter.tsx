@@ -13,6 +13,10 @@ const theme = createTheme({
 
 const SearchAndFilter: React.FC = () => {
 
+    // searchQuery that will be passed to creature-database in the modal window
+    const [searchQuery, setSearchQuery] = useState('')
+
+
     const [width, setWidth] = React.useState(window.innerWidth * 1.5);
 
     useEffect(() => {
@@ -25,23 +29,33 @@ const SearchAndFilter: React.FC = () => {
     }, []);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [searching,setSearching] = useState(false);
 
     const openModal = () => {
         // TODO
         // Create a string like ?name=val etc based off attbValPairs and set searchQuery to it
         const keys = attbValPairs.map(item => item.key);
         const values = attbValPairs.map(item => item.value);
-        // have some kind of loop for this to get everything?
-        setSearchQuery(keys[0]+values[0]);
-        setIsModalOpen(true);
+
+        // m_searchString is monster Search String
+        let m_searchString = new String("");
+        for (let i = 0; i < keys.length; i++) {
+                    if(values[i]!=="")
+                        m_searchString += keys[i] + values[i]
+
+            }
+
+            setSearchQuery(m_searchString.toString());
+            setIsModalOpen(true);
+
     };
 
     // The list of attributes and the values the user gives them
     const [attbValPairs, setAVpairs] = useState([
-        { key: "?name=", value: ""},
-        { key: "?xp_val=", value: ""},
-        { key: "?m_size=", value:""},
-        { key: "?m_ac=", value:""}
+        { key: "&name=", value: ""},
+        { key: "&xp_val=", value: ""},
+        { key: "&m_size=", value:""},
+        { key: "&m_ac=", value:""}
     ]);
 
     // updates attbValPairs at key: string with string user passes in (called below in an Input)
@@ -53,9 +67,6 @@ const SearchAndFilter: React.FC = () => {
             setAVpairs(newList);
         }
     };
-
-    // searchQuery that will be passed to creature-database in the modal window
-    const [searchQuery, setSearchQuery] = useState('')
 
     return (
         <NextUIProvider theme={theme}>
@@ -70,15 +81,19 @@ const SearchAndFilter: React.FC = () => {
                     }}
                 >
                     <Input
-                        value={attbValPairs.find(item => item.key === "?name=")?.value || ""}
-                        onChange={event => handleSpecificValueChange("?name=", event.target.value)}
+                        value={attbValPairs.find(item => item.key === "&name=")?.value || ""}
+                        onChange={event => handleSpecificValueChange("&name=", event.target.value)}
                         width="50%"
                         placeholder="Creature Name"
                         size="xl"
                     />
                     <Button onPress={openModal}>Go!</Button>
-                    <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                        <CreatureDatabase searchQuery={searchQuery} />
+                    <Modal         width="600px"
+                                   open={isModalOpen} onClose={() => {
+                        setSearching(false);
+                        setIsModalOpen(false)
+                    }}>
+                        <CreatureDatabase searchQuery={searchQuery}/>
                     </Modal>
                 </div>
                 <div
@@ -123,8 +138,8 @@ const SearchAndFilter: React.FC = () => {
                         >
                             <Input
                                 placeholder="Armor Class"
-                                value={attbValPairs.find(item => item.key === "?m_ac=")?.value || ""}
-                                onChange={event => handleSpecificValueChange("?m_ac=", event.target.value)}
+                                value={attbValPairs.find(item => item.key === "&m_ac=")?.value || ""}
+                                onChange={event => handleSpecificValueChange("&m_ac=", event.target.value)}
                                 size="xl"
                                 width="40%"
                             />

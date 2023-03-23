@@ -5,8 +5,12 @@ const {sequelize} = require("sequelize-test-helpers");
 
 
 async function getAll(req, res) {
-    var {page, size,
-        name, xp_val, m_size, m_ac} = req.query;
+    var {page, size} = req.query;
+    var name = req.query.name;
+    var xp_val = req.query.xp_val;
+    var m_ac = req.query.m_ac;
+    var m_size = req.query.m_size;
+
     const {limit, offset} = getPagination(page, size);
     let where = {ST_CODE: "active"}
 
