@@ -10,7 +10,7 @@ function applyExtraSetup(sequelize) {
         GASYMOST_GAME_SYS_MONST_STATUS,//comment this out if it does not work
         MOAL_MONSTER_ALIGNMENT,ER_ERROR,MOAT_MONSTER_ACTION,
         MOMV_MONSTER_MOVEMENT,MOPP_MONSTER_PROPERTY,RENO_GASYMO_ID_FK,
-        USGASYMO_GASYMO_ID_FK,MOPBRE_GASYMO_ID_FK
+        USGASYMO_GASYMO_ID_FK,MOPBRE_GASYMO_ID_FK,
 
     } = sequelize.models;
 
@@ -30,63 +30,19 @@ function applyExtraSetup(sequelize) {
             },
             sourceKey: 'CHLE_ID'
         })
+    //CORRECT
+    GASYMO_GAME_SYSTEM_MONSTER.hasOne(GACO_GAME_COMPANY,
+        {
+            foreignKey: {
+                name: "GACO_ID",
+                allowNull: false
+            },
+            sourceKey: 'GACO_ID'
+        })
 
-    // // GASYMO_GAME_SYSTEM_MONSTER.hasOne(GACO_GAME_COMPANY,
-    // //     {
-    // //         foreignKey: {
-    // //             name: "GACO_ID",
-    // //             allowNull: false
-    // //         },
-    // //         sourceKey: 'GACO_ID'
-    // //     })
-    // //
-    // // MOSRTG_MONSTER_SEARCH_TAG.hasOne(GACO_GAME_COMPANY,
-    // //     {
-    // //         foreignKey: {
-    // //             name: "GASYMO_ID",
-    // //             allowNull: false
-    // //         },
-    // //         sourceKey: 'GASYMO_ID'
-    // //     })
-    // // TABLE IS NOT COMPLETE DO NOT INCLUDE
-    // // GASYMO_GAME_SYSTEM_MONSTER.hasOne(MO_MONSTER,
-    // //     {foreignKey: {
-    // //             name:"MO_ID",
-    // //             allowNull: false
-    // //         },
-    // //         sourceKey: 'MO_ID'
-    // //     })
-    //
-    //
-    // GASYMO_GAME_SYSTEM_MONSTER.hasOne(MOTY_MONSTER_TYPE,
-    //     {
-    //         foreignKey: {
-    //             name: "MOTY_ID",
-    //             allowNull: false
-    //         },
-    //         sourceKey: 'SEC_MOTY_ID'
-    //     })
-    //
-    // GASYMO_GAME_SYSTEM_MONSTER.hasOne(SZ_SIZE,
-    //     {
-    //         foreignKey: {
-    //             name: "SZ_ID",
-    //             allowNull: false
-    //         },
-    //         sourceKey: 'SZ_ID'
-    //     })
-    //
-    //
-    // GASYMO_GAME_SYSTEM_MONSTER.hasOne(ST_STATUS,
-    //     {
-    //         foreignKey: {
-    //             name: "ST_CODE",
-    //             allowNull: false
-    //         },
-    //         sourceKey: 'ST_CODE'
-    //     })
-    //
-    // GASYMODS_GAME_SYS_MONSTER_DESC.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
+
+    //INCORRECT: "GACO_GAME_COMPANY"."GASYMO_ID": invalid identifier
+    // MOSRTG_MONSTER_SEARCH_TAG.hasOne(GACO_GAME_COMPANY,
     //     {
     //         foreignKey: {
     //             name: "GASYMO_ID",
@@ -94,51 +50,108 @@ function applyExtraSetup(sequelize) {
     //         },
     //         sourceKey: 'GASYMO_ID'
     //     })
-    //
-    // MOLRAT_MONSTER_LAIR_ACTION.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
-    //     {
-    //         foreignKey: {
-    //             name: "GASYMO_ID",
-    //             allowNull: false
-    //         },
-    //         sourceKey: 'GASYMO_ID'
-    //     })
-    //
-    // MOAB_MONSTER_ATTRIBUTE.hasOne(GASYMO_GAME_SYSTEM_MONSTER,//DUAL
-    //     {
-    //         foreignKey: {
-    //             name: "GASYMO_ID",
-    //             allowNull: false
-    //         },
-    //         sourceKey: 'GASYMO_ID'
-    //     })
-    //
-    // MODI_MONSTER_DISPLAY.hasOne(GASYMO_GAME_SYSTEM_MONSTER,//DUAL
-    //     {
-    //         foreignKey: {
-    //             name: "GASYMO_ID",
-    //             allowNull: false
-    //         },
-    //         sourceKey: 'GASYMO_ID'
-    //     })
-    //
-    // // MOSRTG_MONSTER_SEARCH_TAG.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
-    // //     {
-    // //         foreignKey: {
-    // //             name: "GASYMO_ID",
-    // //             allowNull: false
-    // //         },
-    // //         sourceKey: 'GASYMO_ID'
-    // //     })
-    //
-    // GASYMOST_GAME_SYS_MONST_STATUS.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
-    //     {
-    //         foreignKey: {
-    //             name: "GASYMO_ID",
-    //             allowNull: false
-    //         },
-    //         sourceKey: 'GASYMO_ID'
-    //     })
+
+
+    // CORRECT
+    GASYMO_GAME_SYSTEM_MONSTER.hasOne(MO_MONSTER,
+        {foreignKey: {
+                name:"MO_ID",
+                allowNull: false
+            },
+            sourceKey: 'MO_ID'
+        })
+
+    //CORRECT
+    GASYMO_GAME_SYSTEM_MONSTER.hasOne(MOTY_MONSTER_TYPE,
+        {
+            foreignKey: {
+                name: "MOTY_ID",
+                allowNull: false
+            },
+            sourceKey: 'SEC_MOTY_ID'
+        })
+
+    //CORRECT
+    GASYMO_GAME_SYSTEM_MONSTER.hasOne(SZ_SIZE,
+        {
+            foreignKey: {
+                name: "SZ_ID",
+                allowNull: false
+            },
+            sourceKey: 'SZ_ID'
+        })
+
+    //CORRECT
+    GASYMO_GAME_SYSTEM_MONSTER.hasOne(ST_STATUS,
+        {
+            foreignKey: {
+                name: "ST_CODE",
+                allowNull: false
+            },
+            sourceKey: 'ST_CODE'
+        })
+
+    //INCORRECT: RUNS BUT DOES NOT DISPLAY:
+    //EMPTY TABLE
+    //HASONE OR HASMANY WORK
+    GASYMODS_GAME_SYS_MONSTER_DESC.hasMany(GASYMO_GAME_SYSTEM_MONSTER,
+        {
+            foreignKey: {
+                name: "GASYMO_ID",
+                allowNull: false
+            },
+            sourceKey: 'GASYMO_ID'
+        })
+    //INCORRECT: RUNS BUT DOES NOT DISPLAY
+    //NOT EMPTY
+    MOLRAT_MONSTER_LAIR_ACTION.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
+        {
+            foreignKey: {
+                name: "GASYMO_ID",
+                allowNull: false
+            },
+            sourceKey: 'GASYMO_ID'
+        })
+
+    //INCORRECT: RUNS BUT DOES NOT DISPLAY
+    MOAB_MONSTER_ATTRIBUTE.hasOne(GASYMO_GAME_SYSTEM_MONSTER,//DUAL
+        {
+            foreignKey: {
+                name: "GASYMO_ID",
+                allowNull: false
+            },
+            sourceKey: 'GASYMO_ID'
+        })
+
+    //INCORRECT: RUNS BUT DOES NOT DISPLAY
+    MODI_MONSTER_DISPLAY.hasOne(GASYMO_GAME_SYSTEM_MONSTER,//DUAL
+        {
+            foreignKey: {
+                name: "GASYMO_ID",
+                allowNull: false
+            },
+            sourceKey: 'GASYMO_ID'
+        })
+
+    //INCORRECT: RUNS BUT DOES NOT DISPLAY
+    MOSRTG_MONSTER_SEARCH_TAG.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
+        {
+            foreignKey: {
+                name: "GASYMO_ID",
+                allowNull: false
+            },
+            sourceKey: 'GASYMO_ID'
+        })
+
+    //INCORRECT: RUNS BUT DOES NOT DISPLAY
+    GASYMOST_GAME_SYS_MONST_STATUS.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
+        {
+            foreignKey: {
+                name: "GASYMO_ID",
+                allowNull: false
+            },
+            sourceKey: 'GASYMO_ID'
+        })
     //
     // ER_ERROR.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
     //     {
@@ -222,15 +235,17 @@ function applyExtraSetup(sequelize) {
     // //         sourceKey: 'GASYMO_ID'
     // //     })
     //
-    //
-    // // GASYMO_GAME_SYS_MONSTER_DESC.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
-    // //     {
-    // //         foreignKey: {
-    // //             name: "GASYMO_ID",
-    // //             allowNull: false
-    // //         },
-    // //         sourceKey: "GASYMO_ID"
-    // //     })
+
+    //INCORRECT: WILL NOT RUN
+    //Also a double :(
+    // GASYMODS_GAME_SYS_MONSTER_DESC.hasMany(GASYMO_GAME_SYSTEM_MONSTER,
+    //     {
+    //         foreignKey: {
+    //             name: "GASYMO_ID",
+    //             allowNull: false
+    //         },
+    //         sourceKey: "GASYMO_ID"
+    //     })
 
 // Saw in GASYMO_ID
 //     GASYMO_GAME_SYSTEM_MONSTER.hasMany(MOAB_MONSTER_ATTRIBUTE, //DUAL
