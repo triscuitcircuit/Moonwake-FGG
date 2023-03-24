@@ -47,7 +47,7 @@ function App() {
       <Routes>                                       // paths to other pages defined in /pages
         <Route path="/" element={<HomeDemo />} />
         <Route path="/creature-creator" element={<CreatureCreator />} />
-        <Route path="/creature-database" element={<CreatureDatabase />} />
+        <Route path="/creature-database" element={<CreatureDatabase searchQuery={''}/>} />
         <Route path="/search_and_filter" element={<SearchAndFilter />} />
         <Route path="/books" element={<Books />} />
         <Route path="/help-feedback" element={<HelpFeedback />} />
