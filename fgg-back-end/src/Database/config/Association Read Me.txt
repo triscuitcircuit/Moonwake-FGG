@@ -3,3 +3,10 @@ This is a readme for the Associations.
 Starting with GASYMO_GAME_SYSTEM_MONSTER so that we can do search and filter.
     Ignore MO_ID. It is an incomplete table.
     Ignore  RR_RARITY. It is blank
+
+ER_GASYMO_ID_FK
+    Weird Input to FK
+
+MOMV_MONSTER_MOVEMENT
+    Plent of null in table
+
