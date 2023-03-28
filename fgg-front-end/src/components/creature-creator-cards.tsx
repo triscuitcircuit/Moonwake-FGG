@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Card, Text, Col, Row, Button, Input, Dropdown} from "@nextui-org/react";
 
 interface Props {
@@ -13,6 +13,13 @@ interface AttributeInputProps {
 
 interface SpeedInputProps {
     name: string;
+
+    setSpeed: (value: number) => void;
+}
+
+interface ChallengeRatingProps {
+    value: number;
+    setChallengeRating: (value: number) => void;
 }
 
 export const StartNew: React.FC<Props> = ({ onButtonClick }) => (
@@ -184,24 +191,77 @@ export const CharCard = () => (
     </Card>
 );
 
-export const SpeedInput: React.FC<SpeedInputProps> = ({name}) => (
-    <div
-        style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            margin: "10px",
+export const SpeedInput: React.FC<SpeedInputProps> = ({name, setSpeed}) => {
+    const [value, setValue] = useState<number | "">(0);
+    const [showWarning, setShowWarning] = useState(false);
+    const [warningMessage, setWarningMessage] = useState("");
+    const [showError, setShowError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const inputValue = event.target.value;
+        if (inputValue === "") {
+            setValue("");
+            setShowWarning(false);
+            setShowError(false);
+            setWarningMessage("");
+        } else if (!isNaN(Number(inputValue)) && Number(inputValue) >= 0 && Number(inputValue) < 1000) {
+            setValue(Number(inputValue));
+            if (Number(inputValue) > 400) {
+                setShowWarning(true);
+                setShowError(false);
+                setWarningMessage("Speed is very fast");
+                setSpeed(Number(inputValue));
+                // {console.log("Speed: " + Number(inputValue))}
+            }
+            else if (Number(inputValue) % 5 !== 0) {
+                    setShowWarning(true);
+                    setShowError(false);
+                    setWarningMessage("Value should be divisible by 5");
+                    setSpeed(Number(inputValue));
+                    // {console.log("Speed: " + Number(inputValue))}
+            }
+            else {
+                setShowWarning(false);
+                setShowError(false);
+                setWarningMessage("");
+                setSpeed(Number(inputValue));
+                // {console.log("Speed: " + Number(inputValue))}
+            }
+        } else if (Number(inputValue) >= 1000) {
+            setShowError(true);
+            setShowWarning(false);
+            setErrorMessage("Keep speed under 1000");
+        } else {
+            setShowError(true);
+            setShowWarning(false);
+            setErrorMessage("Invalid input value");
+        }
+    };
+
+    return (
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "10px",
             }}
-    >
-        <Text h5>{name}</Text>
-        <Input
-            type="number"
-            placeholder="----"
-            size="lg"
-        />
-    </div>
-);
+        >
+            <Text h5>{name}</Text>
+            <Input
+                type="number"
+                placeholder="----"
+                size="lg"
+                value={value}
+                onChange={handleChange}
+                helperText={showWarning ? warningMessage : showError ? errorMessage : ""}
+                helperColor={showWarning ? "warning" : showError ? "error" : "default"}
+            />
+        </div>
+    );
+}
 
 export const AttributeInput: React.FC<AttributeInputProps> = ({name, value, setValue}) => {
 
@@ -213,7 +273,6 @@ export const AttributeInput: React.FC<AttributeInputProps> = ({name, value, setV
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                margin: "10px",
                 width: "100%",
                 }}
         >
@@ -239,3 +298,48 @@ export const AttributeInput: React.FC<AttributeInputProps> = ({name, value, setV
         </div>
     );
 };
+
+export const ChallengeRatingInput: React.FC<ChallengeRatingProps> = ({ value, setChallengeRating}) => {
+
+    const dropdownItems = [
+        { key: "0", value: 0 },
+        { key: "1/8", value: 1/8 },
+        { key: "1/4", value: 1/4 },
+        { key: "1/2", value: 1/2 },
+    ];
+
+    for (let i = 1; i <= 40; i++) {
+        const value = i;
+        dropdownItems.push({ key: value.toString(), value: value });
+    }
+
+    return (
+        <div
+            style={{
+                flex: "1",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "10px",
+            }}
+        >
+            <Dropdown>
+                <Dropdown.Button flat css={{ width: "100%" }}>
+                    {value}
+                </Dropdown.Button>
+                <Dropdown.Menu
+                    aria-label="Challenge Rating menu"
+                    disallowEmptySelection
+                    selectionMode="single"
+                    css={{ maxHeight: "400px", overflow: "auto" }}
+                    onAction={setChallengeRating}
+                >
+                    {dropdownItems.map((item) => (
+                        <Dropdown.Item key={item.key}>
+                            {item.key}
+                        </Dropdown.Item>
+                    ))}
+                </Dropdown.Menu>
+            </Dropdown>
+        </div>
+    );
+}
