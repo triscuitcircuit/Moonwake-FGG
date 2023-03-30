@@ -39,3 +39,25 @@
 .showBorders div {
     border: 1px solid darkred;
 }
+
+.creature-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.creature-stat-block {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.creature-image-container {
+    flex: 1;
+    text-align: center;
+    border: 2px solid #fff;
+}
+
+.creature-image {
+    max-width: 100%;
+    max-height: 100%;
+}

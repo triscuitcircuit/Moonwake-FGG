@@ -107,32 +107,26 @@ const CreatureCreator: React.FC = () => {
     const [truesight, setTruesight] = useState<boolean>(false);
     const [passivePerception, setPassivePerception] = useState<boolean>(false);
 
+    const [previewCreature, setPreviewCreature] = useState<boolean>(false);
+
     const [showToast, setShowToast] = useState<boolean>(true);
+    const [showAllToasts, setShowAllToasts] = useState<boolean>(false);
     const [showDivBorders, setShowDivBorders] = useState<boolean>(false);
-    const [displayAll, setDisplayAll] = useState<boolean>(false);
 
-    const disableToasts = () => {
-        setShowToast(false);
-    }
-
-    const enableToasts = () => {
-        setShowToast(true);
+    const toggleToastVisibility = () => {
+        setShowToast(!showToast);
     }
 
     const displayAllToasts = () => {
-        setDisplayAll(true);
+        setShowAllToasts(true);
+
+        setTimeout(() => {
+            setShowAllToasts(false);
+        }, 500);
     }
 
-    const hideAllToasts = () => {
-        setDisplayAll(false);
-    }
-
-    const disableBorders = () => {
-        setShowDivBorders(false);
-    }
-
-    const showBorders = () => {
-        setShowDivBorders(true);
+    const toggleDivBorders = () => {
+        setShowDivBorders(!showDivBorders);
     }
 
     const languages = [
@@ -190,6 +184,10 @@ const CreatureCreator: React.FC = () => {
     const handleButtonClick = () => {
         setIsClicked(!isClicked);
     };
+
+    const handlePreviewButtonClick = () => {
+        setPreviewCreature(!previewCreature);
+    }
 
     /* ---------------------------------------------------------------------------------- */
     /* setSetters is called by the attributeInput component to set the value and modifier */
@@ -348,7 +346,7 @@ const CreatureCreator: React.FC = () => {
     // --------------------------------------------------------
 
     useEffect(() => {
-        if (intelligence != "----" && selectedAlignment != "----" || displayAll == true) {
+        if (intelligence != "----" && selectedAlignment != "----" || showAllToasts) {
             if (parseInt(intelligence) < 5 && selectedAlignment != "unaligned") {
                 toast.error(
                     <>
@@ -360,7 +358,7 @@ const CreatureCreator: React.FC = () => {
                         </p>
                     </>, { style: { width: "400px", translate: "-50px" } });
             }
-            if (parseInt(intelligence) > 4 && selectedAlignment == "unaligned" || displayAll == true) {
+            if (parseInt(intelligence) > 4 && selectedAlignment == "unaligned" || showAllToasts) {
                 toast.error(
                     <>
                         <p>
@@ -372,10 +370,10 @@ const CreatureCreator: React.FC = () => {
                     </>, { style: { width: "400px", translate: "-50px" } });
             }
         }
-    }, [intelligence, selectedAlignment, displayAll]);
+    }, [intelligence, selectedAlignment, showAllToasts]);
 
     useEffect(() => {
-        if (selectedType == "swarm" || displayAll == true) {
+        if (selectedType == "swarm" || showAllToasts) {
             toast.error(
                 <>
                     <p>
@@ -415,7 +413,7 @@ const CreatureCreator: React.FC = () => {
                     </ul>
                 </>, { style: { width: "800px", translate: "-250px" } });
         }
-        if (selectedType == "undead" || displayAll == true) {
+        if (selectedType == "undead" || showAllToasts) {
             toast.error(
                 <>
                     <p>
@@ -460,7 +458,7 @@ const CreatureCreator: React.FC = () => {
                     </ul>
                 </>, { style: { width: "800px", translate: "-250px" } });
         }
-        if (selectedType == "construct" || displayAll == true) {
+        if (selectedType == "construct" || showAllToasts) {
             toast.error(
                 <>
                     <p>
@@ -495,7 +493,7 @@ const CreatureCreator: React.FC = () => {
                     </ul>
                 </>, { style: { width: "800px", translate: "-250px" } });
         }
-        if (selectedType == "elemental" || displayAll == true) {
+        if (selectedType == "elemental" || showAllToasts) {
             toast.error(
                 <>
                     <p>
@@ -520,7 +518,7 @@ const CreatureCreator: React.FC = () => {
                     </ul>
                 </>, { style: { width: "800px", translate: "-250px" } });
         }
-        if (selectedType == "dragon" || displayAll == true) {
+        if (selectedType == "dragon" || showAllToasts) {
             toast.error(
                 <>
                     <p><b>Your creature is a Dragon. You might consider the following:</b></p>
@@ -540,7 +538,7 @@ const CreatureCreator: React.FC = () => {
                     </ul>
                 </>, { style: { width: "800px", translate: "-250px" } });
         }
-        if (selectedType == "ooze" || displayAll == true) {
+        if (selectedType == "ooze" || showAllToasts) {
             toast.error(
                 <>
                     <p><b>Your creature is an Ooze. You might consider the following:</b></p>
@@ -573,7 +571,7 @@ const CreatureCreator: React.FC = () => {
                     </ul>
                 </>, { style: { width: "800px", translate: "-250px" } });
         }
-        if (selectedType == "plant" || displayAll == true) {
+        if (selectedType == "plant" || showAllToasts) {
             toast.error(
                 <>
                     <p><b>Your creature is a Plant. You might consider the following:</b></p>
@@ -590,7 +588,7 @@ const CreatureCreator: React.FC = () => {
                     </ul>
                 </>, { style: { width: "800px", translate: "-250px" } });
         }
-        if (selectedType == "beast" || displayAll == true) {
+        if (selectedType == "beast" || showAllToasts) {
             toast.error(
                 <>
                     <p>
@@ -599,7 +597,7 @@ const CreatureCreator: React.FC = () => {
                 </>
             );
         }
-        if (selectedType == "celestial" || displayAll == true) {
+        if (selectedType == "celestial" || showAllToasts) {
             toast.error(
                 <>
                     <p>
@@ -608,7 +606,7 @@ const CreatureCreator: React.FC = () => {
                 </>
             );
         }
-        if (selectedType == "fey" || displayAll == true) {
+        if (selectedType == "fey" || showAllToasts) {
             toast.error(
                 <>
                     <p>
@@ -617,7 +615,7 @@ const CreatureCreator: React.FC = () => {
                 </>
             );
         }
-        if (selectedType == "fiend" || displayAll == true) {
+        if (selectedType == "fiend" || showAllToasts) {
             toast.error(
                 <>
                     <p>
@@ -643,7 +641,7 @@ const CreatureCreator: React.FC = () => {
                 </>
             );
         }
-        if (selectedType == "demon" || displayAll == true) {
+        if (selectedType == "demon" || showAllToasts) {
             toast.error(
                 <>
                     <p>
@@ -651,7 +649,7 @@ const CreatureCreator: React.FC = () => {
                     </p>
                 </>
             );
-            if (["chaotic evil", "----"].includes(selectedAlignment) == false || displayAll == true) {
+            if (["chaotic evil", "----"].includes(selectedAlignment) == false || showAllToasts) {
                 toast.error(
                     <>
                         <p>
@@ -661,7 +659,7 @@ const CreatureCreator: React.FC = () => {
                 );
             }
         }
-        if (selectedType == "devil" || displayAll == true) {
+        if (selectedType == "devil" || showAllToasts) {
             toast.error(
                 <>
                     <p>
@@ -669,7 +667,7 @@ const CreatureCreator: React.FC = () => {
                     </p>
                 </>
             );
-            if (["lawful evil", "----"].includes(selectedAlignment) == false || displayAll == true) {
+            if (["lawful evil", "----"].includes(selectedAlignment) == false || showAllToasts) {
                 toast.error(
                     <>
                         <p>
@@ -679,7 +677,7 @@ const CreatureCreator: React.FC = () => {
                 );
             }
         }
-        if (selectedType == "giant" || displayAll == true) {
+        if (selectedType == "giant" || showAllToasts) {
             toast.error(
                 <>
                     <p>
@@ -688,7 +686,7 @@ const CreatureCreator: React.FC = () => {
                 </>
             );
         }
-        if (selectedType == "humanoid" || displayAll == true ) {
+        if (selectedType == "humanoid" || showAllToasts) {
             toast.error(
                 <>
                     <p>
@@ -697,7 +695,7 @@ const CreatureCreator: React.FC = () => {
                 </>
             );
         }
-        if(["dwarf", "elf", "gnome", "goblinoid", "half-orc", "kobold", "orc"].includes(selectedType) && darkvision == false || displayAll == true) {
+        if(["dwarf", "elf", "gnome", "goblinoid", "half-orc", "kobold", "orc"].includes(selectedType) && darkvision == false || showAllToasts) {
             toast.error(
                 <>
                     <p>
@@ -706,11 +704,11 @@ const CreatureCreator: React.FC = () => {
                 </>
             );
         }
-    }, [selectedType, selectedAlignment, darkvision, displayAll]);
+    }, [selectedType, selectedAlignment, darkvision, showAllToasts]);
 
     useEffect(() => {
-        if (challengeRating >= 10 || displayAll == true) {
-            if (challengeRating >= 15 || displayAll == true) {
+        if (challengeRating >= 10 || showAllToasts) {
+            if (challengeRating >= 15 || showAllToasts) {
                 toast.error(
                     <>
                         <p>
@@ -752,11 +750,10 @@ const CreatureCreator: React.FC = () => {
                     </ul>
                 </>, { style: { width: "800px", translate: "-250px" } });
         }
-    }, [challengeRating, displayAll]);
+    }, [challengeRating, showAllToasts]);
 
     useEffect(() => {
-        console.log(selectedSize);
-        if (selectedSize == "Huge" || displayAll == true) {
+        if (selectedSize == "Huge" || showAllToasts) {
             toast.error(
                 <>
                     <p>
@@ -769,7 +766,7 @@ const CreatureCreator: React.FC = () => {
                 </>
             );
         }
-    }, [selectedSize, displayAll]);
+    }, [selectedSize, showAllToasts]);
 
     // @ts-ignore
     return (
@@ -829,16 +826,9 @@ const CreatureCreator: React.FC = () => {
             {/* If the button is clicked, then the creature creation form is shown */}
             {/* ------------------------------------------------------------------ */}
 
-            {isClicked &&
+            {isClicked && !previewCreature &&
                 <Container md className={showDivBorders ? "showBorders" : ''}>
-                    <AdminPanel
-                        disableToasts={disableToasts}
-                        enableToasts={enableToasts}
-                        displayAllToasts={displayAllToasts}
-                        hideAllToasts={hideAllToasts}
-                        disableBorders={disableBorders}
-                        showBorders={showBorders}
-                    />
+                    <AdminPanel toggleToastVisibility={toggleToastVisibility} displayAllToasts={displayAllToasts} toggleDivBorders={toggleDivBorders} />
                     <div
                         style={{
                             display: "flex",
@@ -865,6 +855,10 @@ const CreatureCreator: React.FC = () => {
                                 flexDirection: "row",
                                 width: "100%",
                                 marginTop: "2%",
+                                paddingTop: "2%",
+                                paddingBottom: "2%",
+                                borderTop: "3px solid #fff",
+                                borderBottom: "3px solid #fff",
                             }}
                         >
                             <Text h3 css={{ flex: "1" }}>Name:</Text>
@@ -889,6 +883,7 @@ const CreatureCreator: React.FC = () => {
                                 justifyContent: "center",
                                 alignItems: "center",
                                 width: "100%",
+                                paddingTop: "2%",
                                 }}
                         >
                             <div
@@ -971,8 +966,7 @@ const CreatureCreator: React.FC = () => {
                                         selectionMode="single"
                                         items={typeItems}
                                         selectedKeys={selectedType}
-                                        // @ts-ignore
-                                        onSelectionChange={setSelectedType}
+                                        onAction={setSelectedType}
                                         css={{ maxHeight: "400px", overflow: "auto" }}
                                     >
                                         {/*@ts-ignore*/}
@@ -1153,10 +1147,12 @@ const CreatureCreator: React.FC = () => {
                                 justifyContent: "space-around",
                                 alignItems: "center",
                                 width: "100%",
-                                marginTop: "2%",
+                                marginTop: "3%",
+                                paddingBottom: "2%",
+                                borderBottom: "3px solid #fff",
                             }}
                         >
-                            <Text h5 css={{ flex: "1" }}>Hit Points</Text>
+                            <Text h4 css={{ flex: "1" }}>Hit Points</Text>
                             <Input
                                 aria-label={"No. of Hit Dice"}
                                 bordered
@@ -1188,6 +1184,8 @@ const CreatureCreator: React.FC = () => {
                                     justifyContent: "space-around",
                                     alignItems: "center",
                                     width: "100%",
+                                    paddingBottom: "2%",
+                                    borderBottom: "3px solid #fff",
                                 }}
                             >
                                 <SpeedInput name={"Base"} setSpeed={setBaseSpeed} />
@@ -1204,6 +1202,8 @@ const CreatureCreator: React.FC = () => {
                                 flexDirection: "column",
                                 width: "100%",
                                 marginTop: "2%",
+                                paddingBottom: "2%",
+                                borderBottom: "3px solid #fff",
                             }}
                         >
                             <Text h3 >Attributes:</Text>
@@ -1256,6 +1256,8 @@ const CreatureCreator: React.FC = () => {
                                 flexDirection: "row",
                                 width: "100%",
                                 marginTop: "2%",
+                                paddingBottom: "2%",
+                                borderBottom: "3px solid #fff",
                             }}
                         >
                             <div
@@ -1283,6 +1285,8 @@ const CreatureCreator: React.FC = () => {
                                 flexDirection: "column",
                                 width: "100%",
                                 marginTop: "2%",
+                                paddingBottom: "2%",
+                                borderBottom: "3px solid #fff",
                             }}
                         >
                             <Text h3>Saving Throws:</Text>
@@ -1389,6 +1393,8 @@ const CreatureCreator: React.FC = () => {
                                 flexDirection: "column",
                                 width: "100%",
                                 marginTop: "2%",
+                                paddingBottom: "2%",
+                                borderBottom: "3px solid #fff",
                             }}
                         >
                             <Text h3 css={{ flex: "1" }}>Skills: </Text>
@@ -1445,54 +1451,59 @@ const CreatureCreator: React.FC = () => {
                         <div
                             style={{
                                 width: "100%",
-                                marginTop: "2%",
+                                paddingBottom: "2%",
+                                borderBottom: "3px solid #fff",
                             }}
                         >
-                            <Text h3 >Damage Vulnerabilities: </Text>
+                            <Text h3 css={{ marginTop: "2%" }}>Damage Vulnerabilities: </Text>
                             <Checkbox.Group
                                 orientation={"horizontal"}
                                 label={"Select Damage Vulnerabilities"}
                                 value={selectedDamageVulnerabilities}
                                 onChange={setSelectedDamageVulnerabilities}
+                                css={{ paddingBottom: "2%", borderBottom: "3px solid #fff" }}
                             >
                                 {damageTypeItems.map((damageType: { name: string }, index: React.Key) => (
                                     <Checkbox key={index} value={damageType.name} css={{ width: "250px", marginTop: "5px" }}>{damageType.name}</Checkbox>
                                 ))}
                             </Checkbox.Group>
-                            <Text h3>Damage Resistances: </Text>
+                            <Text h3 css={{ marginTop: "2%" }}>Damage Resistances: </Text>
                             <Checkbox.Group
                                 orientation={"horizontal"}
                                 label={"Select Damage Resistances"}
                                 value={selectedDamageResistances}
                                 onChange={setSelectedDamageResistances}
+                                css={{ paddingBottom: "2%", borderBottom: "3px solid #fff" }}
                             >
                                 {damageTypeItems.map((damageType: { name: string }, index: React.Key) => (
                                     <Checkbox key={index} value={damageType.name} css={{ width: "250px", marginTop: "5px" }}>{damageType.name}</Checkbox>
                                 ))}
                             </Checkbox.Group>
-                            <Text h3>Damage Immunities: </Text>
+                            <Text h3 css={{ marginTop: "2%" }}>Damage Immunities: </Text>
                             <Checkbox.Group
                                 orientation={"horizontal"}
                                 label={"Select Damage Immunities"}
                                 value={selectedDamageImmunities}
                                 onChange={setSelectedDamageImmunities}
+                                css={{ paddingBottom: "2%", borderBottom: "3px solid #fff" }}
                             >
                                 {damageTypeItems.map((damageType: { name: string }, index: React.Key) => (
                                     <Checkbox key={index} value={damageType.name} css={{ width: "250px", marginTop: "5px" }}>{damageType.name}</Checkbox>
                                 ))}
                             </Checkbox.Group>
-                            <Text h3>Condition Immunities: </Text>
+                            <Text h3 css={{ marginTop: "2%" }}>Condition Immunities: </Text>
                             <Checkbox.Group
                                 orientation={"horizontal"}
                                 label={"Select Condition Immunities"}
                                 value={selectedConditionImmunities}
                                 onChange={setSelectedConditionImmunities}
+                                css={{ paddingBottom: "2%", borderBottom: "3px solid #fff" }}
                             >
                                 {conditionItems.map((condition: { name: string }, index: React.Key) => (
                                     <Checkbox key={index} value={condition.name} css={{ width: "250px", marginTop: "5px" }}>{condition.name}</Checkbox>
                                 ))}
                             </Checkbox.Group>
-                            <Text h3>Senses: </Text>
+                            <Text h3 css={{ marginTop: "2%" }}>Senses: </Text>
                             <Table
                                 bordered
                                 compact
@@ -1541,11 +1552,14 @@ const CreatureCreator: React.FC = () => {
                             justifyContent: "center",
                             alignItems: "center",
                             width: "100%",
+                            marginTop: "2%",
+                            paddingBottom: "2%",
+                            borderBottom: "3px solid #fff",
                             }}
                     >
                         <Button onPress={handleButtonClick}>Go Back</Button>
                         <Spacer x={0.5} />
-                        <Button>Preview Creature</Button>
+                        <Button onPress={handlePreviewButtonClick}>Preview Creature</Button>
                         {showToast &&
                             <ToastContainer
                                 position="bottom-center"
@@ -1558,6 +1572,90 @@ const CreatureCreator: React.FC = () => {
                                 theme="colored"
                             />
                         }
+                    </div>
+                </Container>
+            }
+            {previewCreature &&
+                <Container md>
+                    <div className="creature-container">
+                        <div className="creature-stat-block">
+                            <h2>{name || "Unnamed Creature"}</h2>
+                            <p>
+                                <strong>Size:</strong> {selectedSize || "----"} |{" "}
+                                <strong>Type:</strong> {selectedType || "----"} |{" "}
+                                <strong>Subtype:</strong> {selectedSubtype || "----"} |{" "}
+                                <strong>Alignment:</strong> {selectedAlignment || "----"}
+                            </p>
+                            <p>
+                                <strong>Armor Class:</strong> {selectedArmorClass || "----"} (
+                                {selectedArmorType || "----"}) |{" "}
+                                <strong>Hit Dice:</strong> {numHitDice ? `${numHitDice}d${selectedSize ? `${hitDiceValue} + ${constitutionMod ? constitutionMod : "----"}` : "----"}` : "----"}
+                            </p>
+                            <p>
+                                <strong>Speed:</strong> Base {baseSpeed} ft. {flySpeed > 0 && `| Fly ${flySpeed} ft.`} {swimSpeed > 0 && `| Swim ${swimSpeed} ft.`} {climbSpeed > 0 && `| Climb ${climbSpeed} ft.`} {burrowSpeed > 0 && `| Burrow ${burrowSpeed} ft.`}
+                            </p>
+                            <p>
+                                <strong>STR:</strong> {strength} ({strengthMod}) |{" "}
+                                <strong>DEX:</strong> {dexterity} ({dexterityMod}) |{" "}
+                                <strong>CON:</strong> {constitution} ({constitutionMod})
+                                <br/>
+                                <strong>INT:</strong> {intelligence} ({intelligenceMod}) |{" "}
+                                <strong>WIS:</strong> {wisdom} ({wisdomMod}) |{" "}
+                                <strong>CHA:</strong> {charisma} ({charismaMod})
+                            </p>
+                            <p>
+                                <strong>Saving Throws:</strong>{" "}
+                                {strengthThrow && `STR +${strengthMod}, `}
+                                {dexterityThrow && `DEX +${dexterityMod}, `}
+                                {constitutionThrow && `CON +${constitutionMod}, `}
+                                {intelligenceThrow && `INT +${intelligenceMod}, `}
+                                {wisdomThrow && `WIS +${wisdomMod}, `}
+                                {charismaThrow && `CHA +${charismaMod}, `}
+                            </p>
+                            <p>
+                                <strong>Skills:</strong>{" "}
+                                {Object.entries(selectedSkills).map(([skill, level]) => (
+                                    <span key={skill}>
+                                    {skill}: {level} |{" "}
+                                </span>
+                                ))}
+                            </p>
+                            <p>
+                                <strong>Damage Vulnerabilities:</strong>{" "}
+                                {selectedDamageVulnerabilities.join(", ") || "None"}
+                            </p>
+                            <p>
+                                <strong>Damage Resistances:</strong>{" "}
+                                {selectedDamageResistances.join(", ") || "None"}
+                            </p>
+                            <p>
+                                <strong>Damage Immunities:</strong>{" "}
+                                {selectedDamageImmunities.join(", ") || "None"}
+                            </p>
+                            <p>
+                                <strong>Condition Immunities:</strong>{" "}
+                                {selectedConditionImmunities.join(", ") || "None"}
+                            </p>
+                            <p>
+                                <strong>Senses:</strong>{" "}
+                                {blindsight && "Blindsight, "}
+                                {darkvision && "Darkvision, "}
+                                {tremorsense && "Tremorsense, "}
+                                {truesight && "Truesight, "}
+                                {passivePerception && "Passive Perception"}
+                            </p>
+                            <p>
+                                <strong>Challenge Rating:</strong> {challengeRating}
+                            </p>
+                            <div style={{display: 'flex', justifyContent: 'flex-start'}}>
+                                <Button onPress={handlePreviewButtonClick}>Go Back</Button>
+                                <Spacer x={0.5} />
+                                <Button>Save to PDF</Button>
+                            </div>
+                        </div>
+                        <div className="creature-image-container">
+                            <img src="https://nextui.org/images/card-example-4.jpeg" alt="Creature Image" className="creature-image" />
+                        </div>
                     </div>
                 </Container>
             }
