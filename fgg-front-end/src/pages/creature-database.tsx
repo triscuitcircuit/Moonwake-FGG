@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {Parallax} from 'react-parallax';
+import { useLocation } from "react-router-dom"
+//import {Parallax} from 'react-parallax';
 import {
     Text,
     NextUIProvider,
@@ -12,10 +13,16 @@ const theme = createTheme({
     type: "dark",
 });
 
+// searchQuery will be given by search_and_filter when it generates
+// a modal window containing the creature-database with the filtered URL
+// will be '' on App.tsx so selecting database page directly will display all
+interface Props {
+    searchQuery: string;
+}
 
+const CreatureDatabase = ({ searchQuery }: Props) => {
 
-const CreatureDatabase = () => {
-    const connection = new Connection("http://localhost:8080/api/gasymo_game_system_monster");
+    const connection = new Connection("http://localhost:8080/api/gasymo_game_system_monster?"+searchQuery);
 
     const [data, setData] = React.useState<any>(null);
     const [card, setCard] = useState(1);
@@ -66,7 +73,7 @@ const CreatureDatabase = () => {
                         }}
                         weight="bold"
                     >
-                        Creature Database Page
+                        FGG Database
                     </Text>
                 </div>
             </Container>

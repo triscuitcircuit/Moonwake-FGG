@@ -37,7 +37,7 @@ const CreatureCreator: React.FC = () => {
     /* --------------------------- */
     /* Creature creation variables */
     /* --------------------------- */
-
+    
     const [name, setName] = useState<string>("");
     const [selectedLanguage, setSelectedLanguage] = useState<any>("----");
     const [isClicked, setIsClicked] = useState(false);
@@ -54,7 +54,7 @@ const CreatureCreator: React.FC = () => {
     const [climbSpeed, setClimbSpeed] = useState(0);
     const [burrowSpeed, setBurrowSpeed] = useState(0);
     const [challengeRating, setChallengeRating] = useState<number>(0);
-
+    
     /* ------------------------- */
     /* Data connection variables */
     /* ------------------------- */
@@ -271,6 +271,7 @@ const CreatureCreator: React.FC = () => {
     //  Construct conditionItems from conditionData
     const conditionItems = conditionData ? conditionData.map((item: { CD_ID: React.Key; CD_NAME: string; CD_DISPLAY_NAME: string; }) => (
     { key: item.CD_NAME, name: item.CD_DISPLAY_NAME }
+
     )) : [];
 
     const armorItems = [
@@ -811,7 +812,7 @@ const CreatureCreator: React.FC = () => {
                                 marginRight: "5%",
                                 }}
                         >
-                            <StartNew onButtonClick={handleButtonClick}/>
+                            <StartNew onButtonClick={handleButtonClick} />
                         </div>
                         <div
                             style={{
