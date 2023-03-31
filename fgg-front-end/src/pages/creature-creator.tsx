@@ -185,6 +185,10 @@ const CreatureCreator: React.FC = () => {
         setIsClicked(!isClicked);
     };
 
+    const fillFormWithPresets = () => {
+        setIsClicked(!isClicked);
+    }
+
     const handlePreviewButtonClick = () => {
         setPreviewCreature(!previewCreature);
     }
@@ -807,7 +811,7 @@ const CreatureCreator: React.FC = () => {
                                 marginRight: "5%",
                                 }}
                         >
-                            <StartNew onButtonClick={handleButtonClick} />
+                            <StartNew onButtonClick={handleButtonClick}/>
                         </div>
                         <div
                             style={{
@@ -816,7 +820,7 @@ const CreatureCreator: React.FC = () => {
                                 marginLeft: "5%",
                                 }}
                         >
-                            <Auto />
+                            <Auto onButtonClick={fillFormWithPresets}/>
                         </div>
                     </div>
                 </Container>

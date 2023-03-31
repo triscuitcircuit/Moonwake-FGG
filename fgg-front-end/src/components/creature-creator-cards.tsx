@@ -41,13 +41,13 @@ export const StartNew: React.FC<Props> = ({ onButtonClick }) => (
         <Card.Divider />
         <Card.Footer>
             <Row justify="center">
-                <Button size="sm" onClick={onButtonClick}>Start</Button>
+                <Button size="sm" onPress={onButtonClick}>Start</Button>
             </Row>
         </Card.Footer>
     </Card>
 );
 
-export const Auto = () => (
+export const Auto: React.FC<Props> = ({onButtonClick}) => (
     <Card>
         <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
             <Col>
@@ -66,7 +66,7 @@ export const Auto = () => (
         <Card.Divider />
         <Card.Footer>
             <Row justify="center">
-                <Button size="sm">Auto</Button>
+                <Button size="sm" onPress={onButtonClick}>Auto</Button>
             </Row>
         </Card.Footer>
     </Card>
