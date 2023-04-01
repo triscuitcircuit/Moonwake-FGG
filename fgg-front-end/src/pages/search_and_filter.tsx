@@ -63,7 +63,7 @@ const SearchAndFilter: React.FC = () => {
                         if (count == 0){
                             console.log("triggered");
                             keys[i] = keys[i].substring(0, 0) + '&' + keys[i].substring(0 + 1);
-                            keys[i] = keys[i].substring(0, 1) + '' + keys[i].substring(1 + 1); //only needed if OR is ||*
+                            //keys[i] = keys[i].substring(0, 1) + '' + keys[i].substring(1 + 1); //only needed if OR is ||*
                         }
                         m_searchString += keys[i] + values[i];
                         console.log("eeeeee",m_searchString);
@@ -90,7 +90,7 @@ const SearchAndFilter: React.FC = () => {
         if (andToggle) {
             setAddANDorOR("&");
         } else {
-            setAddANDorOR("||"); // is it | or ||?
+            setAddANDorOR("|"); // is it | or ||?
         }
     }, [andToggle]);
 
