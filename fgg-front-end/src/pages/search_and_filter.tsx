@@ -47,14 +47,27 @@ const SearchAndFilter: React.FC = () => {
     const openModal = () => {
         // TODO
         // Create a string like ?name=val etc based off attbValPairs and set searchQuery to it
-        const keys = attbValPairs.map(item => item.key);
+        let keys = attbValPairs.map(item => item.key);
         const values = attbValPairs.map(item => item.value);
+        let count = 0;
 
         // m_searchString is monster Search String
         let m_searchString = new String("");
         for (let i = 0; i < keys.length; i++) {
+                    // finds values that aren't empty (i.e, user is looking for them)
+                    // and appends them to searchstring
                     if (values[i]!=="" && keys[i][0]!=='r') {
+                        console.log("hi",keys[i], i);
+                        // the following if forces & onto the first item the user searches for
+                        // so that if global OR is enabled it won't fetch the whole database
+                        if (count == 0){
+                            console.log("triggered");
+                            keys[i] = keys[i].substring(0, 0) + '&' + keys[i].substring(0 + 1);
+                            keys[i] = keys[i].substring(0, 1) + '' + keys[i].substring(1 + 1); //only needed if OR is ||*
+                        }
                         m_searchString += keys[i] + values[i];
+                        console.log("eeeeee",m_searchString);
+                        count = count + 1;
                     }
                     //TODO
                         // Have all ranges keys start with r (and in route as well for simplicity)
@@ -64,7 +77,6 @@ const SearchAndFilter: React.FC = () => {
                         console.log("range")
                         // append to search string differently, make sure chunk still starts with &
                     }
-
             }
 
             setSearchQuery(m_searchString.toString());
@@ -72,26 +84,16 @@ const SearchAndFilter: React.FC = () => {
 
     };
 
-    // function addANDorOR(){
-    //     let cr = '';
-    //     if(andToggle == true){
-    //         cr = '&';
-    //     }
-    //     else{
-    //         cr =  '|';
-    //     }
-    //     return cr;
-    // }
+    // changes addANDorOR to match global AND or global OR
+    // depending on the value the user selects for andToggle (true or false)
     useEffect(() => {
         if (andToggle) {
             setAddANDorOR("&");
         } else {
-            setAddANDorOR("|");
+            setAddANDorOR("||"); // is it | or ||?
         }
     }, [andToggle]);
 
-    // TODO
-    // add a global "AND / OR" button toggle that will change the & in the keys to |
     // The list of attributes and the values the user gives them
     const [attbValPairs, setAVpairs] = useState([
         { key: addANDorOR+"name=", value: ""},
@@ -108,6 +110,7 @@ const SearchAndFilter: React.FC = () => {
         { key: addANDorOR+"rMax_hp", value: ""}
     ]);
 
+    // updates the prefix for the keys to match the current setting for global AND or OR
     useEffect( () => {
         setAVpairs(
             [{ key: addANDorOR+"name=", value: ""},
@@ -124,6 +127,7 @@ const SearchAndFilter: React.FC = () => {
             { key: addANDorOR+"rMax_hp", value: ""}]
         )
     },[addANDorOR]);
+
     // updates attbValPairs at key: string with string user passes in (called below in an Input)
     const handleSpecificValueChange = (key: string, newValue: string) => {
         const itemIndex = attbValPairs.findIndex(item => item.key === key);

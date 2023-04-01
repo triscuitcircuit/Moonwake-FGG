@@ -253,21 +253,21 @@ function applyExtraSetup(sequelize) {
     //         sourceKey: "GASYMO_ID"
     //     })
 
-// Saw in GASYMO_ID
-//     GASYMO_GAME_SYSTEM_MONSTER.hasMany(MOAB_MONSTER_ATTRIBUTE, //DUAL
-//         {foreignKey: 'GASYMO_ID'})
-//
-//     GASYMO_GAME_SYSTEM_MONSTER.hasMany(MOAK_MONSTER_ATTACK,
-//         {foreignKey: 'GASYMO_ID'})
-//
-//     GASYMO_GAME_SYSTEM_MONSTER.hasMany(MODI_MONSTER_DISPLAY, //DUAL
-//         {foreignKey: 'GASYMO_ID'})
-//
-//
-//     CHLE_CHALLENGE_LEVEL.belongsTo(GASYMO_GAME_SYSTEM_MONSTER,
-//         {foreignKey: "CHLE_ID"})
-//     MOAB_MONSTER_ATTRIBUTE.belongsTo(GASYMO_GAME_SYSTEM_MONSTER, //DUAL
-//         {foreignKey: 'GASYMO_ID'})
+//Saw in GASYMO_ID
+    GASYMO_GAME_SYSTEM_MONSTER.hasMany(MOAB_MONSTER_ATTRIBUTE, //DUAL
+        {foreignKey: 'GASYMO_ID'})
+
+    GASYMO_GAME_SYSTEM_MONSTER.hasMany(MOAK_MONSTER_ATTACK,
+        {foreignKey: 'GASYMO_ID'})
+
+    GASYMO_GAME_SYSTEM_MONSTER.hasMany(MODI_MONSTER_DISPLAY, //DUAL
+        {foreignKey: 'GASYMO_ID'})
+
+
+    CHLE_CHALLENGE_LEVEL.belongsTo(GASYMO_GAME_SYSTEM_MONSTER,
+        {foreignKey: "CHLE_ID"})
+    MOAB_MONSTER_ATTRIBUTE.belongsTo(GASYMO_GAME_SYSTEM_MONSTER, //DUAL
+        {foreignKey: 'GASYMO_ID'})
 }
 
 module.exports = {applyExtraSetup};
