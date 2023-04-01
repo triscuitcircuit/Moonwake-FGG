@@ -10,6 +10,8 @@ async function getAll(req, res) {
     var xp_val = req.query.xp_val;
     var m_ac = req.query.m_ac;
     var m_size = req.query.m_size;
+    var rMin_hp = req.query.rMin_hp;
+    var rMax_hp = req.query.rMax_hp;
 
     const {limit, offset} = getPagination(page, size);
     let where = {ST_CODE: "active"}
@@ -24,6 +26,8 @@ async function getAll(req, res) {
         where.GASYMO_DISPLAY_NAME = {[Op.like]: '%'+name +"%"}
     }
 
+    // this gets data from an associated table, not
+    // GASYMO_GAME_SYSTEM_MONSTER, which is why it looks like this
     if(m_size) {
         s_include.push({
             model: db.sequelize.models.SZ_SIZE,
@@ -33,11 +37,17 @@ async function getAll(req, res) {
     if(m_ac)
         where.GASYMO_ARMOR_CLASS = {[Op.eq]: m_ac}
 
-
     if(xp_val)
         // TODO
         // check type of xp_val, it needs to be string for this?
-        where.GASYMO_XP_VALUE = {[Op.eq]: xp_val}
+        where.GASYMO_XP_VALUE = {[Op.eq]: xp_val + '%'}
+
+   // if (rMin_hp && rMax_hp){
+        // TODO
+        // HP is No. of Hit Dice x Hit Dice size + Con Mod
+        // need to get constitution to calc Con Mod
+        // could be hard because attributes are laid out in strange way
+   // }
 
 const GASYMO_GAME_SYSTEM_MONSTER =
         await db.sequelize.models.GASYMO_GAME_SYSTEM_MONSTER.findAndCountAll(

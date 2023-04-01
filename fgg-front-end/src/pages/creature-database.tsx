@@ -23,7 +23,7 @@ interface Props {
 const CreatureDatabase = ({ searchQuery }: Props) => {
 
     const connection = new Connection("http://localhost:8080/api/gasymo_game_system_monster?"+searchQuery);
-
+    console.log(searchQuery);
     const [data, setData] = React.useState<any>(null);
     const [card, setCard] = useState(1);
     const [modalOpen, setModalOpen] = useState(false);

@@ -1,10 +1,11 @@
-import {Button, Container, Grid, Input, NextUIProvider, Text, Modal} from "@nextui-org/react";
+import {Button, Container, Grid, Input, NextUIProvider, Text, Modal, Switch} from "@nextui-org/react";
 // @ts-ignore
 import {HorizontalSlider, VerticalSlider} from "../components/Sliders";
 import {CharCard, ConCard, DexCard, IntCard, StrengthCard, WisCard} from "../components/creature-creator-cards";
 import React, {useEffect, useState} from "react";
 import {createTheme} from "@nextui-org/react";
 import CreatureDatabase from "../pages/creature-database";
+import {add} from "husky";
 
 const theme = createTheme({
     type: "dark",
@@ -16,6 +17,18 @@ const SearchAndFilter: React.FC = () => {
     // searchQuery that will be passed to creature-database in the modal window
     const [searchQuery, setSearchQuery] = useState('')
 
+    const [andToggle, setAndToggle] = useState<boolean>(true);
+    const changeAnd = () => {
+        setAndToggle(!andToggle);
+    };
+
+    // will be appended to the keys in the key-value list below to make
+    // global and AND and OR work
+    // TODO
+    // doing it this way (for OR) makes the entire database appear
+    // because everything is being ORed
+    // need some way to check if only one key has a non-empty string val (in OpenModal)
+    const [addANDorOR, setAddANDorOR] = useState<string>("&");
 
     const [width, setWidth] = React.useState(window.innerWidth * 1.5);
 
@@ -40,8 +53,17 @@ const SearchAndFilter: React.FC = () => {
         // m_searchString is monster Search String
         let m_searchString = new String("");
         for (let i = 0; i < keys.length; i++) {
-                    if(values[i]!=="")
-                        m_searchString += keys[i] + values[i]
+                    if (values[i]!=="" && keys[i][0]!=='r') {
+                        m_searchString += keys[i] + values[i];
+                    }
+                    //TODO
+                        // Have all ranges keys start with r (and in route as well for simplicity)
+                        // I foresee an issue if min_health and max_health are not right next to each other
+                        // (which they should be)
+                    else if (keys[i][0]=='r'){
+                        console.log("range")
+                        // append to search string differently, make sure chunk still starts with &
+                    }
 
             }
 
@@ -50,14 +72,58 @@ const SearchAndFilter: React.FC = () => {
 
     };
 
+    // function addANDorOR(){
+    //     let cr = '';
+    //     if(andToggle == true){
+    //         cr = '&';
+    //     }
+    //     else{
+    //         cr =  '|';
+    //     }
+    //     return cr;
+    // }
+    useEffect(() => {
+        if (andToggle) {
+            setAddANDorOR("&");
+        } else {
+            setAddANDorOR("|");
+        }
+    }, [andToggle]);
+
+    // TODO
+    // add a global "AND / OR" button toggle that will change the & in the keys to |
     // The list of attributes and the values the user gives them
     const [attbValPairs, setAVpairs] = useState([
-        { key: "&name=", value: ""},
-        { key: "&xp_val=", value: ""},
-        { key: "&m_size=", value:""},
-        { key: "&m_ac=", value:""}
+        { key: addANDorOR+"name=", value: ""},
+        { key: addANDorOR+"xp_val=", value: ""},
+        { key: addANDorOR+"m_size=", value: ""},
+        { key: addANDorOR+"m_ac=", value: ""},
+        // ranges need their own seperate string, looping thru and appending won't work
+        // needs to look like `minLevel=${minLevel}&maxLevel=${maxLevel}`
+        // simplest way I can see is to add R, check for it?
+        { key: addANDorOR+"rMinAC", value: ""},
+        // note we can already add m_ac to the URL, so we don't need to add r versions to route
+        { key: addANDorOR+"rMaxAC", value: ""},
+        { key: addANDorOR+"rMin_hp", value: ""},
+        { key: addANDorOR+"rMax_hp", value: ""}
     ]);
 
+    useEffect( () => {
+        setAVpairs(
+            [{ key: addANDorOR+"name=", value: ""},
+            { key: addANDorOR+"xp_val=", value: ""},
+            { key: addANDorOR+"m_size=", value: ""},
+            { key: addANDorOR+"m_ac=", value: ""},
+            // ranges need their own seperate string, looping thru and appending won't work
+            // needs to look like `minLevel=${minLevel}&maxLevel=${maxLevel}`
+            // simplest way I can see is to add R, check for it?
+            { key: addANDorOR+"rMinAC", value: ""},
+            // note we can already add m_ac to the URL, so we don't need to add r versions to route
+            { key: addANDorOR+"rMaxAC", value: ""},
+            { key: addANDorOR+"rMin_hp", value: ""},
+            { key: addANDorOR+"rMax_hp", value: ""}]
+        )
+    },[addANDorOR]);
     // updates attbValPairs at key: string with string user passes in (called below in an Input)
     const handleSpecificValueChange = (key: string, newValue: string) => {
         const itemIndex = attbValPairs.findIndex(item => item.key === key);
@@ -81,12 +147,14 @@ const SearchAndFilter: React.FC = () => {
                     }}
                 >
                     <Input
-                        value={attbValPairs.find(item => item.key === "&name=")?.value || ""}
-                        onChange={event => handleSpecificValueChange("&name=", event.target.value)}
+                        value={attbValPairs.find(item => item.key === addANDorOR+"name=")?.value || ""}
+                        onChange={event => handleSpecificValueChange(addANDorOR+"name=", event.target.value)}
                         width="50%"
                         placeholder="Creature Name"
                         size="xl"
                     />
+                    <p>Global AND</p>
+                    <Switch onChange={changeAnd} checked={andToggle}/>
                     <Button onPress={openModal}>Go!</Button>
                     <Modal         width="600px"
                                    open={isModalOpen} onClose={() => {
@@ -138,8 +206,9 @@ const SearchAndFilter: React.FC = () => {
                         >
                             <Input
                                 placeholder="Armor Class"
-                                value={attbValPairs.find(item => item.key === "&m_ac=")?.value || ""}
-                                onChange={event => handleSpecificValueChange("&m_ac=", event.target.value)}
+                                value={attbValPairs.find(item => item.key === addANDorOR+"m_ac=")?.value || ""}
+                                onChange=
+                                    {event => handleSpecificValueChange(addANDorOR+"m_ac=", event.target.value)}
                                 size="xl"
                                 width="40%"
                             />
@@ -186,7 +255,9 @@ const SearchAndFilter: React.FC = () => {
                                     flex: "4",
                                 }}
                             >
-                                <HorizontalSlider />
+                                <HorizontalSlider
+
+                                />
                             </div>
                         </div>
                     </div>
