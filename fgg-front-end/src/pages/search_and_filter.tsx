@@ -11,7 +11,8 @@ const theme = createTheme({
     type: "dark",
 });
 
-
+// TODO
+// clean up the mess I made with addANDorOR, etc
 const SearchAndFilter: React.FC = () => {
 
     // searchQuery that will be passed to creature-database in the modal window
@@ -58,11 +59,12 @@ const SearchAndFilter: React.FC = () => {
                     // and appends them to searchstring
                     if (values[i]!=="" && keys[i][0]!=='r') {
                         console.log("hi",keys[i], i);
+                        keys[i] = '&' + keys[i];
                         // the following if forces & onto the first item the user searches for
                         // so that if global OR is enabled it won't fetch the whole database
                         if (count == 0){
                             console.log("triggered");
-                            keys[i] = keys[i].substring(0, 0) + '&' + keys[i].substring(0 + 1);
+                            //keys[i] = keys[i].substring(0, 0) + '&' + keys[i].substring(0 + 1);
                             //keys[i] = keys[i].substring(0, 1) + '' + keys[i].substring(1 + 1); //only needed if OR is ||*
                         }
                         m_searchString += keys[i] + values[i];
@@ -88,9 +90,9 @@ const SearchAndFilter: React.FC = () => {
     // depending on the value the user selects for andToggle (true or false)
     useEffect(() => {
         if (andToggle) {
-            setAddANDorOR("&");
+            setAddANDorOR("");
         } else {
-            setAddANDorOR("|"); // is it | or ||?
+            setAddANDorOR(""); // is it | or ||?
         }
     }, [andToggle]);
 
