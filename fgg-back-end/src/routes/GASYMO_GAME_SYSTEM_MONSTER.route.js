@@ -3,6 +3,33 @@ const {getIdParam, getPagination, getPagingData} = require('../Database/config/h
 const {Op, Sequelize} = require("sequelize");
 const {sequelize} = require("sequelize-test-helpers");
 
+// generates all possible capitalizations of a given string
+// to make searching for name case insensitive
+// returns a list of sequelize commands matching each capitalization against GASYMO_DISPLAY_NAME
+function generateCapitalizations(str) {
+    let result = [];
+    let count = Math.pow(2, str.length); // total number of combinations
+
+    for (let i = 0; i < count; i++) {
+        let current = "";
+        for (let j = 0; j < str.length; j++) {
+            if ((i & Math.pow(2, j))) {
+                current += str[j].toUpperCase();
+            } else {
+                current += str[j].toLowerCase();
+            }
+        }
+        result.push(current);
+    }
+
+    let nameORs = [];       // list of sequelize commands on the names to make searching for name case insensitive
+    for (let i = 0; i < result.length; i++){
+        nameORs.push({GASYMO_DISPLAY_NAME : {[Op.like]:'%'+result[i]+"%"}})
+    }
+
+    return nameORs;
+}
+
 async function getAll(req, res) {
     var {page, size} = req.query;
     var gAND = req.query.gAND;
@@ -18,14 +45,21 @@ async function getAll(req, res) {
 
     let where = {ST_CODE: "active"};
 
-   // put stuff the user is searching for here, use ternary operators to handle them being null when not searched for
+    // convert the name to lowercase - append that to orList
+    // loop over the length of the name
+    // change name[i] to uppercase - append that to orList
+
+    // put stuff the user is searching for here, use ternary operators to handle them being null when not searched for
+    // (list of ternary operators)
     let content = [
-        name1 ? { GASYMO_DISPLAY_NAME : {[Op.like]:'%'+name1 +"%"}} : null,
+        // oracle doesn't support op.ilike, this is a workaround for making name case insensitive
+        // (ex): find the results of Ape OR ape OR APE OR aPe, etc
+        name1 ? { [Op.or]: generateCapitalizations(name1)} : null,
         m_ac ? { GASYMO_ARMOR_CLASS : {[Op.eq]: m_ac} } : null
     ];
 
    // OR or AND the content into the where statement depending on if global AND is toggled on or off
-    if (gAND[1] == "false"){
+    if (gAND == "false"){
         where[Op.or] = content;
     }
     else{
