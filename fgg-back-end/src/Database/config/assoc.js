@@ -152,71 +152,77 @@ function applyExtraSetup(sequelize) {
             },
             sourceKey: 'GASYMO_ID'
         })
-    //
-    // ER_ERROR.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
-    //     {
-    //         foreignKey: {
-    //             name: "GASYMO_ID",
-    //             allowNull: false
-    //         },//weird below source
-    //         sourceKey: 'ER_RELATED_GASYMO_ID'
-    //     })
-    //
-    // MOAL_MONSTER_ALIGNMENT.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
-    //     {
-    //         foreignKey: {
-    //             name: "GASYMO_ID",//second one
-    //             allowNull: false
-    //         },
-    //         sourceKey: 'GASYMO_ID'
-    //     })
-    //
-    // MOAL_MONSTER_ALIGNMENT.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
-    //     {
-    //         foreignKey: {
-    //             name: "GASYMO_ID",
-    //             allowNull: false
-    //         },
-    //         sourceKey: 'GASYMO_ID'
-    //     })
-    //
-    // MOAT_MONSTER_ACTION.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
-    //     {
-    //         foreignKey: {
-    //             name: "GASYMO_ID",
-    //             allowNull: false
-    //         },
-    //         sourceKey: 'GASYMO_ID'
-    //     })
-    //
-    // MOMV_MONSTER_MOVEMENT.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
-    //     {
-    //         foreignKey: {
-    //             name: "GASYMO_ID",
-    //             allowNull: false
-    //         },
-    //         sourceKey: 'GASYMO_ID'
-    //     })
-    //
-    // MOAK_MONSTER_ATTACK.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
-    //     {
-    //         foreignKey: {
-    //             name: "GASYMO_ID",
-    //             allowNull: false
-    //         },
-    //         sourceKey: 'GASYMO_ID'
-    //     })
-    //
-    // MOPP_MONSTER_PROPERTY.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
-    //     {
-    //         foreignKey: {
-    //             name: "GASYMO_ID",
-    //             allowNull: false
-    //         },
-    //         sourceKey: 'GASYMO_ID'
-    //     })
-    //
-    //
+
+    //INCORRECT: RUNS BUT DOES NOT DISPLAY
+    ER_ERROR.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
+        {
+            foreignKey: {
+                name: "GASYMO_ID",
+                allowNull: false
+            },//weird below source
+            sourceKey: 'ER_RELATED_GASYMO_ID'
+        })
+
+    //INCORRECT: RUNS BUT DOES NOT DISPLAY
+    MOAL_MONSTER_ALIGNMENT.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
+        {
+            foreignKey: {
+                name: "GASYMO_ID",//second one
+                allowNull: false
+            },
+            sourceKey: 'GASYMO_ID'
+        })
+
+    //INCORRECT: RUNS BUT DOES NOT DISPLAY
+    MOAL_MONSTER_ALIGNMENT.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
+        {
+            foreignKey: {
+                name: "GASYMO_ID",
+                allowNull: false
+            },
+            sourceKey: 'GASYMO_ID'
+        })
+
+    //INCORRECT: RUNS BUT DOES NOT DISPLAY
+    MOAT_MONSTER_ACTION.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
+        {
+            foreignKey: {
+                name: "GASYMO_ID",
+                allowNull: false
+            },
+            sourceKey: 'GASYMO_ID'
+        })
+
+    //INCORRECT: RUNS BUT DOES NOT DISPLAY
+    MOMV_MONSTER_MOVEMENT.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
+        {
+            foreignKey: {
+                name: "GASYMO_ID",
+                allowNull: false
+            },
+            sourceKey: 'GASYMO_ID'
+        })
+
+    //INCORRECT: RUNS BUT DOES NOT DISPLAY
+    MOAK_MONSTER_ATTACK.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
+        {
+            foreignKey: {
+                name: "GASYMO_ID",
+                allowNull: false
+            },
+            sourceKey: 'GASYMO_ID'
+        })
+    //INCORRECT: RUNS BUT DOES NOT DISPLAY
+    MOPP_MONSTER_PROPERTY.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
+        {
+            foreignKey: {
+                name: "GASYMO_ID",
+                allowNull: false
+            },
+            sourceKey: 'GASYMO_ID'
+        })
+
+
     // // MOPBRE_GASYMO_ID_FK.hasOne(GASYMO_GAME_SYSTEM_MONSTER,
     // //     {
     // //         foreignKey: {
@@ -247,21 +253,21 @@ function applyExtraSetup(sequelize) {
     //         sourceKey: "GASYMO_ID"
     //     })
 
-// Saw in GASYMO_ID
-//     GASYMO_GAME_SYSTEM_MONSTER.hasMany(MOAB_MONSTER_ATTRIBUTE, //DUAL
-//         {foreignKey: 'GASYMO_ID'})
-//
-//     GASYMO_GAME_SYSTEM_MONSTER.hasMany(MOAK_MONSTER_ATTACK,
-//         {foreignKey: 'GASYMO_ID'})
-//
-//     GASYMO_GAME_SYSTEM_MONSTER.hasMany(MODI_MONSTER_DISPLAY, //DUAL
-//         {foreignKey: 'GASYMO_ID'})
-//
-//
-//     CHLE_CHALLENGE_LEVEL.belongsTo(GASYMO_GAME_SYSTEM_MONSTER,
-//         {foreignKey: "CHLE_ID"})
-//     MOAB_MONSTER_ATTRIBUTE.belongsTo(GASYMO_GAME_SYSTEM_MONSTER, //DUAL
-//         {foreignKey: 'GASYMO_ID'})
+//Saw in GASYMO_ID
+    GASYMO_GAME_SYSTEM_MONSTER.hasMany(MOAB_MONSTER_ATTRIBUTE, //DUAL
+        {foreignKey: 'GASYMO_ID'})
+
+    GASYMO_GAME_SYSTEM_MONSTER.hasMany(MOAK_MONSTER_ATTACK,
+        {foreignKey: 'GASYMO_ID'})
+
+    GASYMO_GAME_SYSTEM_MONSTER.hasMany(MODI_MONSTER_DISPLAY, //DUAL
+        {foreignKey: 'GASYMO_ID'})
+
+
+    CHLE_CHALLENGE_LEVEL.belongsTo(GASYMO_GAME_SYSTEM_MONSTER,
+        {foreignKey: "CHLE_ID"})
+    MOAB_MONSTER_ATTRIBUTE.belongsTo(GASYMO_GAME_SYSTEM_MONSTER, //DUAL
+        {foreignKey: 'GASYMO_ID'})
 }
 
 module.exports = {applyExtraSetup};

@@ -1,0 +1,63 @@
+.nextui-checkbox-group-items {
+    display: flex !important;
+    flex-wrap: wrap !important;
+}
+
+.nextui-tooltip-button {
+    width: 100% !important;
+}
+
+.floatingDiv {
+    position: fixed;
+    top: 50%;
+    right: 5%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    background-color: #fff;
+    color: #000;
+    /* Add other styles as needed, such as background color, padding, border, etc. */
+}
+
+.panelTitle {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+}
+
+.floatingDiv__content {
+    display: flex;
+    padding: 10px;
+}
+
+.panelButton {
+    flex: 1;
+    padding: 5px;
+    margin: 5px;
+}
+
+.showBorders div {
+    border: 1px solid darkred;
+}
+
+.creature-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.creature-stat-block {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.creature-image-container {
+    flex: 1;
+    text-align: center;
+    border: 2px solid #fff;
+}
+
+.creature-image {
+    max-width: 100%;
+    max-height: 100%;
+}
