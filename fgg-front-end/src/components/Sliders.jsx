@@ -78,8 +78,8 @@ export class HorizontalSlider extends Component {
         this.setState({ update })
     }
 
-    onChange = values => {
-        this.setState({ values })
+    onChange = (values) => {
+        this.setState({ values });
     }
 
     setDomain = domain => {

@@ -1,11 +1,12 @@
 // Defines tests to test that each table's attributes can be fetched and viewed
 
 const request = require('supertest')
-const {response} = require("express");
+const express = require('express');
+const app = require("../src/server");
 
 describe('Show all AB_ATTRIBUTE', () => {
     it('shows all attributes', async () => {
-        await request('/api/ab_attribute', function (response) {
+        await request(app, '/api/ab_attribute', function (response) {
             expect(response.statusCode).toEqual(200)
             expect(response.body).toHaveProperty('AB_IDGASY_ID')
             expect(response.body).toHaveProperty('AB_NAME')
@@ -224,5 +225,14 @@ describe('Shows all CD_CONDITION', () => {
             expect(response.body).toHaveProperty('LAST_MODIFIED_DATE')
             expect(response.body).toHaveProperty('LAST_MODIFIED_BY')
         })
+    })
+})
+
+describe('Shows all GASYMO_GAME_SYSTEM_MONSTER', function(){
+    it('should show GASYMO_GAME_SYSTEM_MONSTER', function(done){
+        request(app)
+            .get('/api/GASYMO_GAME_SYSTEM_MONSTER/1')
+            .expect('Content-Type', /json/)
+            .expect(200,done)
     })
 })

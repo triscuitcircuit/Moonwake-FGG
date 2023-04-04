@@ -1,7 +1,6 @@
 const db = require("../Database/models");
 const {getIdParam, getPagination, getPagingData} = require('../Database/config/helpers');
 const {Op, Sequelize} = require("sequelize");
-const {sequelize} = require("sequelize-test-helpers");
 
 // generates all possible capitalizations of a given string
 // to make searching for name case insensitive
@@ -59,7 +58,7 @@ async function getAll(req, res) {
     ];
 
    // OR or AND the content into the where statement depending on if global AND is toggled on or off
-    if (gAND == "false"){
+    if (gAND === "false"){
         where[Op.or] = content;
     }
     else{
