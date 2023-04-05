@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from "react";
-import { useLocation } from "react-router-dom"
-//import {Parallax} from 'react-parallax';
 import {
     Text,
     NextUIProvider,
@@ -22,7 +20,7 @@ interface Props {
 
 const CreatureDatabase = ({ searchQuery }: Props) => {
 
-    const connection = new Connection("http://localhost:8080/api/gasymo_game_system_monster?"+searchQuery);
+    const connection = new Connection("http://localhost:8080/api/gasymo_game_system_monster?" + searchQuery);
     console.log(searchQuery);
     const [data, setData] = React.useState<any>(null);
     const [card, setCard] = useState(1);
