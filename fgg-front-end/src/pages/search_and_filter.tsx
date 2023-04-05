@@ -205,8 +205,6 @@ const SearchAndFilter: React.FC = () => {
                             <HorizontalSlider
                                 onChange={event => handleSpecificValueChange("m_ac=", event.toString())}
                             />
-                            {/* TODO: this gets the previous value instead of the current one? goes for all sliders*/}
-                            {/*Should be fine, other inputs are like that too*/}
                         </div>
                     </div>
                 <div
