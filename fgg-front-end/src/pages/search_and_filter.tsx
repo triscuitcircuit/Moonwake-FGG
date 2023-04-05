@@ -17,19 +17,6 @@ const theme = createTheme({
 // clean up the mess I made with addANDorOR, etc
 const SearchAndFilter: React.FC = () => {
 
-    const [sliderValues, setSliderValues] = useState();
-
-    const handleSliderChange = (values: any) => {
-        console.log(values);
-        setSliderValues(values);
-    };
-
-
-
-    useEffect(() => {
-        console.log("Slider values changed:", sliderValues);
-    }, [sliderValues]);
-
     // searchQuery that will be passed to creature-database in the modal window
     const [searchQuery, setSearchQuery] = useState('')
 
@@ -74,7 +61,7 @@ const SearchAndFilter: React.FC = () => {
                 //TODO
                 // Have all ranges keys start with r (and in route as well for simplicity)
                 // I foresee an issue if min_health and max_health are not right next to each other
-            // (which they should be)
+                // delimit on , and check instead of having two vars?!
             else if (keys[i][0] == 'r') {
                 console.log("range")
                 // append to search string differently, make sure chunk still starts with &
@@ -86,7 +73,7 @@ const SearchAndFilter: React.FC = () => {
 
     };
 
-    // The list of attributes and the values the user gives them
+    // The list of attributes available to search for and the values the user gives them
     const [attbValPairs, setAVpairs] = useState([
         {key: "gAND=", value: andToggle.toString()},
         {key: "name1=", value: ""},
@@ -100,7 +87,15 @@ const SearchAndFilter: React.FC = () => {
         // note we can already add m_ac to the URL, so we don't need to add r versions to route
         {key: "rMaxAC", value: ""},
         {key: "rMin_hp", value: ""},
-        {key: "rMax_hp", value: ""}
+        {key: "rMax_hp", value: ""},
+        {key: "str=", value: ""},
+        {key: "dex=", value: ""},
+        {key: "con=", value: ""},
+        {key: "int=", value: ""},
+        {key: "wis=", value: ""},
+        {key: "chr=", value: ""},
+        {key: "hp=", value: ""}
+
     ]);
 
     // updates gAND to t or f
@@ -108,7 +103,8 @@ const SearchAndFilter: React.FC = () => {
         handleSpecificValueChange("gAND=", andToggle.toString())
     }, [andToggle]);
 
-    // updates attbValPairs at key: string with string user passes in (called below in return in an Input)
+    // updates attbValPairs at key: string with string user passes in
+    // called in the return statement below whenever we need to get a value the user passes in
     const handleSpecificValueChange = (key: string, newValue: string) => {
         const itemIndex = attbValPairs.findIndex(item => item.key === key);
         if (itemIndex !== -1) {
@@ -116,6 +112,7 @@ const SearchAndFilter: React.FC = () => {
             newList[itemIndex] = {...newList[itemIndex], value: newValue};
             setAVpairs(newList);
         }
+        console.log(attbValPairs);
     };
 
     // @ts-ignore
@@ -205,8 +202,11 @@ const SearchAndFilter: React.FC = () => {
                                 flex: "4",
                             }}
                         >
-                            <HorizontalSlider  values={sliderValues}
-                                               OnChange={handleSliderChange}/>
+                            <HorizontalSlider
+                                onChange={event => handleSpecificValueChange("m_ac=", event.toString())}
+                            />
+                            {/* TODO: this gets the previous value instead of the current one? goes for all sliders*/}
+                            {/*Should be fine, other inputs are like that too*/}
                         </div>
                     </div>
                 <div
@@ -223,7 +223,9 @@ const SearchAndFilter: React.FC = () => {
                             flex: "4",
                         }}
                     >
-                        <HorizontalSlider/>
+                        <HorizontalSlider
+                            onChange={event => handleSpecificValueChange("hp=", event.toString())}
+                        />
                     </div>
                 </div>
                     <div
@@ -297,12 +299,24 @@ const SearchAndFilter: React.FC = () => {
                                 alignItems: "center"
                             }}
                         >
-                            <VerticalSlider/>
-                            <VerticalSlider/>
-                            <VerticalSlider/>
-                            <VerticalSlider/>
-                            <VerticalSlider/>
-                            <VerticalSlider/>
+                            <VerticalSlider
+                                onChange={event => handleSpecificValueChange("str=", event.toString())}
+                            />
+                            <VerticalSlider
+                                onChange={event => handleSpecificValueChange("dex=", event.toString())}
+                            />
+                            <VerticalSlider
+                                onChange={event => handleSpecificValueChange("con=", event.toString())}
+                            />
+                            <VerticalSlider
+                                onChange={event => handleSpecificValueChange("int=", event.toString())}
+                            />
+                            <VerticalSlider
+                                onChange={event => handleSpecificValueChange("wis=", event.toString())}
+                            />
+                            <VerticalSlider
+                                onChange={event => handleSpecificValueChange("chr=", event.toString())}
+                            />
                         </div>
                     </div>
                     <div
