@@ -1,11 +1,30 @@
 const db = require("../Database/models");
 const {getIdParam, getPagination, getPagingData} = require('../Database/config/helpers');
-const {Op, Sequelize} = require("sequelize");
-const {sequelize} = require("sequelize-test-helpers");
+const { Op } = require("sequelize");
+
+// loop thru attributes until a string matches yours? - string will be somewhat pre-built: "STR XX" - all
+// MOAB_DISPLAY_TEXT - the 0th thru 5th indices are all the same - for 1 digit values (CHA 8) - the 5th indice will be blank
+// limits us to STR 99 - but I think thats ok
+// what user types in has to be equal to MOAB_VALUE plus MOAB_BONUS_VALUE
+
+// key = "str"
+// value = "STR%20"  (because spaces are replaced by %20 - docs say this should be done auto - keep as space?
+// in url:
+// &str=STR 16 (+3)
+// in route - str will = "STR 16 (+3)"
+        // where: MOAB_DISPLAY_TEXT: {[Op.like]: "STR 16 (+3)"}
+// ^ means user will have to type in bonus as well
+// say we just get STR 16
+                //OR together STR 16 (+0) thru +99
+// even if its just ?str=16
+        // in here that would be "16" - append "STR " to the front of that and then send that to the or generator
+
 
 // generates all possible capitalizations of a given string
 // to make searching for name case insensitive
 // returns a list of sequelize commands matching each capitalization against GASYMO_DISPLAY_NAME
+// TODO: another function like this for generating an ORed list for a range of values? Is there a simpler way?
+//          I can just use gt (greater than), lt, etc - read the docs lol - combine with and AND
 function generateCapitalizations(str) {
     let result = [];
     let count = Math.pow(2, str.length); // total number of combinations
@@ -38,18 +57,16 @@ async function getAll(req, res) {
     var xp_val = req.query.xp_val;
     var m_ac = req.query.m_ac;
     var m_size = req.query.m_size;
-    var rMin_hp = req.query.rMin_hp;
+    var rMin_hp = req.query.rMin_hp; // instead of ranges, passing delimited string in w both values is much smarter
     var rMax_hp = req.query.rMax_hp;
+    var str = req.query.str;
 
     const {limit, offset} = getPagination(page, size);
 
     let where = {ST_CODE: "active"};
 
-    // convert the name to lowercase - append that to orList
-    // loop over the length of the name
-    // change name[i] to uppercase - append that to orList
-
     // put stuff the user is searching for here, use ternary operators to handle them being null when not searched for
+    // unless value being searched for is an associated attribute - see below
     // (list of ternary operators)
     let content = [
         // oracle doesn't support op.ilike, this is a workaround for making name case insensitive
@@ -59,7 +76,7 @@ async function getAll(req, res) {
     ];
 
    // OR or AND the content into the where statement depending on if global AND is toggled on or off
-    if (gAND == "false"){
+    if (gAND === "false"){
         where[Op.or] = content;
     }
     else{
@@ -70,6 +87,16 @@ async function getAll(req, res) {
         {all: true, nested: true}
     ];
 
+    if(str){
+        s_include.push({
+                    model: db.sequelize.models.MOAB_MONSTER_ATTRIBUTE,
+                    where: {MOAB_DISPLAY_TEXT: {[Op.like]: "STR 16 (+3)"}}
+            }
+        )
+    }
+
+
+
     // TODO: get below attributes into content variable above
 
     //  // this gets data from an associated table, not
@@ -79,7 +106,6 @@ async function getAll(req, res) {
     //          model: db.sequelize.models.SZ_SIZE,
     //          where: {SZ_HIT_DICE_VALUE: m_size}})
     //      }
-
 
     //  if(xp_val)
     //      // TODO
