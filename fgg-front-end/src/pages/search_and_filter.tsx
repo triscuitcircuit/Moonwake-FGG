@@ -12,9 +12,6 @@ const theme = createTheme({
     type: "dark",
 });
 
-
-// TODO
-// clean up the mess I made with addANDorOR, etc
 const SearchAndFilter: React.FC = () => {
 
     // searchQuery that will be passed to creature-database in the modal window
@@ -54,17 +51,9 @@ const SearchAndFilter: React.FC = () => {
         for (let i = 0; i < keys.length; i++) {
             // finds values that aren't empty (i.e, user is looking for them)
             // and appends them to m_searchstring
-            if (values[i] !== "" && keys[i][0] !== 'r') {
+            if (values[i] !== "") {
                 keys[i] = '&' + keys[i];        // appends & to front of each key - proper URL syntax
                 m_searchString += keys[i] + values[i];
-            }
-                //TODO
-                // Have all ranges keys start with r (and in route as well for simplicity)
-                // I foresee an issue if min_health and max_health are not right next to each other
-                // delimit on , and check instead of having two vars?!
-            else if (keys[i][0] == 'r') {
-                console.log("range")
-                // append to search string differently, make sure chunk still starts with &
             }
         }
 
@@ -80,14 +69,6 @@ const SearchAndFilter: React.FC = () => {
         {key: "xp_val=", value: ""},
         {key: "m_size=", value: ""},
         {key: "m_ac=", value: ""},
-        // ranges need their own seperate string, looping thru and appending won't work
-        // needs to look like `minLevel=${minLevel}&maxLevel=${maxLevel}`
-        // simplest way I can see is to add R, check for it?
-        {key: "rMinAC", value: ""},
-        // note we can already add m_ac to the URL, so we don't need to add r versions to route
-        {key: "rMaxAC", value: ""},
-        {key: "rMin_hp", value: ""},
-        {key: "rMax_hp", value: ""},
         {key: "str=", value: ""},
         {key: "dex=", value: ""},
         {key: "con=", value: ""},
@@ -112,7 +93,6 @@ const SearchAndFilter: React.FC = () => {
             newList[itemIndex] = {...newList[itemIndex], value: newValue};
             setAVpairs(newList);
         }
-        console.log(attbValPairs);
     };
 
     // @ts-ignore
