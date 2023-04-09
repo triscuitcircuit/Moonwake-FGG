@@ -166,6 +166,8 @@ const SearchAndFilter: React.FC = () => {
                             bordered
                             color="primary"
                             width="50%"
+                            value={attbValPairs.find(item => item.key === "m_size=")?.value || ""}
+                            onChange={event => handleSpecificValueChange("m_size=", event.target.value)}
                         />
                     </div>
                     <div

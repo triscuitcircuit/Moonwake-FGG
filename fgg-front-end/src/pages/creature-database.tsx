@@ -17,16 +17,27 @@ const theme = createTheme({
 interface Props {
     searchQuery: string;
 }
-
+// todo if searchQuery is "" or &gAND=true or &gAND=false - don't display the page changing stuff
 const CreatureDatabase = ({ searchQuery }: Props) => {
 
     const connection = new Connection("http://localhost:8080/api/gasymo_game_system_monster?" + searchQuery);
+
     console.log(searchQuery);
+
     const [data, setData] = React.useState<any>(null);
     const [card, setCard] = useState(1);
     const [modalOpen, setModalOpen] = useState(false);
     const [page, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(false);
+
+    // if sQ contains no associated values - pagentation is still on - display page choice buttons
+    let sQassocFree = true;
+    if(searchQuery.includes("str") || searchQuery.includes("hp") || searchQuery.includes("m_size") ||
+        searchQuery.includes("dex") || searchQuery.includes("con") || searchQuery.includes("int") ||
+        searchQuery.includes("wis") || searchQuery.includes("chr"))
+    {
+        sQassocFree = false;
+    }
 
     const fetchPage = async (page: React.SetStateAction<number>) => {
         setLoading(true);
@@ -88,13 +99,14 @@ const CreatureDatabase = ({ searchQuery }: Props) => {
                                 marginTop: "5%",
                             }}
                         >
+                            {sQassocFree &&
                             <Grid>
                                 <Container justify="center">
                                     {loading && <Loading type="points"/>}
                                     <Pagination total={data.totalPages} initialPage={1} page={page}
                                                 onChange={fetchPage}/>
                                 </Container>
-                            </Grid>
+                            </Grid>}
                         </div>
                         <MonsterModal isOpen={modalOpen} monsterId={card} onClose={handleModalClose} />
                         {data.monsters.map((item: {
