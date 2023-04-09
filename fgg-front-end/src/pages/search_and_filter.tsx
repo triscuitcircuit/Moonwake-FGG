@@ -25,6 +25,12 @@ const SearchAndFilter: React.FC = () => {
         setAndToggle(!andToggle);
     };
 
+    const [alphToggle, setAlphToggle] = useState<boolean>(false);
+
+    const changeAlph = () => {
+        setAlphToggle(!alphToggle);
+    };
+
     const [width, setWidth] = React.useState(window.innerWidth * 1.5);
 
     useEffect(() => {
@@ -65,6 +71,7 @@ const SearchAndFilter: React.FC = () => {
     // The list of attributes available to search for and the values the user gives them
     const [attbValPairs, setAVpairs] = useState([
         {key: "gAND=", value: andToggle.toString()},
+        {key: "sortAlphOn=", value: alphToggle.toString()},
         {key: "name1=", value: ""},
         {key: "xp_val=", value: ""},
         {key: "m_size=", value: ""},
@@ -75,7 +82,8 @@ const SearchAndFilter: React.FC = () => {
         {key: "int=", value: ""},
         {key: "wis=", value: ""},
         {key: "chr=", value: ""},
-        {key: "hp=", value: ""}
+        {key: "hp=", value: ""},
+        {key: "author=", value: ""}
 
     ]);
 
@@ -83,6 +91,11 @@ const SearchAndFilter: React.FC = () => {
     useEffect(() => {
         handleSpecificValueChange("gAND=", andToggle.toString())
     }, [andToggle]);
+
+    // updates whether or not user wants their results sorted alphabetically by name
+    useEffect(() => {
+        handleSpecificValueChange("sortAlphOn=", alphToggle.toString())
+    }, [alphToggle]);
 
     // updates attbValPairs at key: string with string user passes in
     // called in the return statement below whenever we need to get a value the user passes in
@@ -299,6 +312,18 @@ const SearchAndFilter: React.FC = () => {
                             />
                         </div>
                     </div>
+                <p>Sort Alphabetically</p>
+                <Switch onChange={changeAlph} checked={alphToggle}/>
+                <Text h3 css={{flex: "1"}}>Author:</Text>
+                <Input
+                    css={{flex: "3"}}
+                    bordered
+                    color="primary"
+                    value={attbValPairs.find(item => item.key === "author=")?.value || ""}
+                    onChange={event => handleSpecificValueChange("author=", event.target.value)}
+                    width="50%"
+                    size="xl"
+                />
                     <div
                         style={{
                             display: "flex",
@@ -306,7 +331,6 @@ const SearchAndFilter: React.FC = () => {
                             border: "1px solid white",
                         }}
                     >
-
                 </div>
             </Container>
         </NextUIProvider>

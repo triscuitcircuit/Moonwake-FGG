@@ -34,7 +34,7 @@ const CreatureDatabase = ({ searchQuery }: Props) => {
     let sQassocFree = true;
     if(searchQuery.includes("str") || searchQuery.includes("hp") || searchQuery.includes("m_size") ||
         searchQuery.includes("dex") || searchQuery.includes("con") || searchQuery.includes("int") ||
-        searchQuery.includes("wis") || searchQuery.includes("chr"))
+        searchQuery.includes("wis") || searchQuery.includes("chr") || searchQuery.includes("author"))
     {
         sQassocFree = false;
     }

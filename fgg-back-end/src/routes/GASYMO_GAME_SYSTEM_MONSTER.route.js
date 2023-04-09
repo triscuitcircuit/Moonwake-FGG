@@ -49,15 +49,16 @@ async function getAll(req, res) {
     const {page, size} = req.query;
     const gAND = req.query.gAND;
 
-    // const sortAlphOn = req.query.sortAlphOn;
-    // let sortA = false;
-    // if (sortAlphOn === "true"){
-    //     sortA = true
-    // }
+    const sortAlphOn = req.query.sortAlphOn;
+    let sortA = false;
+    if (sortAlphOn === "true"){
+        sortA = true
+    }
 
     const name1 = req.query.name1;
     const xp_val = req.query.xp_val;
     const m_size = req.query.m_size;
+    const author = req.query.author;
 
     let m_ac = req.query.m_ac;
     let m_ac_arr;
@@ -133,7 +134,7 @@ async function getAll(req, res) {
 
     // NOTE: always make sure these line up with the boolean in creature-database.tsx in the front end
     let assocValsExist = false;
-    if (str || dex || con || int || wis || chr || hp || m_size){
+    if (str || dex || con || int || wis || chr || hp || m_size || author){
         assocValsExist = true;
     }
 
@@ -146,9 +147,12 @@ async function getAll(req, res) {
     ];
 
     // need to OR together the attributes that use the same column since ANDing them wouldn't make sense
-    // TODO now stuff gets thru when it shouldn't, obviously
+    // TODO: now stuff gets thru when it shouldn't now tho
     // fix by counting? looking for 3 attributes = 3 things should show up?
-    let attbContent = [
+    // HOWEVER - users can still tell when a creature doesn't meet their critera because the stat that
+    // doesn't match their search won't show up on the preview (kinda - its inconsistent)
+    // Ex: searching for STR 18 and CON 21 - results show "Goblin" with only STR 18 displayed in preview: CON !=21
+    let attbContent = [ //might be this?? todo check
         str ? { [Op.or]: generateRangeContent("STR ", '$MOAB_MONSTER_ATTRIBUTEs.MOAB_DISPLAY_TEXT$',
                 parseInt(str_arr[0]), parseInt(str_arr[1]))} : null,
         dex ? { [Op.or]: generateRangeContent("DEX ", '$MOAB_MONSTER_ATTRIBUTEs.MOAB_DISPLAY_TEXT$',
@@ -161,7 +165,13 @@ async function getAll(req, res) {
                 parseInt(wis_arr[0]), parseInt(wis_arr[1]))} : null,
         chr ? { [Op.or]: generateRangeContent("CHA ", '$MOAB_MONSTER_ATTRIBUTEs.MOAB_DISPLAY_TEXT$',
                 parseInt(chr_arr[0]), parseInt(chr_arr[1]))} : null
-    ]
+    ] // if user is not searching for these values, list will be all null
+    let attbContentExists = false;
+    for(let i = 0; i < attbContent.length; i++){
+        if(attbContent[i] != null){
+            attbContentExists = true;
+        }
+    }
 
     // put stuff the user is searching for here, use ternary operators to handle them being null when not searched for
     // unless value being searched for is an associated attribute - see below
@@ -174,7 +184,8 @@ async function getAll(req, res) {
         hp ? { [Op.or]: generateRangeContent("Hit Points ", '$MODI_MONSTER_DISPLAYs.MODI_PRINT_TEXT$',
                 parseInt(hp_arr[0]), parseInt(hp_arr[1]))} : null,
         m_size ? {[Op.or]: generateCapitalizations(m_size, "$SZ_SIZE.SZ_NAME$")} : null,
-        attbContent ? {[Op.or]: attbContent} : null
+        author ? {[Op.or]: generateCapitalizations(author, "$GACO_GAME_COMPANY.GACO_NAME$")} : null,
+        attbContentExists ? {[Op.or]: attbContent} : null
     ];
 
     // OR or AND the content into the where statement depending on if global AND is toggled on or off
@@ -185,35 +196,26 @@ async function getAll(req, res) {
         where[Op.and] = content;
     }
 
-    // // TODO: get below attributes into content variable above-----------------------------------
-    // //  if(xp_val)
-    // //      // TODO
-    // //      // check type of xp_val, it needs to be string for this?
-    // //      where.GASYMO_XP_VALUE = {[Op.eq]: xp_val + '%'}
-    //
-    // //--------------------------------------------------------------------------------------------------
-
-    //let GASYMO_GAME_SYSTEM_MONSTER;
+    let GASYMO_GAME_SYSTEM_MONSTER;
     // TODO: below is a workaround for pagentation breaking searching for associated values - fix pagentation
-    //if (assocValsExist) {
-   const GASYMO_GAME_SYSTEM_MONSTER =
-        await db.sequelize.models.GASYMO_GAME_SYSTEM_MONSTER.findAndCountAll({
-            where: where,
-            include: s_include,
-            //order: Sequelize.col([GASYMO_DISPLAY_NAME])
-        });
-    //}
-    // else{
-    //     GASYMO_GAME_SYSTEM_MONSTER =
-    //         await db.sequelize.models.GASYMO_GAME_SYSTEM_MONSTER.findAndCountAll({
-    //             where: where,
-    //             include: s_include,
-    //             limit: limit,
-    //             offset: offset,
-    //             //order: Sequelize.col("GASYMO_DISPLAY_NAME")
-    //         });         // TODO: add toggles to filter by author, STR, CHA, AC, etc - at the bottom of the page - update user guide! and AM (if bugs), TESTS ); - group by / sort by statement? - another if for if that's checked
-    // }
-    console.log("AAAAAAAAAA", GASYMO_GAME_SYSTEM_MONSTER);
+    if (assocValsExist) {
+        GASYMO_GAME_SYSTEM_MONSTER =
+            await db.sequelize.models.GASYMO_GAME_SYSTEM_MONSTER.findAndCountAll({
+                where: where,
+                include: s_include,
+                order: sortA ? [['GASYMO_DISPLAY_NAME', 'ASC']] : null
+            });
+    }
+    else{
+        GASYMO_GAME_SYSTEM_MONSTER =
+            await db.sequelize.models.GASYMO_GAME_SYSTEM_MONSTER.findAndCountAll({
+                where: where,
+                include: s_include,
+                limit: limit,
+                offset: offset,
+                order: sortA ? [['GASYMO_DISPLAY_NAME', 'ASC']] : null
+            });
+    }
     res.status(200).send(getPagingData(GASYMO_GAME_SYSTEM_MONSTER, page, limit))
 }
 
