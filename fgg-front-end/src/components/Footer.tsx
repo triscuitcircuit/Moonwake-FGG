@@ -17,8 +17,6 @@ export const Footer: React.FC<FooterProps> = ({ clientLogo, yourLogo }) => {
                 </div>
 
                 <div className="links-section">
-                    <a href="/faq">FAQs</a>
-                    <a href="/policies">Policies</a>
                     <a href={"https://www.froggodgames.com/"} target="_blank" rel="noopener noreferrer">Frog God Games</a>
                 </div>
 

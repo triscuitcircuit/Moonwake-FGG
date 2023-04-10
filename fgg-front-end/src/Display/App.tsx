@@ -7,10 +7,6 @@ import HomeDemo from "../components/Home-Demo";
 import CreatureCreator from "../pages/creature-creator";
 import CreatureDatabase from "../pages/creature-database";
 import SearchAndFilter from "../pages/search_and_filter";
-import Books from "../pages/books";
-import HelpFeedback from "../pages/help-feedback";
-import Login from "../pages/login";
-import SignUp from "../pages/sign-up";
 import {Footer} from "../components/Footer";
 
 function App() {
@@ -25,10 +21,6 @@ function App() {
                       <Route path="/creature-creator" element={<CreatureCreator />} />
                       <Route path="/creature-database" element={<CreatureDatabase searchQuery={''}/>} />
                       <Route path="/search_and_filter" element={<SearchAndFilter />} />
-                      <Route path="/books" element={<Books />} />
-                      <Route path="/help-feedback" element={<HelpFeedback />} />
-                      <Route path="/login" element={<Login />} />
-                      <Route path="/sign-up" element={<SignUp />} />
                   </Routes>
               </Router>
           </div>

@@ -1,7 +1,6 @@
 const db = require("../Database/models");
 const {getIdParam, getPagination, getPagingData} = require('../Database/config/helpers');
-const { Op, Sequelize} = require("sequelize");
-const {sequelize} = require("sequelize-test-helpers");
+const { Op } = require("sequelize");
 
 // generates all possible capitalizations of a given string
 // to make searching for name case insensitive
@@ -56,14 +55,14 @@ async function getAll(req, res) {
     }
 
     const name1 = req.query.name1;
-    const xp_val = req.query.xp_val;
+    // const xp_val = req.query.xp_val;
     const m_size = req.query.m_size;
     const author = req.query.author;
 
     let m_ac = req.query.m_ac;
     let m_ac_arr;
     if (m_ac && m_ac !== "0,99") {
-        m_ac_arr = m_ac.split(",");   // turns AC selection into [min AC, max AC]
+        m_ac_arr = m_ac.split(",");   // turns AC selection into [min AC,max AC]
     }
     else{
         m_ac = null;

@@ -2,7 +2,6 @@ import React from "react";
 import {
     Navbar,
     Image,
-    Button,
     Link,
 } from "@nextui-org/react";
 
@@ -11,10 +10,6 @@ const collapseItems = [
     { text: "Creature Creator", href: "/creature-creator" },
     { text: "Creature Database", href: "/creature-database" },
     { text: "Search & Filter", href: "/search_and_filter" },
-    { text: "Books", href: "/books" },
-    { text: "Help & Feedback", href: "/help-feedback" },
-    { text: "Login", href: "/login" },
-    { text: "Sign Up", href: "/sign-up" },
 ];
 
 const Nav = () => {
@@ -56,14 +51,6 @@ const Nav = () => {
                         {item.text}
                     </Navbar.Link>
                 ))}
-            </Navbar.Content>
-            <Navbar.Content>
-                <Navbar.Link href="/login">Login</Navbar.Link>
-                <Navbar.Item>
-                    <Button auto flat as={Link} href="/sign-up">
-                        Sign Up
-                    </Button>
-                </Navbar.Item>
             </Navbar.Content>
             <Navbar.Collapse>
                 {collapseItems.map((item) => (
