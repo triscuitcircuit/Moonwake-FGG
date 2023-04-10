@@ -41,7 +41,6 @@ export const MonsterModal: React.FC<Props> = ({isOpen, onClose, monsterId}) => {
                         <Modal.Header>
                             <Text id="modal-title" size={18}>
                                 {data.GASYMO_DISPLAY_NAME}
-                                {console.log(data)}
                             </Text>
                         </Modal.Header>
                         <Modal.Body>
@@ -58,21 +57,6 @@ export const MonsterModal: React.FC<Props> = ({isOpen, onClose, monsterId}) => {
                                 (item: { MODI_ID: number, MODI_HTML_TAGGED_TEXT: any }) => (
                                     <Text>
                                         {<div dangerouslySetInnerHTML={{__html: item.MODI_HTML_TAGGED_TEXT}}/>}
-                                    </Text>
-                                ))}
-                            <Text
-                                size={30}
-                                css={{
-                                    textGradient: "45deg, $blue600 -20%, $pink600 50%",
-                                }}
-                                weight="bold"
-                            >
-                                Attacks:
-                            </Text>
-                            {data.MOAK_MONSTER_ATTACKs.map(
-                                (item: { MOAK_ID: number, MOAK_TAGGED_DISPLAY_TEXT: any }) => (
-                                    <Text>
-                                        {<div dangerouslySetInnerHTML={{__html: item.MOAK_TAGGED_DISPLAY_TEXT}}/>}
                                     </Text>
                                 ))}
                         </Modal.Body>

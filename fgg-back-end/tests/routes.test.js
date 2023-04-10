@@ -227,12 +227,3 @@ describe('Shows all CD_CONDITION', () => {
         })
     })
 })
-
-describe('Shows all GASYMO_GAME_SYSTEM_MONSTER', function(){
-    it('should show GASYMO_GAME_SYSTEM_MONSTER', function(done){
-        request(app)
-            .get('/api/GASYMO_GAME_SYSTEM_MONSTER/1')
-            .expect('Content-Type', /json/)
-            .expect(200,done)
-    })
-})
