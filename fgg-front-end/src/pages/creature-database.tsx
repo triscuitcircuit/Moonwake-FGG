@@ -7,7 +7,6 @@ import {
 import {Connection} from "../Database/Connection";
 import {MonsterModal} from "./creature-db-modal";
 
-
 const theme = createTheme({
     type: "dark",
 });
@@ -140,6 +139,9 @@ const CreatureDatabase = ({ searchQuery }: Props) => {
                                     <Table.Row key={index+item.GASYMO_XP_VALUE}>
                                         <Table.Cell>
                                             <Tooltip
+                                                css={{
+                                                    zIndex: 99999
+                                                }}
                                                 content=
                                                     {item.MOAB_MONSTER_ATTRIBUTEs.map((item_as: { MOAB_ID: React.Key; MOAB_DISPLAY_TEXT: string }) => (item_as.MOAB_DISPLAY_TEXT))}>
                                                 {item.GASYMO_DISPLAY_NAME}

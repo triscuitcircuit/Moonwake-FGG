@@ -146,7 +146,7 @@ const SearchAndFilter: React.FC = () => {
                     <p>Global AND</p>
                     <Switch onChange={changeAnd} checked={andToggle}/>
                     <Button onPress={openModal}>Go!</Button>
-                    <Modal width="900px"
+                    <Modal width="1200px"
                            open={isModalOpen} onClose={() => {
                         setIsModalOpen(false)
                     }}>
