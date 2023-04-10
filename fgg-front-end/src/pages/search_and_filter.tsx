@@ -250,7 +250,15 @@ const SearchAndFilter: React.FC = () => {
                             justifyContent: "center",
                         }}
                     >
-                        <Grid.Container gap={1} justify="space-around" css={{width: width > 1500 ? "60%" : "80%"}}>
+                        <Grid.Container gap={1}
+                                        justify="space-around"
+                                        css={{
+                                            width: width > 1500 ? "80%" : "100%",
+                                            display: "flex",
+                                            flexWrap: "nowrap",
+                                            overflowX: "auto",
+                                        }}
+                        >
                             <Grid>
                                 <StrengthCard/>
                             </Grid>
