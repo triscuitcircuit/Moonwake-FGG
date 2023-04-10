@@ -132,10 +132,9 @@ async function getAll(req, res) {
     }
 
     // NOTE: always make sure these line up with the boolean in creature-database.tsx in the front end
-    let assocValsExist = false;
-    if (str || dex || con || int || wis || chr || hp || m_size || author){
-        assocValsExist = true;
-    }
+    let assocValsExist;
+    assocValsExist = !!(str || dex || con || int || wis || chr || hp || m_size || author);
+
 
     const {limit, offset} = getPagination(page, size);
 

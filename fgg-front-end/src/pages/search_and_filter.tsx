@@ -6,7 +6,6 @@ import {CharCard, ConCard, DexCard, IntCard, StrengthCard, WisCard} from "../com
 import React, {useEffect, useState} from "react";
 import {createTheme} from "@nextui-org/react";
 import CreatureDatabase from "../pages/creature-database";
-import {add} from "husky";
 
 const theme = createTheme({
     type: "dark",
@@ -43,7 +42,6 @@ const SearchAndFilter: React.FC = () => {
     }, []);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [searching, setSearching] = useState(false);
 
     // called when user selects the Go! button after putting in their search params
     // sets searchQuery to the string of non-empty key value pairs concatenated together
@@ -57,7 +55,7 @@ const SearchAndFilter: React.FC = () => {
         for (let i = 0; i < keys.length; i++) {
             // finds values that aren't empty (i.e, user is looking for them)
             // and appends them to m_searchstring
-            if (values[i] !== "") {
+            if (values[i] !== "" && values[i] !== '0,99') { // range of 0 to 99 means don't search by it
                 keys[i] = '&' + keys[i];        // appends & to front of each key - proper URL syntax
                 m_searchString += keys[i] + values[i];
             }
@@ -150,7 +148,6 @@ const SearchAndFilter: React.FC = () => {
                     <Button onPress={openModal}>Go!</Button>
                     <Modal width="600px"
                            open={isModalOpen} onClose={() => {
-                        setSearching(false);
                         setIsModalOpen(false)
                     }}>
                         <CreatureDatabase searchQuery={searchQuery}/>
