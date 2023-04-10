@@ -178,11 +178,12 @@ async function getAll(req, res) {
     let content = [
         // oracle doesn't support op.ilike, this is a workaround for making name case insensitive
         // (ex): find the results of Ape OR ape OR APE OR aPe, etc
-        name1 ? { [Op.or]: generateCapitalizations(name1, "GASYMO_DISPLAY_NAME")} : null,     // OR's together the list of names from the func
+        name1 ? { [Op.or]: generateCapitalizations(name1, "GASYMO_DISPLAY_NAME")} : null,     // OR's together
         m_ac ? { GASYMO_ARMOR_CLASS : {[Op.between]: [m_ac_arr[0], m_ac_arr[1]]} } : null,
         hp ? { [Op.or]: generateRangeContent("Hit Points ", '$MODI_MONSTER_DISPLAYs.MODI_PRINT_TEXT$',
                 parseInt(hp_arr[0]), parseInt(hp_arr[1]))} : null,
-        m_size ? {[Op.or]: generateCapitalizations(m_size, "$SZ_SIZE.SZ_NAME$")} : null,
+        // MODI_MONSTER_DISPLAYs.MODI_TEXT holds many things, allowing user to use that field for misc. values
+        m_size ? {[Op.or]: generateCapitalizations(m_size, "$MODI_MONSTER_DISPLAYs.MODI_TEXT$")} : null,
         author ? {[Op.or]: generateCapitalizations(author, "$GACO_GAME_COMPANY.GACO_NAME$")} : null,
         attbContentExists ? {[Op.or]: attbContent} : null
     ];
