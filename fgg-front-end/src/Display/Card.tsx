@@ -15,10 +15,10 @@ export const Card1 = () => (
       </Col>
     </Card.Header>
     <Card.Image
-      src="https://nextui.org/images/card-example-4.jpeg"
+      src="https://cdn.shopify.com/s/files/1/0619/2172/2537/files/Picture2.png?v=1675814194&width=200,%20//cdn.shopify.com/s/files/1/0619/2172/2537/files/Picture2.png?v=1675814194"
       objectFit="cover"
       width="100%"
-      height={340}
+      height={500}
       alt="Card image background"
     />
     <Card.Divider />
@@ -42,10 +42,10 @@ export const Card2 = () => (
       </Col>
     </Card.Header>
     <Card.Image
-      src="https://nextui.org/images/card-example-4.jpeg"
+      src="http://cdn.shopify.com/s/files/1/0619/2172/2537/files/Temple_Orcus_Final_ColinChan.small.jpg?v=1676410810&width=200,%20//cdn.shopify.com/s/files/1/0619/2172/2537/files/Temple_Orcus_Final_ColinChan.small.jpg?v=1676410810"
       objectFit="cover"
       width="100%"
-      height={340}
+      height={500}
       alt="Card image background"
     />
     <Card.Divider />

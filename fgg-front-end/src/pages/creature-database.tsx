@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {
-    Text,
+    Text, Table,
     NextUIProvider,
-    createTheme, Progress, Grid, Card, Container, Row, Badge, Pagination, Loading,
+    createTheme, Progress, Grid, Card, Container, Row, Badge, Pagination, Loading, Tooltip, Button,
 } from "@nextui-org/react";
 import {Connection} from "../Database/Connection";
 import {MonsterModal} from "./creature-db-modal";
+
 
 const theme = createTheme({
     type: "dark",
@@ -109,38 +110,60 @@ const CreatureDatabase = ({ searchQuery }: Props) => {
                             </Grid>}
                         </div>
                         <MonsterModal isOpen={modalOpen} monsterId={card} onClose={handleModalClose} />
-                        {data.monsters.map((item: {
-                            MODI_MONSTER_DISPLAYs: any;
-                            GASYMO_ID: React.Key; GASYMO_DISPLAY_NAME: string;
-                            GACO_GAME_COMPANY: any; MOAB_MONSTER_ATTRIBUTEs: any; GASYMO_ARMOR_CLASS: number;
-                            GASYMO_HIT_DICE_TYPE: number; GASYMO_HIT_DICE_NUM: number; GASYMO_XP_VALUE: number
-                            GASYMO_AC_TYPE_DETAIL: string; SZ_SIZE: any; MOTY_MONSTER_TYPE: any
-                        }) => (
-                            <Grid sm={12} md={5}>
-                                <Card css={{mw: "330px"}} key={item.GASYMO_ID+item.GASYMO_DISPLAY_NAME}
-                                      variant="bordered" isPressable isHoverable
-                                      onPressEnd={() => displayModal(item.GASYMO_ID)}>
-                                    <Card.Header>
-                                        <Text b>{item.GASYMO_DISPLAY_NAME}</Text><br></br>
-                                    </Card.Header>
-                                    <Card.Divider/>
-                                    <Card.Body css={{py: "$10"}}>
-                                        <Text>
-                                            {item.MOAB_MONSTER_ATTRIBUTEs.map(
-                                                (item_as: { MOAB_ID: React.Key; MOAB_DISPLAY_TEXT: string }) => (
-                                                    <Text>{item_as.MOAB_DISPLAY_TEXT}</Text>
-                                                ))}
-                                        </Text>
-                                    </Card.Body>
-                                    <Card.Footer>
-                                        <Row justify="flex-end">
-                                            <Text>{item.GACO_GAME_COMPANY.GACO_NAME}</Text>
-                                        </Row>
-                                    </Card.Footer>
-                                </Card>
-                            </Grid>
-                        ))}
-                        {/*{console.log(data)}*/}
+                        <Table
+                            bordered
+                            compact
+                            shadow={false}
+                            aria-label={"Skills selection table"}
+                            css={{
+                                flex: "1",
+                                height: "auto",
+                            }}
+                        >
+                            <Table.Header>
+                                <Table.Column width="40%">NAME</Table.Column>
+                                <Table.Column width="40%">AC</Table.Column>
+                                <Table.Column width="40%">ARMOR TYPE</Table.Column>
+                                <Table.Column width="40%">HIT DICE</Table.Column>
+                                <Table.Column width="40%">XP</Table.Column>
+                                <Table.Column width="40%">SIZE</Table.Column>
+                                <Table.Column width="40%">CREATOR</Table.Column>
+                                <Table.Column width="40%">INSPECT</Table.Column>
+                            </Table.Header>
+                            <Table.Body>
+                                {data.monsters.map((item: {MODI_MONSTER_DISPLAYs: any;
+                                    GASYMO_ID: React.Key; GASYMO_DISPLAY_NAME: string,
+                                    GASYMO_HIT_DICE_TYPE: number,MOAB_MONSTER_ATTRIBUTEs: any,
+                                    GACO_GAME_COMPANY: string,
+                                    GASYMO_ARMOR_CLASS: number, GASYMO_XP_VALUE: number,
+                                    SZ_SIZE: any; GASYMO_AC_TYPE_DETAIL: string}, index: React.Key)=>(
+                                    <Table.Row key={index+item.GASYMO_XP_VALUE}>
+                                        <Table.Cell>
+                                            <Tooltip
+                                                content=
+                                                    {item.MOAB_MONSTER_ATTRIBUTEs.map((item_as: { MOAB_ID: React.Key; MOAB_DISPLAY_TEXT: string }) => (item_as.MOAB_DISPLAY_TEXT))}>
+                                                {item.GASYMO_DISPLAY_NAME}
+                                            </Tooltip>
+                                        </Table.Cell>
+                                        <Table.Cell>{item.GASYMO_ARMOR_CLASS}</Table.Cell>
+                                        <Table.Cell>{item.GASYMO_AC_TYPE_DETAIL}</Table.Cell>
+                                        <Table.Cell>d{item.GASYMO_HIT_DICE_TYPE}</Table.Cell>
+                                        <Table.Cell>{item.GASYMO_XP_VALUE}</Table.Cell>
+                                        <Table.Cell>{item.SZ_SIZE.SZ_NAME}</Table.Cell>
+                                        <Table.Cell>{item.GACO_GAME_COMPANY.GACO_NAME}</Table.Cell>
+                                        <Table.Cell>
+                                            <Tooltip content="Inspect">
+                                                <Button bordered color="primary" auto
+                                                        onClick={()=>displayModal(item.GASYMO_ID)}>
+                                                    Go!
+                                                </Button>
+                                            </Tooltip>
+                                        </Table.Cell>
+                                    </Table.Row>
+                                ))}
+                            </Table.Body>
+
+                        </Table>
                     </Grid.Container>
                 ) : (
                     <Grid.Container md>

@@ -1,4 +1,4 @@
-import {Modal, Spacer, Text} from "@nextui-org/react";
+import {Modal, Spacer, Table, Text} from "@nextui-org/react";
 import React, {useEffect} from 'react';
 import {Connection} from "../Database/Connection";
 
@@ -25,6 +25,7 @@ export const MonsterModal: React.FC<Props> = ({isOpen, onClose, monsterId}) => {
             setData(null);
     }, [isOpen]);
 
+    // @ts-ignore
     return (
         <div>
             {data ? (
@@ -56,7 +57,7 @@ export const MonsterModal: React.FC<Props> = ({isOpen, onClose, monsterId}) => {
                             {data.MODI_MONSTER_DISPLAYs.map(
                                 (item: { MODI_ID: number, MODI_HTML_TAGGED_TEXT: any }) => (
                                     <Text>
-                                        {<div dangerouslySetInnerHTML={{__html: item.MODI_HTML_TAGGED_TEXT}}/>}
+                                        <div dangerouslySetInnerHTML={{__html: item.MODI_HTML_TAGGED_TEXT}}/>
                                     </Text>
                                 ))}
                         </Modal.Body>

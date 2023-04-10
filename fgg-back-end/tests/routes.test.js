@@ -52,7 +52,6 @@ describe('Show all ABCA_ATTRIBUTE_CATEGORY', () => {
             expect(response.body).toHaveProperty('LAST_MODIFIED_DATE')
             expect(response.body).toHaveProperty('LAST_MODIFIED_BY')
             expect(response.body).toHaveProperty('GASY_ID')
-
         })
     })
 })
