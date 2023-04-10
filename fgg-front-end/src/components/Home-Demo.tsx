@@ -74,31 +74,31 @@ const HomeDemo = () => {
 
     return (
         <NextUIProvider theme={theme}>
-            <Navbar isBordered variant = 'sticky'>
-                <Navbar.Brand>
-                    <User
-                        name={userDataGoogle?.name}
-                        src={userDataGoogle?.picture}
-                        description={userDataGoogle?.email}
-                        bordered
-                        color = 'primary'
-                        size = 'lg'
-                    />
-                </Navbar.Brand>
-                <Navbar.Content>
-                    <Navbar.Item>
-                        <Button
-                            auto
-                            flat
-                            size='sm'
-                            color='primary'
-                            onClick={() => setLogOut()}
-                        >
-                            Log out
-                        </Button>
-                    </Navbar.Item>
-                </Navbar.Content>
-            </Navbar>
+            {/*<Navbar isBordered variant = 'sticky'>*/}
+            {/*    <Navbar.Brand>*/}
+            {/*        <User*/}
+            {/*            name={userDataGoogle?.name}*/}
+            {/*            src={userDataGoogle?.picture}*/}
+            {/*            description={userDataGoogle?.email}*/}
+            {/*            bordered*/}
+            {/*            color = 'primary'*/}
+            {/*            size = 'lg'*/}
+            {/*        />*/}
+            {/*    </Navbar.Brand>*/}
+            {/*    <Navbar.Content>*/}
+            {/*        <Navbar.Item>*/}
+            {/*            <Button*/}
+            {/*                auto*/}
+            {/*                flat*/}
+            {/*                size='sm'*/}
+            {/*                color='primary'*/}
+            {/*                onClick={() => setLogOut()}*/}
+            {/*            >*/}
+            {/*                Log out*/}
+            {/*            </Button>*/}
+            {/*        </Navbar.Item>*/}
+            {/*    </Navbar.Content>*/}
+            {/*</Navbar>*/}
             <Container justify="center">
                 <Grid.Container gap={2} justify="center">
                     <Grid xs={12} sm={4}>
@@ -108,8 +108,6 @@ const HomeDemo = () => {
                         <Card2 />
                     </Grid>
                 </Grid.Container>
-            </Container>
-            <Container justify="center">
                 <Collapse.Group>
                     <Collapse
                         title="Recently Created Creatures"
