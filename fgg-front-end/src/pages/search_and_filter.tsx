@@ -146,11 +146,15 @@ const SearchAndFilter: React.FC = () => {
                     <p>Global AND</p>
                     <Switch onChange={changeAnd} checked={andToggle}/>
                     <Button onPress={openModal}>Go!</Button>
-                    <Modal width="1200px"
+                    <Modal scroll
+                           closeButton
+                           fullScreen
                            open={isModalOpen} onClose={() => {
                         setIsModalOpen(false)
                     }}>
-                        <CreatureDatabase searchQuery={searchQuery}/>
+                        <div style={{overflow: 'auto'}}>
+                            <CreatureDatabase searchQuery={searchQuery}/>
+                        </div>
                     </Modal>
                 </div>
                     <div

@@ -61,6 +61,8 @@ const CreatureDatabase = ({ searchQuery }: Props) => {
     }, []);
 
 
+    // @ts-ignore
+    // @ts-ignore
     return (
         <NextUIProvider theme={theme}>
             <Container justify="center">
@@ -133,10 +135,10 @@ const CreatureDatabase = ({ searchQuery }: Props) => {
                                 {data.monsters.map((item: {MODI_MONSTER_DISPLAYs: any;
                                     GASYMO_ID: React.Key; GASYMO_DISPLAY_NAME: string,
                                     GASYMO_HIT_DICE_TYPE: number,MOAB_MONSTER_ATTRIBUTEs: any,
-                                    GACO_GAME_COMPANY: string,
+                                    GACO_GAME_COMPANY: any,
                                     GASYMO_ARMOR_CLASS: number, GASYMO_XP_VALUE: number,
                                     SZ_SIZE: any; GASYMO_AC_TYPE_DETAIL: string}, index: React.Key)=>(
-                                    <Table.Row key={index+item.GASYMO_XP_VALUE}>
+                                    <Table.Row key={Number(index)+item.GASYMO_XP_VALUE}>
                                         <Table.Cell>
                                             <Tooltip
                                                 css={{
@@ -172,15 +174,14 @@ const CreatureDatabase = ({ searchQuery }: Props) => {
                         <div
                             style={{
                                 display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
+                                margin: "0 auto"
                             }}
                         >
-                            <Progress
-                                indeterminated
-                                value={50}
+                            <Loading
+                                //indeterminated
+                                //value={50}
                                 color="secondary"
-                                status="secondary"
+                                //status="secondary"
                             />
                         </div>
                     </Grid.Container>
