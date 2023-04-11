@@ -34,12 +34,10 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
-      - name: cd directory
-        run: cd fgg-front-end 
       - name: Install dependencies
-        run: npm install
+        run: cd fgg-front-end  && npm install
       - name: Build
-        run: npm run build
+        run: cd fgg-front-end && npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
