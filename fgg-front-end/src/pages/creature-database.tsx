@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {
     Text, Table,
     NextUIProvider,
-    createTheme, Progress, Grid, Card, Container, Row, Badge, Pagination, Loading, Tooltip, Button,
+    createTheme, Progress, Grid, Card, Container, Row, Pagination, Loading, Tooltip, Button,
 } from "@nextui-org/react";
 import {Connection} from "../Database/Connection";
 import {MonsterModal} from "./creature-db-modal";
@@ -62,6 +62,9 @@ const CreatureDatabase = ({ searchQuery }: Props) => {
     }, []);
 
 
+    // @ts-ignore
+    // @ts-ignore
+    // @ts-ignore
     return (
         <NextUIProvider theme={theme}>
             <Container justify="center">
@@ -137,7 +140,10 @@ const CreatureDatabase = ({ searchQuery }: Props) => {
                                     GACO_GAME_COMPANY: string,
                                     GASYMO_ARMOR_CLASS: number, GASYMO_XP_VALUE: number,
                                     SZ_SIZE: any; GASYMO_AC_TYPE_DETAIL: string}, index: React.Key)=>(
-                                    <Table.Row key={index+item.GASYMO_XP_VALUE}>
+                                    <Table.Row key={
+                                        //@ts-ignore
+                                        index+item.GASYMO_XP_VALUE
+                                    }>
                                         <Table.Cell>
                                             <Tooltip
                                                 content=
@@ -150,7 +156,11 @@ const CreatureDatabase = ({ searchQuery }: Props) => {
                                         <Table.Cell>d{item.GASYMO_HIT_DICE_TYPE}</Table.Cell>
                                         <Table.Cell>{item.GASYMO_XP_VALUE}</Table.Cell>
                                         <Table.Cell>{item.SZ_SIZE.SZ_NAME}</Table.Cell>
-                                        <Table.Cell>{item.GACO_GAME_COMPANY.GACO_NAME}</Table.Cell>
+
+                                        <Table.Cell>{
+                                            //@ts-ignore
+                                            item.GACO_GAME_COMPANY.GACO_NAME
+                                        }</Table.Cell>
                                         <Table.Cell>
                                             <Tooltip content="Inspect">
                                                 <Button bordered color="primary" auto

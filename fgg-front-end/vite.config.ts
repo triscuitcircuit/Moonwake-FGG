@@ -7,6 +7,7 @@ export default defineConfig(({ command, mode }) =>
   const env = loadEnv(mode, process.cwd(), '')
   return {
     define: {
+      "base":"/Moonwake-FGG/",
       'process': "import.meta",
       'process.env':"import.meta.env",
       'process.versions': "import.meta.versions"
