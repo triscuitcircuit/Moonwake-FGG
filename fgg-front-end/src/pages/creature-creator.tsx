@@ -25,6 +25,9 @@ import './creature-creator.css';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import AdminPanel from "../components/AdminPanel";
+import jsPDF from 'jspdf';
+
+
 
 const theme = createTheme({
     type: "dark",
@@ -193,6 +196,41 @@ const CreatureCreator: React.FC = () => {
         setPreviewCreature(!previewCreature);
     }
 
+
+    /* ---------------------------------------------------------------------------------- */
+    /* handleSaveToPdfClick() is called under Preview Container */
+    /* ---------------------------------------------------------------------------------- */
+
+    /*
+    function handleSaveToPdfClick() {
+        const doc = new jsPDF();
+
+        // ignore certain elements when generating PDF
+        const specialElementHandlers = {
+            '#ignorePDF': (element, renderer) => true,
+        };
+
+        // get the HTML content of the creature container
+        const container = document.querySelector('.creature-container');
+        const source = container.innerHTML;
+
+        // convert HTML to PDF using html2pdf() method
+        html2pdf().from(source).set({ 'elementHandlers': specialElementHandlers }).save('creature.pdf');
+    }
+    */
+
+    const handleSaveToPdfClick = () => {
+        const doc = new jsPDF();
+
+        // Get the creature container element and add it to the PDF document
+        const creatureContainer = document.getElementById('creature-container');
+        doc.html(creatureContainer, {
+            callback: () => {
+                // Save the PDF document
+                doc.save('creature.pdf');
+            },
+        });
+    };
     /* ---------------------------------------------------------------------------------- */
     /* setSetters is called by the attributeInput component to set the value and modifier */
     /* ---------------------------------------------------------------------------------- */
@@ -774,898 +812,946 @@ const CreatureCreator: React.FC = () => {
     }, [selectedSize, showAllToasts]);
 
     // @ts-ignore
-    return (
-        <NextUIProvider theme={theme}>
-            <Container md>
-                <div
+    // @ts-ignore
+    let nextUIProvider = <><NextUIProvider theme={theme}>
+        <Container md>
+            <div
+              style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  marginTop: "5%",
+              }}
+            >
+                <Text h1>Creature Creation Page</Text>
+            </div>
+        </Container>
+
+        {/* ------------------------------------------------------------------------ */}
+        {/*Conditionally renders the cards depending on whether the button is clicked*/}
+        {/* ------------------------------------------------------------------------ */}
+
+        {!isClicked &&
+          <Container md>
+              <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    marginTop: "5%",
+                }}
+              >
+                  <div
+                    style={{
+                        display: "flex",
+                        flex: "1",
+                        marginRight: "5%",
+                    }}
+                  >
+                      <StartNew onButtonClick={handleButtonClick} />
+                  </div>
+                  <div
+                    style={{
+                        display: "flex",
+                        flex: "1",
+                        marginLeft: "5%",
+                    }}
+                  >
+                      <Auto onButtonClick={fillFormWithPresets} />
+                  </div>
+              </div>
+          </Container>
+        }
+
+        {/* ------------------------------------------------------------------ */}
+        {/* If the button is clicked, then the creature creation form is shown */}
+        {/* ------------------------------------------------------------------ */}
+
+        {isClicked && !previewCreature &&
+          <Container md className={showDivBorders ? "showBorders" : ''}>
+              <AdminPanel toggleToastVisibility={toggleToastVisibility} displayAllToasts={displayAllToasts}
+                          toggleDivBorders={toggleDivBorders} />
+              <div
+                style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                }}
+              >
+                  <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: "60%",
+                        marginTop: "2%",
+                    }}
+                  >
+                      <Text h2>Enter Creature Information</Text>
+                  </div>
+                  <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        width: "100%",
+                        marginTop: "2%",
+                        paddingTop: "2%",
+                        paddingBottom: "2%",
+                        borderTop: "3px solid #fff",
+                        borderBottom: "3px solid #fff",
+                    }}
+                  >
+                      <Text h3 css={{ flex: "1" }}>Name:</Text>
+                      <Input
+                        bordered
+                        color="primary"
+                        placeholder="Creature Name"
+                        size="lg"
+                        onChange={e => setName(e.target.value)}
+                        css={{ flex: "3" }}
+                      />
+                      <div
+                        style={{
+                            flex: "1"
+                        }}
+                      >
+                      </div>
+                  </div>
+                  <div
                     style={{
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
                         width: "100%",
-                        marginTop: "5%",
+                        paddingTop: "2%",
+                    }}
+                  >
+                      <div
+                        style={{
+                            display: "flex",
+                            width: "100%",
+                            alignItems: "center",
                         }}
-                >
-                    <Text h1>Creature Creation Page</Text>
-                </div>
-            </Container>
-
-            {/* ------------------------------------------------------------------------ */}
-            {/*Conditionally renders the cards depending on whether the button is clicked*/}
-            {/* ------------------------------------------------------------------------ */}
-
-            {!isClicked &&
-                <Container md>
-                    <div
+                      >
+                          <Text h3>Tags:</Text>
+                      </div>
+                  </div>
+                  <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-around",
+                        alignItems: "center",
+                        width: "100%",
+                    }}
+                  >
+                      <div
                         style={{
                             display: "flex",
-                            justifyContent: "center",
+                            flexDirection: "column",
+                            flex: "1",
+                            margin: "10px",
                             alignItems: "center",
-                            width: "100%",
-                            marginTop: "5%",
-                            }}
-                    >
-                        <div
-                            style={{
-                                display: "flex",
-                                flex: "1",
-                                marginRight: "5%",
-                                }}
-                        >
-                            <StartNew onButtonClick={handleButtonClick} />
-                        </div>
-                        <div
-                            style={{
-                                display: "flex",
-                                flex: "1",
-                                marginLeft: "5%",
-                                }}
-                        >
-                            <Auto onButtonClick={fillFormWithPresets}/>
-                        </div>
-                    </div>
-                </Container>
-            }
+                        }}
+                      >
 
-            {/* ------------------------------------------------------------------ */}
-            {/* If the button is clicked, then the creature creation form is shown */}
-            {/* ------------------------------------------------------------------ */}
+                          {/* --------------------------- */}
+                          {/* Dropdown for selecting size */}
+                          {/* --------------------------- */}
 
-            {isClicked && !previewCreature &&
-                <Container md className={showDivBorders ? "showBorders" : ''}>
-                    <AdminPanel toggleToastVisibility={toggleToastVisibility} displayAllToasts={displayAllToasts} toggleDivBorders={toggleDivBorders} />
-                    <div
+                          <Text h5>Size:</Text>
+                          <Dropdown>
+                              <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
+                                  {selectedSize + (sizeItems.find((item: { key: string; }) => item.key === selectedSize)?.hitDiceValue ?
+                                    " (d" + sizeItems.find((item: { key: string; }) => item.key === selectedSize)?.hitDiceValue + ")" : "")}
+                              </Dropdown.Button>
+                              <Dropdown.Menu
+                                aria-label="Size dropdown menu"
+                                disallowEmptySelection
+                                selectionMode="single"
+                                items={sizeItems}
+                                selectedKeys={selectedSize}
+                                onAction={setSelectedSize}
+                              >
+                                  {/*@ts-ignore*/}
+                                  {({ key, name }) => (
+                                    <Dropdown.Item key={key}>
+                                        {name}
+                                    </Dropdown.Item>
+                                  )}
+                              </Dropdown.Menu>
+                          </Dropdown>
+                      </div>
+                      <div
                         style={{
                             display: "flex",
-                            flexWrap: "wrap",
-                            justifyContent: "center",
+                            flexDirection: "column",
+                            flex: "1",
+                            margin: "10px",
                             alignItems: "center",
-                            width: "100%",
-                            }}
-                    >
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                width: "60%",
-                                marginTop: "2%",
-                                }}
-                        >
-                            <Text h2>Enter Creature Information</Text>
-                        </div>
-                        <div
-                            style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                width: "100%",
-                                marginTop: "2%",
-                                paddingTop: "2%",
-                                paddingBottom: "2%",
-                                borderTop: "3px solid #fff",
-                                borderBottom: "3px solid #fff",
-                            }}
-                        >
-                            <Text h3 css={{ flex: "1" }}>Name:</Text>
-                            <Input
-                                bordered
-                                color="primary"
-                                placeholder="Creature Name"
-                                size="lg"
-                                onChange={e => setName(e.target.value)}
-                                css={{ flex: "3" }}
-                            />
-                            <div
-                                style={{
-                                    flex: "1"
-                                }}
-                            >
-                            </div>
-                        </div>
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                width: "100%",
-                                paddingTop: "2%",
-                                }}
-                        >
-                            <div
-                                style={{
-                                    display: "flex",
-                                    width: "100%",
-                                    alignItems: "center",
-                                }}
-                            >
-                                    <Text h3 >Tags:</Text>
-                            </div>
-                        </div>
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "space-around",
-                                alignItems: "center",
-                                width: "100%",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    flex: "1",
-                                    margin: "10px",
-                                    alignItems: "center",
-                                    }}
-                            >
+                        }}
+                      >
 
-                                {/* --------------------------- */}
-                                {/* Dropdown for selecting size */}
-                                {/* --------------------------- */}
+                          {/* ------------------------------- */}
+                          {/* Dropdown for selecting the type */}
+                          {/* ------------------------------- */}
 
-                                <Text h5>Size:</Text>
-                                <Dropdown>
-                                    <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
-                                        {selectedSize + (sizeItems.find((item: { key: string; }) => item.key === selectedSize)?.hitDiceValue ?
-                                            " (d" + sizeItems.find((item: { key: string; }) => item.key === selectedSize)?.hitDiceValue + ")" : "")}
-                                    </Dropdown.Button>
-                                    <Dropdown.Menu
-                                        aria-label="Size dropdown menu"
-                                        disallowEmptySelection
-                                        selectionMode="single"
-                                        items={sizeItems}
-                                        selectedKeys={selectedSize}
-                                        onAction={setSelectedSize}
-                                    >
-                                        {/*@ts-ignore*/}
-                                        {({key, name}) => (
-                                            <Dropdown.Item key={key}>
-                                                {name}
-                                            </Dropdown.Item>
-                                        )}
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            </div>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    flex: "1",
-                                    margin: "10px",
-                                    alignItems: "center",
-                                    }}
-                            >
-
-                                {/* ------------------------------- */}
-                                {/* Dropdown for selecting the type */}
-                                {/* ------------------------------- */}
-
-                                <Text h5>Type:</Text>
-                                <Dropdown>
-                                    <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
-                                        {selectedType}
-                                    </Dropdown.Button>
-                                    <Dropdown.Menu
-                                        aria-label="Type dropdown menu"
-                                        disallowEmptySelection
-                                        selectionMode="single"
-                                        items={typeItems}
-                                        selectedKeys={selectedType}
-                                        onAction={setSelectedType}
-                                        css={{ maxHeight: "400px", overflow: "auto" }}
-                                    >
-                                        {/*@ts-ignore*/}
-                                        {({key, name}) => (
-                                            <Dropdown.Item key={key} css={{ tt: "capitalize" }}>
-                                                {name}
-                                            </Dropdown.Item>
-                                        )}
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            </div>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    flex: "1",
-                                    margin: "10px",
-                                    alignItems: "center",
-                                    }}
-                            >
-
-                                {/* ---------------------------------- */}
-                                {/* Dropdown for selecting the subtype */}
-                                {/* ---------------------------------- */}
-
-                                <Text h5>Subtype:</Text>
-                                <Dropdown>
-                                    <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
-                                        {selectedSubtype}
-                                    </Dropdown.Button>
-                                    <Dropdown.Menu
-                                        aria-label="Subtype dropdown menu"
-                                        selectionMode="single"
-                                        items={subtypeItems}
-                                        selectedKeys={selectedSubtype}
-                                        onAction={setSelectedSubtype}
-                                        css={{ maxHeight: "400px", overflow: "auto" }}
-                                    >
-                                        {/*@ts-ignore*/}
-                                        {({key, name}) => (
-                                            <Dropdown.Item key={key}>
-                                                {name}
-                                            </Dropdown.Item>
-                                        )}
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            </div>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    flex: "1",
-                                    margin: "10px",
-                                    alignItems: "center",
-                                    }}
-                            >
-
-                                {/* ------------------------------------ */}
-                                {/* Dropdown for selecting the alignment */}
-                                {/* ------------------------------------ */}
-
-                                <Text h5>Alignment:</Text>
-                                <Dropdown>
-                                    <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
-                                        {selectedAlignment}
-                                    </Dropdown.Button>
-                                    <Dropdown.Menu
-                                        aria-label="Alignment dropdown menu"
-                                        disallowEmptySelection
-                                        selectionMode="single"
-                                        items={alignmentItems}
-                                        selectedKeys={selectedAlignment}
-                                        onAction={setSelectedAlignment}
-                                        css={{ maxHeight: "400px", overflow: "auto" }}
-                                    >
-                                        {/*@ts-ignore*/}
-                                        {({key, name}) => (
-                                            <Dropdown.Item key={key}>
-                                                {name}
-                                            </Dropdown.Item>
-                                        )}
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            </div>
-                        </div>
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "space-around",
-                                alignItems: "center",
-                                width: "100%",
-                                marginTop: "2%",
-                            }}
-                        >
-
-                            {/* ---------------------------------------- */}
-                            {/* Dropdown to select the armor class value */}
-                            {/* ---------------------------------------- */}
-
-                            <Text h4 css={{ flex: "1" }}>Armor Class:</Text>
-                            <Dropdown>
-                                <Dropdown.Button flat css={{ flex: "2" }}>
-                                    {selectedArmorClass + " + (" + dexterityMod + ")"}
-                                </Dropdown.Button>
-                                <Dropdown.Menu
-                                    aria-label="Armor Class dropdown menu"
-                                    disallowEmptySelection
-                                    selectionMode="single"
-                                    onAction={setSelectedArmorClass}
-                                    css={{ maxHeight: "400px", overflow: "auto" }}
-                                >
-                                    {/* loop 30 times creating a new dropdown item with the values 1-30*/}
-                                    {[...Array(30)].map((x, i) => (
-                                        <Dropdown.Item key={i + 1}>
-                                            {i + 1}
-                                        </Dropdown.Item>
-                                    ))}
-                                </Dropdown.Menu>
-                            </Dropdown>
-
-                            {/* --------------------------------------- */}
-                            {/* Dropdown to select the armor type value */}
-                            {/* --------------------------------------- */}
-
-                            <Text h4 css={{ flex: "1", textAlign: "center" }}>Armor Type:</Text>
-                            <Dropdown>
-                                <Dropdown.Button flat css={{ flex: "2" }}>
-                                    {selectedArmorType}
-                                </Dropdown.Button>
-                                <Dropdown.Menu
-                                    aria-label="Armor Type dropdown menu"
-                                    disallowEmptySelection
-                                    selectionMode="single"
-                                    items={armorItems}
-                                    selectedKeys={selectedArmorType}
-                                    onAction={setSelectedArmorType}
-                                    css={{ maxHeight: "400px", overflow: "auto" }}
-                                >
-                                    {/*@ts-ignore*/}
-                                    {({key, name}) => (
-                                        <Dropdown.Item key={key}>
-                                            {name}
-                                        </Dropdown.Item>
-                                    )}
-                                </Dropdown.Menu>
-                            </Dropdown>
-
-                            {/* ---------------------------------------- */}
-                            {/* Dropdown to select the creature language */}
-                            {/* ---------------------------------------- */}
-
-                            <Text h4 css={{ flex: "1", textAlign: "center" }}>Language:</Text>
-                            <Dropdown>
-                                <Dropdown.Button flat css={{ flex: "2", tt: "capitalize" }}>
-                                    {selectedLanguage}
-                                </Dropdown.Button>
-                                <Dropdown.Menu
-                                    aria-label="Armor Type dropdown menu"
-                                    disallowEmptySelection
-                                    selectionMode="single"
-                                    items={languages}
-                                    selectedKeys={selectedLanguage}
-                                    onAction={setSelectedLanguage}
-                                    css={{ maxHeight: "400px", overflow: "auto" }}
-                                >
-                                    {/*@ts-ignore*/}
-                                    {({key, name}) => (
-                                        <Dropdown.Item key={key}>
-                                            {name}
-                                        </Dropdown.Item>
-                                    )}
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </div>
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "space-around",
-                                alignItems: "center",
-                                width: "100%",
-                                marginTop: "3%",
-                                paddingBottom: "2%",
-                                borderBottom: "3px solid #fff",
-                            }}
-                        >
-                            <Text h4 css={{ flex: "1" }}>Hit Points</Text>
-                            <Input
-                                aria-label={"No. of Hit Dice"}
-                                bordered
-                                type="number"
-                                color="primary"
-                                labelPlaceholder={"No. of Hit Dice"}
-                                value={numHitDice}
-                                size="lg"
-                                width="100%"
-                                css={{ flex: "2" }}
-                                onChange={hitDiceSizeChange}
-                            />
-                            {/* Total HP is No. of Hit Dice x Hit Dice size + Con Mod*/}
-                            <Text h5 css={{ flex: "1", marginLeft: "2%" }}>Total HP: {numHitDice ? numHitDice : "#"}d({hitDiceValue}) + {constitutionMod} </Text>
-                        </div>
-                        <div
-                            style={{
-                                display: "flex",
-                                flexWrap: "wrap",
-                                flexDirection: "column",
-                                width: "100%",
-                                marginTop: "2%",
-                            }}
-                        >
-                            <Text h3 >Speed:</Text>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-around",
-                                    alignItems: "center",
-                                    width: "100%",
-                                    paddingBottom: "2%",
-                                    borderBottom: "3px solid #fff",
-                                }}
-                            >
-                                <SpeedInput name={"Base"} setSpeed={setBaseSpeed} />
-                                <SpeedInput name={"Swim"} setSpeed={setSwimSpeed} />
-                                <SpeedInput name={"Fly"} setSpeed={setFlySpeed} />
-                                <SpeedInput name={"Climb"} setSpeed={setClimbSpeed} />
-                                <SpeedInput name={"Burrow"} setSpeed={setBurrowSpeed} />
-                            </div>
-                        </div>
-                        <div
-                            style={{
-                                display: "flex",
-                                flexWrap: "wrap",
-                                flexDirection: "column",
-                                width: "100%",
-                                marginTop: "2%",
-                                paddingBottom: "2%",
-                                borderBottom: "3px solid #fff",
-                            }}
-                        >
-                            <Text h3 >Attributes:</Text>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-around",
-                                    alignItems: "center",
-                                    width: "100%",
-                                }}
-                            >
-                                <Grid.Container gap={2} justify="space-around">
-                                    <Grid sm={4}>
-                                        <AttributeInput name={"Strength"} value={strength} setValue={(value) => {
-                                            setSetters(parseInt(value), setStrength, setStrengthMod)
-                                        }} />
-                                    </Grid>
-                                    <Grid sm={4}>
-                                        <AttributeInput name={"Dexterity"} value={dexterity} setValue={(value) => {
-                                            setSetters(parseInt(value), setDexterity, setDexterityMod)
-                                        }} />
-                                    </Grid>
-                                    <Grid sm={4}>
-                                        <AttributeInput name={"Constitution"} value={constitution} setValue={(value) => {
-                                            setSetters(parseInt(value), setConstitution, setConstitutionMod)
-                                        }} />
-                                    </Grid>
-                                    <Grid sm={4}>
-                                        <AttributeInput name={"Intelligence"} value={intelligence} setValue={(value) => {
-                                            setSetters(parseInt(value), setIntelligence, setIntelligenceMod)
-                                        }} />
-                                    </Grid>
-                                    <Grid sm={4}>
-                                        <AttributeInput name={"Wisdom"} value={wisdom} setValue={(value) => {
-                                            setSetters(parseInt(value), setWisdom, setWisdomMod)
-                                        }} />
-                                    </Grid>
-                                    <Grid sm={4}>
-                                        <AttributeInput name={"Charisma"} value={charisma} setValue={(value) => {
-                                            setSetters(parseInt(value), setCharisma, setCharismaMod)
-                                        }} />
-                                    </Grid>
-                                </Grid.Container>
-                            </div>
-                        </div>
-                        <div
-                            style={{
-                                display: "flex",
-                                flexWrap: "wrap",
-                                flexDirection: "row",
-                                width: "100%",
-                                marginTop: "2%",
-                                paddingBottom: "2%",
-                                borderBottom: "3px solid #fff",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    flex: "2",
-                                }}
-                            >
-                                <Text h3 >Challenge Rating:</Text>
-                                <ChallengeRatingInput value={challengeRating} setChallengeRating={setChallengeRating} />
-                            </div>
-                            <Spacer x={2} />
-                            <div
-                                style={{
-                                    flex: "2",
-                                }}
-                            >
-                                <Text h3> Proficiency Bonus: </Text>
-                                <Text h4> PB = {proficiencyBonus} </Text>
-                            </div>
-                        </div>
-                        <div
-                            style={{
-                                display: "flex",
-                                flexWrap: "wrap",
-                                flexDirection: "column",
-                                width: "100%",
-                                marginTop: "2%",
-                                paddingBottom: "2%",
-                                borderBottom: "3px solid #fff",
-                            }}
-                        >
-                            <Text h3>Saving Throws:</Text>
-                            <Text h4>Proficient Saving Throws:</Text>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    justifyContent: "space-around",
-                                }}
-                            >
-                                <Grid.Container gap={2} justify="space-around">
-                                    <Grid sm={4} justify={"center"}>
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                flexDirection: "column",
-                                                width: "100%",
-                                            }}
-                                        >
-                                            <Checkbox css={{ flex: "1", marginBottom: "5%" }} onChange={setStrengthThrow} >STR</Checkbox>
-                                            <Tooltip isDisabled={strengthThrow} content={"Select saving throw to enable modifier"} color={"primary"} hideArrow>
-                                                <Input disabled={!strengthThrow} type={"number"} bordered status={!strengthThrow ? "error" : "primary"} labelPlaceholder={"STR"} css={{ flex: "1" }}/>
-                                            </Tooltip>
-                                        </div>
-                                    </Grid>
-                                    <Grid sm={4} justify={"center"}>
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                flexDirection: "column",
-                                                width: "100%",
-                                            }}
-                                        >
-                                            <Checkbox css={{ flex: "1", marginBottom: "5%" }} onChange={setDexterityThrow} >DEX</Checkbox>
-                                            <Tooltip isDisabled={dexterityThrow} content={"Select saving throw to enable modifier"} color={"primary"} hideArrow>
-                                                <Input disabled={!dexterityThrow} type={"number"} bordered status={!dexterityThrow ? "error" : "primary"} labelPlaceholder={"DEX"} css={{ flex: "1" }}/>
-                                            </Tooltip>
-                                        </div>
-                                    </Grid>
-                                    <Grid sm={4} justify={"center"}>
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                flexDirection: "column",
-                                                width: "100%",
-                                            }}
-                                        >
-                                            <Checkbox css={{ flex: "1", marginBottom: "5%" }} onChange={setConstitutionThrow} >CON</Checkbox>
-                                            <Tooltip isDisabled={constitutionThrow} content={"Select saving throw to enable modifier"} color={"primary"} hideArrow>
-                                                <Input disabled={!constitutionThrow} type={"number"} bordered status={!constitutionThrow ? "error" : "primary"} labelPlaceholder={"CON"} css={{ flex: "1" }}/>
-                                            </Tooltip>
-                                        </div>
-                                    </Grid>
-                                    <Grid sm={4} justify={"center"}>
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                flexDirection: "column",
-                                                width: "100%",
-                                            }}
-                                        >
-                                            <Checkbox css={{ flex: "1", marginBottom: "5%" }} onChange={setIntelligenceThrow} >INT</Checkbox>
-                                            <Tooltip isDisabled={intelligenceThrow} content={"Select saving throw to enable modifier"} color={"primary"} hideArrow>
-                                                <Input disabled={!intelligenceThrow} type={"number"} bordered status={!intelligenceThrow ? "error" : "primary"} labelPlaceholder={"INT"} css={{ flex: "1" }}/>
-                                            </Tooltip>
-                                        </div>
-                                    </Grid>
-                                    <Grid sm={4} justify={"center"}>
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                flexDirection: "column",
-                                                width: "100%",
-                                            }}
-                                        >
-                                            <Checkbox css={{ flex: "1", marginBottom: "5%" }} onChange={setWisdomThrow} >WIS</Checkbox>
-                                            <Tooltip isDisabled={wisdomThrow} content={"Select saving throw to enable modifier"} color={"primary"} hideArrow>
-                                                <Input disabled={!wisdomThrow} type={"number"} bordered status={!wisdomThrow ? "error" : "primary"} labelPlaceholder={"WIS"} css={{ flex: "1" }}/>
-                                            </Tooltip>
-                                        </div>
-                                    </Grid>
-                                    <Grid sm={4} justify={"center"}>
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                flexDirection: "column",
-                                                width: "100%",
-                                            }}
-                                        >
-                                            <Checkbox css={{ flex: "1", marginBottom: "5%" }} onChange={setCharismaThrow} >CHA</Checkbox>
-                                            <Tooltip isDisabled={charismaThrow} content={"Select saving throw to enable modifier"} color={"primary"} hideArrow>
-                                                <Input disabled={!charismaThrow} type={"number"} bordered status={!charismaThrow ? "error" : "primary"} labelPlaceholder={"CHA"} css={{ flex: "1" }}/>
-                                            </Tooltip>
-                                        </div>
-                                    </Grid>
-                                </Grid.Container>
-                            </div>
-                        </div>
-                        <div
-                            style={{
-                                display: "flex",
-                                flexWrap: "wrap",
-                                flexDirection: "column",
-                                width: "100%",
-                                marginTop: "2%",
-                                paddingBottom: "2%",
-                                borderBottom: "3px solid #fff",
-                            }}
-                        >
-                            <Text h3 css={{ flex: "1" }}>Skills: </Text>
-                            <Table
-                                bordered
-                                compact
-                                shadow={false}
-                                aria-label={"Skills selection table"}
-                                css={{
-                                    flex: "1",
-                                    height: "auto",
-                                }}
-                            >
-                                <Table.Header>
-                                    <Table.Column width="40%">SKILLS</Table.Column>
-                                    <Table.Column width="20%">PROFICIENT</Table.Column>
-                                    <Table.Column width="20%">EXPERTISE</Table.Column>
-                                    <Table.Column width="20%">MODIFIER</Table.Column>
-                                </Table.Header>
-                                <Table.Body>
-                                    {skillItems.map((skill: { name: string, proficiencyLevel: ProficiencyLevel, relatedAbName: string }, index: React.Key) => (
-                                        <Table.Row key={index}>
-                                            <Table.Cell>{skill.name}</Table.Cell>
-                                            <Table.Cell>
-                                                <Checkbox
-                                                    isSelected={selectedSkills[skill.name] === "proficient"}
-                                                    onChange={() =>
-                                                        handleCheckboxChange(skill, "proficient")
-                                                    }
-                                                />
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                <Checkbox
-                                                    isSelected={selectedSkills[skill.name] === "expertise"}
-                                                    onChange={() =>
-                                                        handleCheckboxChange(skill, "expertise")
-                                                    }
-                                                />
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                {
-                                                    selectedSkills[skill.name] === "proficient"
-                                                        ? findMod(skill.relatedAbName) + " + " + proficiencyBonus + " = " + (findMod(skill.relatedAbName) + proficiencyBonus)
-                                                        : selectedSkills[skill.name] === "expertise"
-                                                            ? findMod(skill.relatedAbName) + " x 2 + " + proficiencyBonus + " = " + (findMod(skill.relatedAbName) * 2 + proficiencyBonus)
-                                                            : "-----"
-                                                }
-                                            </Table.Cell>
-                                        </Table.Row>
-                                    ))}
-                                </Table.Body>
-                            </Table>
-                        </div>
-                        <div
-                            style={{
-                                width: "100%",
-                                paddingBottom: "2%",
-                                borderBottom: "3px solid #fff",
-                            }}
-                        >
-                            <Text h3 css={{ marginTop: "2%" }}>Damage Vulnerabilities: </Text>
-                            <Checkbox.Group
-                                orientation={"horizontal"}
-                                label={"Select Damage Vulnerabilities"}
-                                value={selectedDamageVulnerabilities}
-                                onChange={setSelectedDamageVulnerabilities}
-                                css={{ paddingBottom: "2%", borderBottom: "3px solid #fff" }}
-                            >
-                                {damageTypeItems.map((damageType: { name: string }, index: React.Key) => (
-                                    <Checkbox key={index} value={damageType.name} css={{ width: "250px", marginTop: "5px" }}>{damageType.name}</Checkbox>
-                                ))}
-                            </Checkbox.Group>
-                            <Text h3 css={{ marginTop: "2%" }}>Damage Resistances: </Text>
-                            <Checkbox.Group
-                                orientation={"horizontal"}
-                                label={"Select Damage Resistances"}
-                                value={selectedDamageResistances}
-                                onChange={setSelectedDamageResistances}
-                                css={{ paddingBottom: "2%", borderBottom: "3px solid #fff" }}
-                            >
-                                {damageTypeItems.map((damageType: { name: string }, index: React.Key) => (
-                                    <Checkbox key={index} value={damageType.name} css={{ width: "250px", marginTop: "5px" }}>{damageType.name}</Checkbox>
-                                ))}
-                            </Checkbox.Group>
-                            <Text h3 css={{ marginTop: "2%" }}>Damage Immunities: </Text>
-                            <Checkbox.Group
-                                orientation={"horizontal"}
-                                label={"Select Damage Immunities"}
-                                value={selectedDamageImmunities}
-                                onChange={setSelectedDamageImmunities}
-                                css={{ paddingBottom: "2%", borderBottom: "3px solid #fff" }}
-                            >
-                                {damageTypeItems.map((damageType: { name: string }, index: React.Key) => (
-                                    <Checkbox key={index} value={damageType.name} css={{ width: "250px", marginTop: "5px" }}>{damageType.name}</Checkbox>
-                                ))}
-                            </Checkbox.Group>
-                            <Text h3 css={{ marginTop: "2%" }}>Condition Immunities: </Text>
-                            <Checkbox.Group
-                                orientation={"horizontal"}
-                                label={"Select Condition Immunities"}
-                                value={selectedConditionImmunities}
-                                onChange={setSelectedConditionImmunities}
-                                css={{ paddingBottom: "2%", borderBottom: "3px solid #fff" }}
-                            >
-                                {conditionItems.map((condition: { name: string }, index: React.Key) => (
-                                    <Checkbox key={index} value={condition.name} css={{ width: "250px", marginTop: "5px" }}>{condition.name}</Checkbox>
-                                ))}
-                            </Checkbox.Group>
-                            <Text h3 css={{ marginTop: "2%" }}>Senses: </Text>
-                            <Table
-                                bordered
-                                compact
-                                shadow={false}
-                                aria-label={"Senses selection table"}
-                                css={{
-                                    flex: "1",
-                                    height: "auto",
-                                }}
-                            >
-                                <Table.Header>
-                                    <Table.Column>SENSES</Table.Column>
-                                    <Table.Column>DISTANCE</Table.Column>
-                                    <Table.Column>MODIFIER</Table.Column>
-                                </Table.Header>
-                                <Table.Body>
-                                    {senses.map((sense: { name: string, distance: number }, index: React.Key) => (
-                                        <Table.Row key={index}>
-                                            <Table.Cell>
-                                                <Checkbox
-                                                    onChange={() => handleSenseChange(sense)}
-                                                >
-                                                    {sense.name}
-                                                </Checkbox>
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                <Input
-                                                    type={"number"}
-                                                    labelRight={"ft."}
-                                                />
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                <Checkbox>
-                                                    Limited by range if checked
-                                                </Checkbox>
-                                            </Table.Cell>
-                                        </Table.Row>
-                                    ))}
-                                </Table.Body>
-                            </Table>
-                        </div>
-                    </div>
-                    <div
+                          <Text h5>Type:</Text>
+                          <Dropdown>
+                              <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
+                                  {selectedType}
+                              </Dropdown.Button>
+                              <Dropdown.Menu
+                                aria-label="Type dropdown menu"
+                                disallowEmptySelection
+                                selectionMode="single"
+                                items={typeItems}
+                                selectedKeys={selectedType}
+                                onAction={setSelectedType}
+                                css={{ maxHeight: "400px", overflow: "auto" }}
+                              >
+                                  {/*@ts-ignore*/}
+                                  {({ key, name }) => (
+                                    <Dropdown.Item key={key} css={{ tt: "capitalize" }}>
+                                        {name}
+                                    </Dropdown.Item>
+                                  )}
+                              </Dropdown.Menu>
+                          </Dropdown>
+                      </div>
+                      <div
                         style={{
                             display: "flex",
-                            justifyContent: "center",
+                            flexDirection: "column",
+                            flex: "1",
+                            margin: "10px",
+                            alignItems: "center",
+                        }}
+                      >
+
+                          {/* ---------------------------------- */}
+                          {/* Dropdown for selecting the subtype */}
+                          {/* ---------------------------------- */}
+
+                          <Text h5>Subtype:</Text>
+                          <Dropdown>
+                              <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
+                                  {selectedSubtype}
+                              </Dropdown.Button>
+                              <Dropdown.Menu
+                                aria-label="Subtype dropdown menu"
+                                selectionMode="single"
+                                items={subtypeItems}
+                                selectedKeys={selectedSubtype}
+                                onAction={setSelectedSubtype}
+                                css={{ maxHeight: "400px", overflow: "auto" }}
+                              >
+                                  {/*@ts-ignore*/}
+                                  {({ key, name }) => (
+                                    <Dropdown.Item key={key}>
+                                        {name}
+                                    </Dropdown.Item>
+                                  )}
+                              </Dropdown.Menu>
+                          </Dropdown>
+                      </div>
+                      <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            flex: "1",
+                            margin: "10px",
+                            alignItems: "center",
+                        }}
+                      >
+
+                          {/* ------------------------------------ */}
+                          {/* Dropdown for selecting the alignment */}
+                          {/* ------------------------------------ */}
+
+                          <Text h5>Alignment:</Text>
+                          <Dropdown>
+                              <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
+                                  {selectedAlignment}
+                              </Dropdown.Button>
+                              <Dropdown.Menu
+                                aria-label="Alignment dropdown menu"
+                                disallowEmptySelection
+                                selectionMode="single"
+                                items={alignmentItems}
+                                selectedKeys={selectedAlignment}
+                                onAction={setSelectedAlignment}
+                                css={{ maxHeight: "400px", overflow: "auto" }}
+                              >
+                                  {/*@ts-ignore*/}
+                                  {({ key, name }) => (
+                                    <Dropdown.Item key={key}>
+                                        {name}
+                                    </Dropdown.Item>
+                                  )}
+                              </Dropdown.Menu>
+                          </Dropdown>
+                      </div>
+                  </div>
+                  <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-around",
+                        alignItems: "center",
+                        width: "100%",
+                        marginTop: "2%",
+                    }}
+                  >
+
+                      {/* ---------------------------------------- */}
+                      {/* Dropdown to select the armor class value */}
+                      {/* ---------------------------------------- */}
+
+                      <Text h4 css={{ flex: "1" }}>Armor Class:</Text>
+                      <Dropdown>
+                          <Dropdown.Button flat css={{ flex: "2" }}>
+                              {selectedArmorClass + " + (" + dexterityMod + ")"}
+                          </Dropdown.Button>
+                          <Dropdown.Menu
+                            aria-label="Armor Class dropdown menu"
+                            disallowEmptySelection
+                            selectionMode="single"
+                            onAction={setSelectedArmorClass}
+                            css={{ maxHeight: "400px", overflow: "auto" }}
+                          >
+                              {/* loop 30 times creating a new dropdown item with the values 1-30*/}
+                              {[...Array(30)].map((x, i) => (
+                                <Dropdown.Item key={i + 1}>
+                                    {i + 1}
+                                </Dropdown.Item>
+                              ))}
+                          </Dropdown.Menu>
+                      </Dropdown>
+
+                      {/* --------------------------------------- */}
+                      {/* Dropdown to select the armor type value */}
+                      {/* --------------------------------------- */}
+
+                      <Text h4 css={{ flex: "1", textAlign: "center" }}>Armor Type:</Text>
+                      <Dropdown>
+                          <Dropdown.Button flat css={{ flex: "2" }}>
+                              {selectedArmorType}
+                          </Dropdown.Button>
+                          <Dropdown.Menu
+                            aria-label="Armor Type dropdown menu"
+                            disallowEmptySelection
+                            selectionMode="single"
+                            items={armorItems}
+                            selectedKeys={selectedArmorType}
+                            onAction={setSelectedArmorType}
+                            css={{ maxHeight: "400px", overflow: "auto" }}
+                          >
+                              {/*@ts-ignore*/}
+                              {({ key, name }) => (
+                                <Dropdown.Item key={key}>
+                                    {name}
+                                </Dropdown.Item>
+                              )}
+                          </Dropdown.Menu>
+                      </Dropdown>
+
+                      {/* ---------------------------------------- */}
+                      {/* Dropdown to select the creature language */}
+                      {/* ---------------------------------------- */}
+
+                      <Text h4 css={{ flex: "1", textAlign: "center" }}>Language:</Text>
+                      <Dropdown>
+                          <Dropdown.Button flat css={{ flex: "2", tt: "capitalize" }}>
+                              {selectedLanguage}
+                          </Dropdown.Button>
+                          <Dropdown.Menu
+                            aria-label="Armor Type dropdown menu"
+                            disallowEmptySelection
+                            selectionMode="single"
+                            items={languages}
+                            selectedKeys={selectedLanguage}
+                            onAction={setSelectedLanguage}
+                            css={{ maxHeight: "400px", overflow: "auto" }}
+                          >
+                              {/*@ts-ignore*/}
+                              {({ key, name }) => (
+                                <Dropdown.Item key={key}>
+                                    {name}
+                                </Dropdown.Item>
+                              )}
+                          </Dropdown.Menu>
+                      </Dropdown>
+                  </div>
+                  <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-around",
+                        alignItems: "center",
+                        width: "100%",
+                        marginTop: "3%",
+                        paddingBottom: "2%",
+                        borderBottom: "3px solid #fff",
+                    }}
+                  >
+                      <Text h4 css={{ flex: "1" }}>Hit Points</Text>
+                      <Input
+                        aria-label={"No. of Hit Dice"}
+                        bordered
+                        type="number"
+                        color="primary"
+                        labelPlaceholder={"No. of Hit Dice"}
+                        value={numHitDice}
+                        size="lg"
+                        width="100%"
+                        css={{ flex: "2" }}
+                        onChange={hitDiceSizeChange}
+                      />
+                      {/* Total HP is No. of Hit Dice x Hit Dice size + Con Mod*/}
+                      <Text h5 css={{ flex: "1", marginLeft: "2%" }}>Total
+                          HP: {numHitDice ? numHitDice : "#"}d({hitDiceValue}) + {constitutionMod} </Text>
+                  </div>
+                  <div
+                    style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        flexDirection: "column",
+                        width: "100%",
+                        marginTop: "2%",
+                    }}
+                  >
+                      <Text h3>Speed:</Text>
+                      <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "space-around",
                             alignItems: "center",
                             width: "100%",
-                            marginTop: "2%",
                             paddingBottom: "2%",
                             borderBottom: "3px solid #fff",
-                            }}
-                    >
-                        <Button onPress={handleButtonClick}>Go Back</Button>
-                        <Spacer x={0.5} />
-                        <Button onPress={handlePreviewButtonClick}>Preview Creature</Button>
-                        {showToast &&
-                            <ToastContainer
-                                position="bottom-center"
-                                autoClose={false}
-                                newestOnTop={false}
-                                closeOnClick
-                                rtl={false}
-                                pauseOnFocusLoss
-                                draggable
-                                theme="colored"
-                            />
-                        }
-                    </div>
-                </Container>
-            }
-            {previewCreature &&
-                <Container md>
-                    <div className="creature-container">
-                        <div className="creature-stat-block">
-                            <h2>{name || "Unnamed Creature"}</h2>
-                            <p>
-                                <strong>Size:</strong> {selectedSize || "----"} |{" "}
-                                <strong>Type:</strong> {selectedType || "----"} |{" "}
-                                <strong>Subtype:</strong> {selectedSubtype || "----"} |{" "}
-                                <strong>Alignment:</strong> {selectedAlignment || "----"}
-                            </p>
-                            <p>
-                                <strong>Armor Class:</strong> {selectedArmorClass || "----"} (
-                                {selectedArmorType || "----"}) |{" "}
-                                <strong>Hit Dice:</strong> {numHitDice ? `${numHitDice}d${selectedSize ? `${hitDiceValue} + ${constitutionMod ? constitutionMod : "----"}` : "----"}` : "----"}
-                            </p>
-                            <p>
-                                <strong>Speed:</strong> Base {baseSpeed} ft. {flySpeed > 0 && `| Fly ${flySpeed} ft.`} {swimSpeed > 0 && `| Swim ${swimSpeed} ft.`} {climbSpeed > 0 && `| Climb ${climbSpeed} ft.`} {burrowSpeed > 0 && `| Burrow ${burrowSpeed} ft.`}
-                            </p>
-                            <p>
-                                <strong>STR:</strong> {strength} ({strengthMod}) |{" "}
-                                <strong>DEX:</strong> {dexterity} ({dexterityMod}) |{" "}
-                                <strong>CON:</strong> {constitution} ({constitutionMod})
-                                <br/>
-                                <strong>INT:</strong> {intelligence} ({intelligenceMod}) |{" "}
-                                <strong>WIS:</strong> {wisdom} ({wisdomMod}) |{" "}
-                                <strong>CHA:</strong> {charisma} ({charismaMod})
-                            </p>
-                            <p>
-                                <strong>Saving Throws:</strong>{" "}
-                                {strengthThrow && `STR +${strengthMod}, `}
-                                {dexterityThrow && `DEX +${dexterityMod}, `}
-                                {constitutionThrow && `CON +${constitutionMod}, `}
-                                {intelligenceThrow && `INT +${intelligenceMod}, `}
-                                {wisdomThrow && `WIS +${wisdomMod}, `}
-                                {charismaThrow && `CHA +${charismaMod}, `}
-                            </p>
-                            <p>
-                                <strong>Skills:</strong>{" "}
-                                {Object.entries(selectedSkills).map(([skill, level]) => (
-                                    <span key={skill}>
+                        }}
+                      >
+                          <SpeedInput name={"Base"} setSpeed={setBaseSpeed} />
+                          <SpeedInput name={"Swim"} setSpeed={setSwimSpeed} />
+                          <SpeedInput name={"Fly"} setSpeed={setFlySpeed} />
+                          <SpeedInput name={"Climb"} setSpeed={setClimbSpeed} />
+                          <SpeedInput name={"Burrow"} setSpeed={setBurrowSpeed} />
+                      </div>
+                  </div>
+                  <div
+                    style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        flexDirection: "column",
+                        width: "100%",
+                        marginTop: "2%",
+                        paddingBottom: "2%",
+                        borderBottom: "3px solid #fff",
+                    }}
+                  >
+                      <Text h3>Attributes:</Text>
+                      <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "space-around",
+                            alignItems: "center",
+                            width: "100%",
+                        }}
+                      >
+                          <Grid.Container gap={2} justify="space-around">
+                              <Grid sm={4}>
+                                  <AttributeInput name={"Strength"} value={strength} setValue={(value) => {
+                                      setSetters(parseInt(value), setStrength, setStrengthMod)
+                                  }} />
+                              </Grid>
+                              <Grid sm={4}>
+                                  <AttributeInput name={"Dexterity"} value={dexterity} setValue={(value) => {
+                                      setSetters(parseInt(value), setDexterity, setDexterityMod)
+                                  }} />
+                              </Grid>
+                              <Grid sm={4}>
+                                  <AttributeInput name={"Constitution"} value={constitution} setValue={(value) => {
+                                      setSetters(parseInt(value), setConstitution, setConstitutionMod)
+                                  }} />
+                              </Grid>
+                              <Grid sm={4}>
+                                  <AttributeInput name={"Intelligence"} value={intelligence} setValue={(value) => {
+                                      setSetters(parseInt(value), setIntelligence, setIntelligenceMod)
+                                  }} />
+                              </Grid>
+                              <Grid sm={4}>
+                                  <AttributeInput name={"Wisdom"} value={wisdom} setValue={(value) => {
+                                      setSetters(parseInt(value), setWisdom, setWisdomMod)
+                                  }} />
+                              </Grid>
+                              <Grid sm={4}>
+                                  <AttributeInput name={"Charisma"} value={charisma} setValue={(value) => {
+                                      setSetters(parseInt(value), setCharisma, setCharismaMod)
+                                  }} />
+                              </Grid>
+                          </Grid.Container>
+                      </div>
+                  </div>
+                  <div
+                    style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        flexDirection: "row",
+                        width: "100%",
+                        marginTop: "2%",
+                        paddingBottom: "2%",
+                        borderBottom: "3px solid #fff",
+                    }}
+                  >
+                      <div
+                        style={{
+                            flex: "2",
+                        }}
+                      >
+                          <Text h3>Challenge Rating:</Text>
+                          <ChallengeRatingInput value={challengeRating} setChallengeRating={setChallengeRating} />
+                      </div>
+                      <Spacer x={2} />
+                      <div
+                        style={{
+                            flex: "2",
+                        }}
+                      >
+                          <Text h3> Proficiency Bonus: </Text>
+                          <Text h4> PB = {proficiencyBonus} </Text>
+                      </div>
+                  </div>
+                  <div
+                    style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        flexDirection: "column",
+                        width: "100%",
+                        marginTop: "2%",
+                        paddingBottom: "2%",
+                        borderBottom: "3px solid #fff",
+                    }}
+                  >
+                      <Text h3>Saving Throws:</Text>
+                      <Text h4>Proficient Saving Throws:</Text>
+                      <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-around",
+                        }}
+                      >
+                          <Grid.Container gap={2} justify="space-around">
+                              <Grid sm={4} justify={"center"}>
+                                  <div
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        width: "100%",
+                                    }}
+                                  >
+                                      <Checkbox css={{ flex: "1", marginBottom: "5%" }}
+                                                onChange={setStrengthThrow}>STR</Checkbox>
+                                      <Tooltip isDisabled={strengthThrow}
+                                               content={"Select saving throw to enable modifier"} color={"primary"}
+                                               hideArrow>
+                                          <Input disabled={!strengthThrow} type={"number"} bordered
+                                                 status={!strengthThrow ? "error" : "primary"} labelPlaceholder={"STR"}
+                                                 css={{ flex: "1" }} />
+                                      </Tooltip>
+                                  </div>
+                              </Grid>
+                              <Grid sm={4} justify={"center"}>
+                                  <div
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        width: "100%",
+                                    }}
+                                  >
+                                      <Checkbox css={{ flex: "1", marginBottom: "5%" }}
+                                                onChange={setDexterityThrow}>DEX</Checkbox>
+                                      <Tooltip isDisabled={dexterityThrow}
+                                               content={"Select saving throw to enable modifier"} color={"primary"}
+                                               hideArrow>
+                                          <Input disabled={!dexterityThrow} type={"number"} bordered
+                                                 status={!dexterityThrow ? "error" : "primary"} labelPlaceholder={"DEX"}
+                                                 css={{ flex: "1" }} />
+                                      </Tooltip>
+                                  </div>
+                              </Grid>
+                              <Grid sm={4} justify={"center"}>
+                                  <div
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        width: "100%",
+                                    }}
+                                  >
+                                      <Checkbox css={{ flex: "1", marginBottom: "5%" }}
+                                                onChange={setConstitutionThrow}>CON</Checkbox>
+                                      <Tooltip isDisabled={constitutionThrow}
+                                               content={"Select saving throw to enable modifier"} color={"primary"}
+                                               hideArrow>
+                                          <Input disabled={!constitutionThrow} type={"number"} bordered
+                                                 status={!constitutionThrow ? "error" : "primary"}
+                                                 labelPlaceholder={"CON"} css={{ flex: "1" }} />
+                                      </Tooltip>
+                                  </div>
+                              </Grid>
+                              <Grid sm={4} justify={"center"}>
+                                  <div
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        width: "100%",
+                                    }}
+                                  >
+                                      <Checkbox css={{ flex: "1", marginBottom: "5%" }}
+                                                onChange={setIntelligenceThrow}>INT</Checkbox>
+                                      <Tooltip isDisabled={intelligenceThrow}
+                                               content={"Select saving throw to enable modifier"} color={"primary"}
+                                               hideArrow>
+                                          <Input disabled={!intelligenceThrow} type={"number"} bordered
+                                                 status={!intelligenceThrow ? "error" : "primary"}
+                                                 labelPlaceholder={"INT"} css={{ flex: "1" }} />
+                                      </Tooltip>
+                                  </div>
+                              </Grid>
+                              <Grid sm={4} justify={"center"}>
+                                  <div
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        width: "100%",
+                                    }}
+                                  >
+                                      <Checkbox css={{ flex: "1", marginBottom: "5%" }}
+                                                onChange={setWisdomThrow}>WIS</Checkbox>
+                                      <Tooltip isDisabled={wisdomThrow}
+                                               content={"Select saving throw to enable modifier"} color={"primary"}
+                                               hideArrow>
+                                          <Input disabled={!wisdomThrow} type={"number"} bordered
+                                                 status={!wisdomThrow ? "error" : "primary"} labelPlaceholder={"WIS"}
+                                                 css={{ flex: "1" }} />
+                                      </Tooltip>
+                                  </div>
+                              </Grid>
+                              <Grid sm={4} justify={"center"}>
+                                  <div
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        width: "100%",
+                                    }}
+                                  >
+                                      <Checkbox css={{ flex: "1", marginBottom: "5%" }}
+                                                onChange={setCharismaThrow}>CHA</Checkbox>
+                                      <Tooltip isDisabled={charismaThrow}
+                                               content={"Select saving throw to enable modifier"} color={"primary"}
+                                               hideArrow>
+                                          <Input disabled={!charismaThrow} type={"number"} bordered
+                                                 status={!charismaThrow ? "error" : "primary"} labelPlaceholder={"CHA"}
+                                                 css={{ flex: "1" }} />
+                                      </Tooltip>
+                                  </div>
+                              </Grid>
+                          </Grid.Container>
+                      </div>
+                  </div>
+                  <div
+                    style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        flexDirection: "column",
+                        width: "100%",
+                        marginTop: "2%",
+                        paddingBottom: "2%",
+                        borderBottom: "3px solid #fff",
+                    }}
+                  >
+                      <Text h3 css={{ flex: "1" }}>Skills: </Text>
+                      <Table
+                        bordered
+                        compact
+                        shadow={false}
+                        aria-label={"Skills selection table"}
+                        css={{
+                            flex: "1",
+                            height: "auto",
+                        }}
+                      >
+                          <Table.Header>
+                              <Table.Column width="40%">SKILLS</Table.Column>
+                              <Table.Column width="20%">PROFICIENT</Table.Column>
+                              <Table.Column width="20%">EXPERTISE</Table.Column>
+                              <Table.Column width="20%">MODIFIER</Table.Column>
+                          </Table.Header>
+                          <Table.Body>
+                              {skillItems.map((skill: { name: string, proficiencyLevel: ProficiencyLevel, relatedAbName: string }, index: React.Key) => (
+                                <Table.Row key={index}>
+                                    <Table.Cell>{skill.name}</Table.Cell>
+                                    <Table.Cell>
+                                        <Checkbox
+                                          isSelected={selectedSkills[skill.name] === "proficient"}
+                                          onChange={() =>
+                                            handleCheckboxChange(skill, "proficient")
+                                          }
+                                        />
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        <Checkbox
+                                          isSelected={selectedSkills[skill.name] === "expertise"}
+                                          onChange={() =>
+                                            handleCheckboxChange(skill, "expertise")
+                                          }
+                                        />
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        {
+                                            selectedSkills[skill.name] === "proficient"
+                                              ? findMod(skill.relatedAbName) + " + " + proficiencyBonus + " = " + (findMod(skill.relatedAbName) + proficiencyBonus)
+                                              : selectedSkills[skill.name] === "expertise"
+                                                ? findMod(skill.relatedAbName) + " x 2 + " + proficiencyBonus + " = " + (findMod(skill.relatedAbName) * 2 + proficiencyBonus)
+                                                : "-----"
+                                        }
+                                    </Table.Cell>
+                                </Table.Row>
+                              ))}
+                          </Table.Body>
+                      </Table>
+                  </div>
+                  <div
+                    style={{
+                        width: "100%",
+                        paddingBottom: "2%",
+                        borderBottom: "3px solid #fff",
+                    }}
+                  >
+                      <Text h3 css={{ marginTop: "2%" }}>Damage Vulnerabilities: </Text>
+                      <Checkbox.Group
+                        orientation={"horizontal"}
+                        label={"Select Damage Vulnerabilities"}
+                        value={selectedDamageVulnerabilities}
+                        onChange={setSelectedDamageVulnerabilities}
+                        css={{ paddingBottom: "2%", borderBottom: "3px solid #fff" }}
+                      >
+                          {damageTypeItems.map((damageType: { name: string }, index: React.Key) => (
+                            <Checkbox key={index} value={damageType.name}
+                                      css={{ width: "250px", marginTop: "5px" }}>{damageType.name}</Checkbox>
+                          ))}
+                      </Checkbox.Group>
+                      <Text h3 css={{ marginTop: "2%" }}>Damage Resistances: </Text>
+                      <Checkbox.Group
+                        orientation={"horizontal"}
+                        label={"Select Damage Resistances"}
+                        value={selectedDamageResistances}
+                        onChange={setSelectedDamageResistances}
+                        css={{ paddingBottom: "2%", borderBottom: "3px solid #fff" }}
+                      >
+                          {damageTypeItems.map((damageType: { name: string }, index: React.Key) => (
+                            <Checkbox key={index} value={damageType.name}
+                                      css={{ width: "250px", marginTop: "5px" }}>{damageType.name}</Checkbox>
+                          ))}
+                      </Checkbox.Group>
+                      <Text h3 css={{ marginTop: "2%" }}>Damage Immunities: </Text>
+                      <Checkbox.Group
+                        orientation={"horizontal"}
+                        label={"Select Damage Immunities"}
+                        value={selectedDamageImmunities}
+                        onChange={setSelectedDamageImmunities}
+                        css={{ paddingBottom: "2%", borderBottom: "3px solid #fff" }}
+                      >
+                          {damageTypeItems.map((damageType: { name: string }, index: React.Key) => (
+                            <Checkbox key={index} value={damageType.name}
+                                      css={{ width: "250px", marginTop: "5px" }}>{damageType.name}</Checkbox>
+                          ))}
+                      </Checkbox.Group>
+                      <Text h3 css={{ marginTop: "2%" }}>Condition Immunities: </Text>
+                      <Checkbox.Group
+                        orientation={"horizontal"}
+                        label={"Select Condition Immunities"}
+                        value={selectedConditionImmunities}
+                        onChange={setSelectedConditionImmunities}
+                        css={{ paddingBottom: "2%", borderBottom: "3px solid #fff" }}
+                      >
+                          {conditionItems.map((condition: { name: string }, index: React.Key) => (
+                            <Checkbox key={index} value={condition.name}
+                                      css={{ width: "250px", marginTop: "5px" }}>{condition.name}</Checkbox>
+                          ))}
+                      </Checkbox.Group>
+                      <Text h3 css={{ marginTop: "2%" }}>Senses: </Text>
+                      <Table
+                        bordered
+                        compact
+                        shadow={false}
+                        aria-label={"Senses selection table"}
+                        css={{
+                            flex: "1",
+                            height: "auto",
+                        }}
+                      >
+                          <Table.Header>
+                              <Table.Column>SENSES</Table.Column>
+                              <Table.Column>DISTANCE</Table.Column>
+                              <Table.Column>MODIFIER</Table.Column>
+                          </Table.Header>
+                          <Table.Body>
+                              {senses.map((sense: { name: string, distance: number }, index: React.Key) => (
+                                <Table.Row key={index}>
+                                    <Table.Cell>
+                                        <Checkbox
+                                          onChange={() => handleSenseChange(sense)}
+                                        >
+                                            {sense.name}
+                                        </Checkbox>
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        <Input
+                                          type={"number"}
+                                          labelRight={"ft."}
+                                        />
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        <Checkbox>
+                                            Limited by range if checked
+                                        </Checkbox>
+                                    </Table.Cell>
+                                </Table.Row>
+                              ))}
+                          </Table.Body>
+                      </Table>
+                  </div>
+              </div>
+              <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    marginTop: "2%",
+                    paddingBottom: "2%",
+                    borderBottom: "3px solid #fff",
+                }}
+              >
+                  <Button onPress={handleButtonClick}>Go Back</Button>
+                  <Spacer x={0.5} />
+                  <Button onPress={handlePreviewButtonClick}>Preview Creature</Button>
+                  {showToast &&
+                    <ToastContainer
+                      position="bottom-center"
+                      autoClose={false}
+                      newestOnTop={false}
+                      closeOnClick
+                      rtl={false}
+                      pauseOnFocusLoss
+                      draggable
+                      theme="colored"
+                    />
+                  }
+              </div>
+          </Container>
+        }
+        {previewCreature &&
+          <Container md>
+              <div className="creature-container" id="creature-container">
+                  <div id="ignorePDF">
+                    <div className="creature-stat-block">
+                        <Button onPress={handleSaveToPdfClick}>Save to PDF</Button>
+                      <h2>{name || "Unnamed Creature"}</h2>
+                      <p>
+                          <strong>Size:</strong> {selectedSize || "----"} |{" "}
+                          <strong>Type:</strong> {selectedType || "----"} |{" "}
+                          <strong>Subtype:</strong> {selectedSubtype || "----"} |{" "}
+                          <strong>Alignment:</strong> {selectedAlignment || "----"}
+                      </p>
+                      <p>
+                          <strong>Armor Class:</strong> {selectedArmorClass || "----"} (
+                          {selectedArmorType || "----"}) |{" "}
+                          <strong>Hit
+                              Dice:</strong> {numHitDice ? `${numHitDice}d${selectedSize ? `${hitDiceValue} + ${constitutionMod ? constitutionMod : "----"}` : "----"}` : "----"}
+                      </p>
+                      <p>
+                          <strong>Speed:</strong> Base {baseSpeed} ft. {flySpeed > 0 && `| Fly ${flySpeed} ft.`} {swimSpeed > 0 && `| Swim ${swimSpeed} ft.`} {climbSpeed > 0 && `| Climb ${climbSpeed} ft.`} {burrowSpeed > 0 && `| Burrow ${burrowSpeed} ft.`}
+                      </p>
+                      <p>
+                          <strong>STR:</strong> {strength} ({strengthMod}) |{" "}
+                          <strong>DEX:</strong> {dexterity} ({dexterityMod}) |{" "}
+                          <strong>CON:</strong> {constitution} ({constitutionMod})
+                          <br />
+                          <strong>INT:</strong> {intelligence} ({intelligenceMod}) |{" "}
+                          <strong>WIS:</strong> {wisdom} ({wisdomMod}) |{" "}
+                          <strong>CHA:</strong> {charisma} ({charismaMod})
+                      </p>
+                      <p>
+                          <strong>Saving Throws:</strong>{" "}
+                          {strengthThrow && `STR +${strengthMod}, `}
+                          {dexterityThrow && `DEX +${dexterityMod}, `}
+                          {constitutionThrow && `CON +${constitutionMod}, `}
+                          {intelligenceThrow && `INT +${intelligenceMod}, `}
+                          {wisdomThrow && `WIS +${wisdomMod}, `}
+                          {charismaThrow && `CHA +${charismaMod}, `}
+                      </p>
+                      <p>
+                          <strong>Skills:</strong>{" "}
+                          {Object.entries(selectedSkills).map(([skill, level]) => (
+                            <span key={skill}>
                                     {skill}: {level} |{" "}
                                 </span>
-                                ))}
-                            </p>
-                            <p>
-                                <strong>Damage Vulnerabilities:</strong>{" "}
-                                {selectedDamageVulnerabilities.join(", ") || "None"}
-                            </p>
-                            <p>
-                                <strong>Damage Resistances:</strong>{" "}
-                                {selectedDamageResistances.join(", ") || "None"}
-                            </p>
-                            <p>
-                                <strong>Damage Immunities:</strong>{" "}
-                                {selectedDamageImmunities.join(", ") || "None"}
-                            </p>
-                            <p>
-                                <strong>Condition Immunities:</strong>{" "}
-                                {selectedConditionImmunities.join(", ") || "None"}
-                            </p>
-                            <p>
-                                <strong>Senses:</strong>{" "}
-                                {blindsight && "Blindsight, "}
-                                {darkvision && "Darkvision, "}
-                                {tremorsense && "Tremorsense, "}
-                                {truesight && "Truesight, "}
-                                {passivePerception && "Passive Perception"}
-                            </p>
-                            <p>
-                                <strong>Challenge Rating:</strong> {challengeRating}
-                            </p>
-                            <div style={{display: 'flex', justifyContent: 'flex-start'}}>
-                                <Button onPress={handlePreviewButtonClick}>Go Back</Button>
-                                <Spacer x={0.5} />
-                                <Button>Save to PDF</Button>
-                            </div>
-                        </div>
-                        <div className="creature-image-container">
-                            <img src="https://nextui.org/images/card-example-4.jpeg" alt="Creature Image" className="creature-image" />
-                        </div>
+                          ))}
+                      </p>
+                      <p>
+                          <strong>Damage Vulnerabilities:</strong>{" "}
+                          {selectedDamageVulnerabilities.join(", ") || "None"}
+                      </p>
+                      <p>
+                          <strong>Damage Resistances:</strong>{" "}
+                          {selectedDamageResistances.join(", ") || "None"}
+                      </p>
+                      <p>
+                          <strong>Damage Immunities:</strong>{" "}
+                          {selectedDamageImmunities.join(", ") || "None"}
+                      </p>
+                      <p>
+                          <strong>Condition Immunities:</strong>{" "}
+                          {selectedConditionImmunities.join(", ") || "None"}
+                      </p>
+                      <p>
+                          <strong>Senses:</strong>{" "}
+                          {blindsight && "Blindsight, "}
+                          {darkvision && "Darkvision, "}
+                          {tremorsense && "Tremorsense, "}
+                          {truesight && "Truesight, "}
+                          {passivePerception && "Passive Perception"}
+                      </p>
+                      <p>
+                          <strong>Challenge Rating:</strong> {challengeRating}
+                      </p>
+                      <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                          <Button onPress={handlePreviewButtonClick}>Go Back</Button>
+                          <Spacer x={0.5} />
+                          <Button>Save to PDF</Button>
+                      </div>
+                  </div>
+                  <div className="creature-image-container">
+                      <img src="https://nextui.org/images/card-example-4.jpeg" alt="Creature Image"
+                           className="creature-image" />
                     </div>
-                </Container>
-            }
-        </NextUIProvider>
-    );
+                  </div>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                  <Button onPress={handlePreviewButtonClick}>Go Back</Button>
+                  <Spacer x={0.5} />
+                  <Button onPress={handleSaveToPdfClick}>Save to PDF</Button>
+              </div>
+          </Container>
+
+
+        }
+    </NextUIProvider></>;
+    return nextUIProvider;
 };
 
 export default CreatureCreator;

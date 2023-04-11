@@ -146,11 +146,15 @@ const SearchAndFilter: React.FC = () => {
                     <p>Global AND</p>
                     <Switch onChange={changeAnd} checked={andToggle}/>
                     <Button onPress={openModal}>Go!</Button>
-                    <Modal width="900px"
+                    <Modal scroll
+                           closeButton
+                           fullScreen
                            open={isModalOpen} onClose={() => {
                         setIsModalOpen(false)
                     }}>
-                        <CreatureDatabase searchQuery={searchQuery}/>
+                        <div style={{overflow: 'auto'}}>
+                            <CreatureDatabase searchQuery={searchQuery}/>
+                        </div>
                     </Modal>
                 </div>
                     <div
@@ -246,7 +250,15 @@ const SearchAndFilter: React.FC = () => {
                             justifyContent: "center",
                         }}
                     >
-                        <Grid.Container gap={1} justify="space-around" css={{width: width > 1500 ? "60%" : "80%"}}>
+                        <Grid.Container gap={1}
+                                        justify="space-around"
+                                        css={{
+                                            width: width > 1500 ? "80%" : "100%",
+                                            display: "flex",
+                                            flexWrap: "nowrap",
+                                            overflowX: "auto",
+                                        }}
+                        >
                             <Grid>
                                 <StrengthCard/>
                             </Grid>
