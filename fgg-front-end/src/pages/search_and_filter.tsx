@@ -6,15 +6,11 @@ import {CharCard, ConCard, DexCard, IntCard, StrengthCard, WisCard} from "../com
 import React, {useEffect, useState} from "react";
 import {createTheme} from "@nextui-org/react";
 import CreatureDatabase from "../pages/creature-database";
-import {add} from "husky";
 
 const theme = createTheme({
     type: "dark",
 });
 
-
-// TODO
-// clean up the mess I made with addANDorOR, etc
 const SearchAndFilter: React.FC = () => {
 
     // searchQuery that will be passed to creature-database in the modal window
@@ -26,6 +22,12 @@ const SearchAndFilter: React.FC = () => {
     // called when user flips the switch on the page (in return body below)
     const changeAnd = () => {
         setAndToggle(!andToggle);
+    };
+
+    const [alphToggle, setAlphToggle] = useState<boolean>(false);
+
+    const changeAlph = () => {
+        setAlphToggle(!alphToggle);
     };
 
     const [width, setWidth] = React.useState(window.innerWidth * 1.5);
@@ -40,7 +42,6 @@ const SearchAndFilter: React.FC = () => {
     }, []);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [searching, setSearching] = useState(false);
 
     // called when user selects the Go! button after putting in their search params
     // sets searchQuery to the string of non-empty key value pairs concatenated together
@@ -54,17 +55,9 @@ const SearchAndFilter: React.FC = () => {
         for (let i = 0; i < keys.length; i++) {
             // finds values that aren't empty (i.e, user is looking for them)
             // and appends them to m_searchstring
-            if (values[i] !== "" && keys[i][0] !== 'r') {
+            if (values[i] !== "" && values[i] !== '0,99') { // range of 0 to 99 means don't search by it
                 keys[i] = '&' + keys[i];        // appends & to front of each key - proper URL syntax
                 m_searchString += keys[i] + values[i];
-            }
-                //TODO
-                // Have all ranges keys start with r (and in route as well for simplicity)
-                // I foresee an issue if min_health and max_health are not right next to each other
-                // delimit on , and check instead of having two vars?!
-            else if (keys[i][0] == 'r') {
-                console.log("range")
-                // append to search string differently, make sure chunk still starts with &
             }
         }
 
@@ -76,25 +69,19 @@ const SearchAndFilter: React.FC = () => {
     // The list of attributes available to search for and the values the user gives them
     const [attbValPairs, setAVpairs] = useState([
         {key: "gAND=", value: andToggle.toString()},
+        {key: "sortAlphOn=", value: alphToggle.toString()},
         {key: "name1=", value: ""},
         {key: "xp_val=", value: ""},
         {key: "m_size=", value: ""},
         {key: "m_ac=", value: ""},
-        // ranges need their own seperate string, looping thru and appending won't work
-        // needs to look like `minLevel=${minLevel}&maxLevel=${maxLevel}`
-        // simplest way I can see is to add R, check for it?
-        {key: "rMinAC", value: ""},
-        // note we can already add m_ac to the URL, so we don't need to add r versions to route
-        {key: "rMaxAC", value: ""},
-        {key: "rMin_hp", value: ""},
-        {key: "rMax_hp", value: ""},
         {key: "str=", value: ""},
         {key: "dex=", value: ""},
         {key: "con=", value: ""},
         {key: "int=", value: ""},
         {key: "wis=", value: ""},
         {key: "chr=", value: ""},
-        {key: "hp=", value: ""}
+        {key: "hp=", value: ""},
+        {key: "author=", value: ""}
 
     ]);
 
@@ -102,6 +89,11 @@ const SearchAndFilter: React.FC = () => {
     useEffect(() => {
         handleSpecificValueChange("gAND=", andToggle.toString())
     }, [andToggle]);
+
+    // updates whether or not user wants their results sorted alphabetically by name
+    useEffect(() => {
+        handleSpecificValueChange("sortAlphOn=", alphToggle.toString())
+    }, [alphToggle]);
 
     // updates attbValPairs at key: string with string user passes in
     // called in the return statement below whenever we need to get a value the user passes in
@@ -112,7 +104,6 @@ const SearchAndFilter: React.FC = () => {
             newList[itemIndex] = {...newList[itemIndex], value: newValue};
             setAVpairs(newList);
         }
-        console.log(attbValPairs);
     };
 
     // @ts-ignore
@@ -155,12 +146,15 @@ const SearchAndFilter: React.FC = () => {
                     <p>Global AND</p>
                     <Switch onChange={changeAnd} checked={andToggle}/>
                     <Button onPress={openModal}>Go!</Button>
-                    <Modal width="600px"
+                    <Modal scroll
+                           closeButton
+                           fullScreen
                            open={isModalOpen} onClose={() => {
-                        setSearching(false);
                         setIsModalOpen(false)
                     }}>
-                        <CreatureDatabase searchQuery={searchQuery}/>
+                        <div style={{overflow: 'auto'}}>
+                            <CreatureDatabase searchQuery={searchQuery}/>
+                        </div>
                     </Modal>
                 </div>
                     <div
@@ -186,6 +180,8 @@ const SearchAndFilter: React.FC = () => {
                             bordered
                             color="primary"
                             width="50%"
+                            value={attbValPairs.find(item => item.key === "m_size=")?.value || ""}
+                            onChange={event => handleSpecificValueChange("m_size=", event.target.value)}
                         />
                     </div>
                     <div
@@ -254,7 +250,15 @@ const SearchAndFilter: React.FC = () => {
                             justifyContent: "center",
                         }}
                     >
-                        <Grid.Container gap={1} justify="space-around" css={{width: width > 1500 ? "60%" : "80%"}}>
+                        <Grid.Container gap={1}
+                                        justify="space-around"
+                                        css={{
+                                            width: width > 1500 ? "80%" : "100%",
+                                            display: "flex",
+                                            flexWrap: "nowrap",
+                                            overflowX: "auto",
+                                        }}
+                        >
                             <Grid>
                                 <StrengthCard/>
                             </Grid>
@@ -317,6 +321,18 @@ const SearchAndFilter: React.FC = () => {
                             />
                         </div>
                     </div>
+                <p>Sort Alphabetically</p>
+                <Switch onChange={changeAlph} checked={alphToggle}/>
+                <Text h3 css={{flex: "1"}}>Author:</Text>
+                <Input
+                    css={{flex: "3"}}
+                    bordered
+                    color="primary"
+                    value={attbValPairs.find(item => item.key === "author=")?.value || ""}
+                    onChange={event => handleSpecificValueChange("author=", event.target.value)}
+                    width="50%"
+                    size="xl"
+                />
                     <div
                         style={{
                             display: "flex",
@@ -324,7 +340,6 @@ const SearchAndFilter: React.FC = () => {
                             border: "1px solid white",
                         }}
                     >
-
                 </div>
             </Container>
         </NextUIProvider>
