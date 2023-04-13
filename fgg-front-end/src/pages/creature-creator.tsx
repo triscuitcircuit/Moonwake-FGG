@@ -25,9 +25,7 @@ import './creature-creator.css';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import AdminPanel from "../components/AdminPanel";
-import jsPDF from 'jspdf';
-
-
+import { Document, Page, View, Text as TextPDF, StyleSheet, PDFDownloadLink, Image as ImagePDF } from "@react-pdf/renderer";
 
 const theme = createTheme({
     type: "dark",
@@ -115,6 +113,121 @@ const CreatureCreator: React.FC = () => {
     const [showToast, setShowToast] = useState<boolean>(true);
     const [showAllToasts, setShowAllToasts] = useState<boolean>(false);
     const [showDivBorders, setShowDivBorders] = useState<boolean>(false);
+
+    const styles = StyleSheet.create({
+        page: {
+            flexDirection: "row",
+            backgroundColor: "#E4E4E4"
+        },
+        section: {
+            margin: 10,
+            padding: 10,
+            flexGrow: 1
+        },
+        title: {
+            fontSize: 24,
+            textAlign: "center",
+            textTransform: "uppercase"
+        },
+        subtitle: {
+            fontSize: 18,
+            margin: 12
+        },
+        bold: {
+            fontWeight: "bold"
+        },
+        text: {
+            margin: 12,
+            fontSize: 14,
+            textAlign: "justify",
+        }
+    });
+
+    const CreaturePDF = () => (
+        <Document>
+            <Page size="A4" style={styles.page}>
+                <View style={styles.section}>
+                    <TextPDF style={styles.title}>{name || "Unnamed Creature"}</TextPDF>
+                    <View style={styles.section}>
+                        <TextPDF style={styles.subtitle}>Tags</TextPDF>
+                        <TextPDF style={styles.text}>
+                            <TextPDF style={styles.bold}>Size:</TextPDF> {selectedSize || "----"} |{" "}
+                            <TextPDF style={styles.bold}>Type:</TextPDF> {selectedType || "----"} |{" "}
+                            <TextPDF style={styles.bold}>Subtype:</TextPDF> {selectedSubtype || "----"} |{" "}
+                            <TextPDF style={styles.bold}>Alignment:</TextPDF> {selectedAlignment || "----"}
+                        </TextPDF>
+                        <TextPDF style={styles.subtitle}>
+                            <TextPDF style={styles.bold}>Armor Class:</TextPDF> {selectedArmorClass || "----"} (
+                            {selectedArmorType || "----"}) |{" "}
+                            <Text style={styles.bold}>Hit Dice:</Text> {numHitDice ? `${numHitDice}d${selectedSize ? `${hitDiceValue} + ${constitutionMod ? constitutionMod : "----"}` : "----"}` : "----"}
+                        </TextPDF>
+                        <TextPDF style={styles.subtitle}>
+                            <TextPDF style={styles.bold}>Speed:</TextPDF> Base {baseSpeed} ft. {flySpeed > 0 && `| Fly ${flySpeed} ft.`} {swimSpeed > 0 && `| Swim ${swimSpeed} ft.`} {climbSpeed > 0 && `| Climb ${climbSpeed} ft.`} {burrowSpeed > 0 && `| Burrow ${burrowSpeed} ft.`}
+                        </TextPDF>
+                        <TextPDF style={styles.subtitle}>
+                            <TextPDF style={styles.bold}>STR:</TextPDF> {strength} ({strengthMod}) |{" "}
+                            <TextPDF style={styles.bold}>DEX:</TextPDF> {dexterity} ({dexterityMod}) |{" "}
+                            <TextPDF style={styles.bold}>CON:</TextPDF> {constitution} ({constitutionMod})
+                        </TextPDF>
+                        <TextPDF style={styles.subtitle}>
+                            <TextPDF style={styles.bold}>INT:</TextPDF> {intelligence} ({intelligenceMod}) |{" "}
+                            <TextPDF style={styles.bold}>WIS:</TextPDF> {wisdom} ({wisdomMod}) |{" "}
+                            <TextPDF style={styles.bold}>CHA:</TextPDF> {charisma} ({charismaMod})
+                        </TextPDF>
+                        <TextPDF style={styles.subtitle}>
+                            <TextPDF style={styles.bold}>Saving Throws:</TextPDF>{" "}
+                            {strengthThrow && `STR +${strengthMod}, `}
+                            {dexterityThrow && `DEX +${dexterityMod}, `}
+                            {constitutionThrow && `CON +${constitutionMod}, `}
+                            {intelligenceThrow && `INT +${intelligenceMod}, `}
+                            {wisdomThrow && `WIS +${wisdomMod}, `}
+                            {charismaThrow && `CHA +${charismaMod}, `}
+                        </TextPDF>
+                        <TextPDF style={styles.subtitle}>
+                            <TextPDF style={styles.bold}>Skills:</TextPDF>{" "}
+                            {Object.entries(selectedSkills).map(([skill, level]) => (
+                                <span key={skill}>
+                                            {skill}: {level} |{" "}
+                                        </span>
+                            ))}
+                        </TextPDF>
+                        <TextPDF style={styles.subtitle}>
+                            <TextPDF style={styles.bold}>Damage Vulnerabilities:</TextPDF>{" "}
+                            {selectedDamageVulnerabilities.join(", ") || "None"}
+                        </TextPDF>
+                        <TextPDF style={styles.subtitle}>
+                            <TextPDF style={styles.bold}>Damage Resistances:</TextPDF>{" "}
+                            {selectedDamageResistances.join(", ") || "None"}
+                        </TextPDF>
+                        <TextPDF style={styles.subtitle}>
+                            <TextPDF style={styles.bold}>Damage Immunities:</TextPDF>{" "}
+                            {selectedDamageImmunities.join(", ") || "None"}
+                        </TextPDF>
+                        <TextPDF style={styles.subtitle}>
+                            <TextPDF style={styles.bold}>Condition Immunities:</TextPDF>{" "}
+                            {selectedConditionImmunities.join(", ") || "None"}
+                        </TextPDF>
+                        <TextPDF style={styles.subtitle}>
+                            <TextPDF style={styles.bold}>Senses:</TextPDF>{" "}
+                            {blindsight && "Blindsight, "}
+                            {darkvision && "Darkvision, "}
+                            {tremorsense && "Tremorsense, "}
+                            {truesight && "Truesight, "}
+                            {passivePerception && "Passive Perception"}
+                        </TextPDF>
+                        <TextPDF style={styles.subtitle}>
+                            <TextPDF style={styles.bold}>Challenge Rating:</TextPDF> {challengeRating}
+                        </TextPDF>
+                    </View>
+                    <View style={styles.section}>
+                        <ImagePDF
+                            src="https://nextui.org/images/card-example-4.jpeg"
+                        />
+                    </View>
+                </View>
+            </Page>
+        </Document>
+    );
 
     const toggleToastVisibility = () => {
         setShowToast(!showToast);
@@ -219,18 +332,20 @@ const CreatureCreator: React.FC = () => {
     }
     */
 
-    const handleSaveToPdfClick = () => {
-        const doc = new jsPDF();
+    // const handleSaveToPdfClick = () => {
+    //     const doc = new jsPDF();
+    //
+    //     // Get the creature container element and add it to the PDF document
+    //     const creatureContainer = document.getElementById('creature-container');
+    //     doc.html(creatureContainer, {
+    //         callback: () => {
+    //             // Save the PDF document
+    //             doc.save('creature.pdf');
+    //         },
+    //     });
+    // };
 
-        // Get the creature container element and add it to the PDF document
-        const creatureContainer = document.getElementById('creature-container');
-        doc.html(creatureContainer, {
-            callback: () => {
-                // Save the PDF document
-                doc.save('creature.pdf');
-            },
-        });
-    };
+
     /* ---------------------------------------------------------------------------------- */
     /* setSetters is called by the attributeInput component to set the value and modifier */
     /* ---------------------------------------------------------------------------------- */
@@ -811,9 +926,9 @@ const CreatureCreator: React.FC = () => {
         }
     }, [selectedSize, showAllToasts]);
 
-    // @ts-ignore
-    // @ts-ignore
-    let nextUIProvider = <><NextUIProvider theme={theme}>
+    //@ts-ignore
+    return (
+    <NextUIProvider>
         <Container md>
             <div
               style={{
@@ -1655,103 +1770,97 @@ const CreatureCreator: React.FC = () => {
           </Container>
         }
         {previewCreature &&
-          <Container md>
-              <div className="creature-container" id="creature-container">
-                  <div id="ignorePDF">
+            <Container md>
+                <div className="creature-container">
                     <div className="creature-stat-block">
-                        <Button onPress={handleSaveToPdfClick}>Save to PDF</Button>
-                      <h2>{name || "Unnamed Creature"}</h2>
-                      <p>
-                          <strong>Size:</strong> {selectedSize || "----"} |{" "}
-                          <strong>Type:</strong> {selectedType || "----"} |{" "}
-                          <strong>Subtype:</strong> {selectedSubtype || "----"} |{" "}
-                          <strong>Alignment:</strong> {selectedAlignment || "----"}
-                      </p>
-                      <p>
-                          <strong>Armor Class:</strong> {selectedArmorClass || "----"} (
-                          {selectedArmorType || "----"}) |{" "}
-                          <strong>Hit
-                              Dice:</strong> {numHitDice ? `${numHitDice}d${selectedSize ? `${hitDiceValue} + ${constitutionMod ? constitutionMod : "----"}` : "----"}` : "----"}
-                      </p>
-                      <p>
-                          <strong>Speed:</strong> Base {baseSpeed} ft. {flySpeed > 0 && `| Fly ${flySpeed} ft.`} {swimSpeed > 0 && `| Swim ${swimSpeed} ft.`} {climbSpeed > 0 && `| Climb ${climbSpeed} ft.`} {burrowSpeed > 0 && `| Burrow ${burrowSpeed} ft.`}
-                      </p>
-                      <p>
-                          <strong>STR:</strong> {strength} ({strengthMod}) |{" "}
-                          <strong>DEX:</strong> {dexterity} ({dexterityMod}) |{" "}
-                          <strong>CON:</strong> {constitution} ({constitutionMod})
-                          <br />
-                          <strong>INT:</strong> {intelligence} ({intelligenceMod}) |{" "}
-                          <strong>WIS:</strong> {wisdom} ({wisdomMod}) |{" "}
-                          <strong>CHA:</strong> {charisma} ({charismaMod})
-                      </p>
-                      <p>
-                          <strong>Saving Throws:</strong>{" "}
-                          {strengthThrow && `STR +${strengthMod}, `}
-                          {dexterityThrow && `DEX +${dexterityMod}, `}
-                          {constitutionThrow && `CON +${constitutionMod}, `}
-                          {intelligenceThrow && `INT +${intelligenceMod}, `}
-                          {wisdomThrow && `WIS +${wisdomMod}, `}
-                          {charismaThrow && `CHA +${charismaMod}, `}
-                      </p>
-                      <p>
-                          <strong>Skills:</strong>{" "}
-                          {Object.entries(selectedSkills).map(([skill, level]) => (
-                            <span key={skill}>
+                        <h2>{name || "Unnamed Creature"}</h2>
+                        <p>
+                            <strong>Size:</strong> {selectedSize || "----"} |{" "}
+                            <strong>Type:</strong> {selectedType || "----"} |{" "}
+                            <strong>Subtype:</strong> {selectedSubtype || "----"} |{" "}
+                            <strong>Alignment:</strong> {selectedAlignment || "----"}
+                        </p>
+                        <p>
+                            <strong>Armor Class:</strong> {selectedArmorClass || "----"} (
+                            {selectedArmorType || "----"}) |{" "}
+                            <strong>Hit Dice:</strong> {numHitDice ? `${numHitDice}d${selectedSize ? `${hitDiceValue} + ${constitutionMod ? constitutionMod : "----"}` : "----"}` : "----"}
+                        </p>
+                        <p>
+                            <strong>Speed:</strong> Base {baseSpeed} ft. {flySpeed > 0 && `| Fly ${flySpeed} ft.`} {swimSpeed > 0 && `| Swim ${swimSpeed} ft.`} {climbSpeed > 0 && `| Climb ${climbSpeed} ft.`} {burrowSpeed > 0 && `| Burrow ${burrowSpeed} ft.`}
+                        </p>
+                        <p>
+                            <strong>STR:</strong> {strength} ({strengthMod}) |{" "}
+                            <strong>DEX:</strong> {dexterity} ({dexterityMod}) |{" "}
+                            <strong>CON:</strong> {constitution} ({constitutionMod})
+                            <br/>
+                            <strong>INT:</strong> {intelligence} ({intelligenceMod}) |{" "}
+                            <strong>WIS:</strong> {wisdom} ({wisdomMod}) |{" "}
+                            <strong>CHA:</strong> {charisma} ({charismaMod})
+                        </p>
+                        <p>
+                            <strong>Saving Throws:</strong>{" "}
+                            {strengthThrow && `STR +${strengthMod}, `}
+                            {dexterityThrow && `DEX +${dexterityMod}, `}
+                            {constitutionThrow && `CON +${constitutionMod}, `}
+                            {intelligenceThrow && `INT +${intelligenceMod}, `}
+                            {wisdomThrow && `WIS +${wisdomMod}, `}
+                            {charismaThrow && `CHA +${charismaMod}, `}
+                        </p>
+                        <p>
+                            <strong>Skills:</strong>{" "}
+                            {Object.entries(selectedSkills).map(([skill, level]) => (
+                                <span key={skill}>
                                     {skill}: {level} |{" "}
                                 </span>
-                          ))}
-                      </p>
-                      <p>
-                          <strong>Damage Vulnerabilities:</strong>{" "}
-                          {selectedDamageVulnerabilities.join(", ") || "None"}
-                      </p>
-                      <p>
-                          <strong>Damage Resistances:</strong>{" "}
-                          {selectedDamageResistances.join(", ") || "None"}
-                      </p>
-                      <p>
-                          <strong>Damage Immunities:</strong>{" "}
-                          {selectedDamageImmunities.join(", ") || "None"}
-                      </p>
-                      <p>
-                          <strong>Condition Immunities:</strong>{" "}
-                          {selectedConditionImmunities.join(", ") || "None"}
-                      </p>
-                      <p>
-                          <strong>Senses:</strong>{" "}
-                          {blindsight && "Blindsight, "}
-                          {darkvision && "Darkvision, "}
-                          {tremorsense && "Tremorsense, "}
-                          {truesight && "Truesight, "}
-                          {passivePerception && "Passive Perception"}
-                      </p>
-                      <p>
-                          <strong>Challenge Rating:</strong> {challengeRating}
-                      </p>
-                      <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                          <Button onPress={handlePreviewButtonClick}>Go Back</Button>
-                          <Spacer x={0.5} />
-                          <Button>Save to PDF</Button>
-                      </div>
-                  </div>
-                  <div className="creature-image-container">
-                      <img src="https://nextui.org/images/card-example-4.jpeg" alt="Creature Image"
-                           className="creature-image" />
+                            ))}
+                        </p>
+                        <p>
+                            <strong>Damage Vulnerabilities:</strong>{" "}
+                            {selectedDamageVulnerabilities.join(", ") || "None"}
+                        </p>
+                        <p>
+                            <strong>Damage Resistances:</strong>{" "}
+                            {selectedDamageResistances.join(", ") || "None"}
+                        </p>
+                        <p>
+                            <strong>Damage Immunities:</strong>{" "}
+                            {selectedDamageImmunities.join(", ") || "None"}
+                        </p>
+                        <p>
+                            <strong>Condition Immunities:</strong>{" "}
+                            {selectedConditionImmunities.join(", ") || "None"}
+                        </p>
+                        <p>
+                            <strong>Senses:</strong>{" "}
+                            {blindsight && "Blindsight, "}
+                            {darkvision && "Darkvision, "}
+                            {tremorsense && "Tremorsense, "}
+                            {truesight && "Truesight, "}
+                            {passivePerception && "Passive Perception"}
+                        </p>
+                        <p>
+                            <strong>Challenge Rating:</strong> {challengeRating}
+                        </p>
+                        <div style={{display: 'flex', justifyContent: 'flex-start'}}>
+                            <Button onPress={handlePreviewButtonClick}>Go Back</Button>
+                            <Spacer x={0.5} />
+                            <Button>
+                                <PDFDownloadLink document={<CreaturePDF />} fileName="creature.pdf" style={{ color: "white" }}>
+                                    {({ blob, url, loading, error }) =>
+                                        loading ? 'Loading document...' : 'Download as PDF'
+                                    }
+                                </PDFDownloadLink>
+                            </Button>
+                        </div>
                     </div>
-                  </div>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                  <Button onPress={handlePreviewButtonClick}>Go Back</Button>
-                  <Spacer x={0.5} />
-                  <Button onPress={handleSaveToPdfClick}>Save to PDF</Button>
-              </div>
-          </Container>
-
-
+                    <div className="creature-image-container">
+                        <img src="https://nextui.org/images/card-example-4.jpeg" alt="Creature Image" className="creature-image" />
+                    </div>
+                </div>
+            </Container>
         }
-    </NextUIProvider></>;
-    return nextUIProvider;
+    </NextUIProvider>
+    );
 };
 
 export default CreatureCreator;
