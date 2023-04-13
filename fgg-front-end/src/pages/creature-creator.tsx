@@ -115,66 +115,73 @@ const CreatureCreator: React.FC = () => {
     const [showDivBorders, setShowDivBorders] = useState<boolean>(false);
 
     const styles = StyleSheet.create({
-        page: {
+        creature_container: {
+            display: "flex",
             flexDirection: "row",
-            backgroundColor: "#E4E4E4"
         },
-        section: {
-            margin: 10,
-            padding: 10,
-            flexGrow: 1
+        stat_block: {
+            flex: 1,
+            padding: 20,
+            border: "1px solid black",
         },
         title: {
+            paddingTop: 20,
             fontSize: 24,
             textAlign: "center",
-            textTransform: "uppercase"
         },
         subtitle: {
             fontSize: 18,
-            margin: 12
         },
         bold: {
-            fontWeight: "bold"
+            fontWeight: "bold",
         },
         text: {
-            margin: 12,
-            fontSize: 14,
-            textAlign: "justify",
+            fontSize: 11,
+        },
+        image: {
+            flex: 1,
+            padding: 20,
+            border: "1px solid black",
+        },
+        container: {
+            flexDirection: "column",
+        },
+        inLine: {
+            flex: 1,
         }
     });
 
     const CreaturePDF = () => (
         <Document>
-            <Page size="A4" style={styles.page}>
-                <View style={styles.section}>
-                    <TextPDF style={styles.title}>{name || "Unnamed Creature"}</TextPDF>
-                    <View style={styles.section}>
-                        <TextPDF style={styles.subtitle}>Tags</TextPDF>
+            <Page size="A4" style={styles.container}>
+                <TextPDF style={styles.title}>{name || "Unnamed Creature"}</TextPDF>
+                <View style={styles.creature_container}>
+                    <View style={styles.stat_block}>
                         <TextPDF style={styles.text}>
                             <TextPDF style={styles.bold}>Size:</TextPDF> {selectedSize || "----"} |{" "}
                             <TextPDF style={styles.bold}>Type:</TextPDF> {selectedType || "----"} |{" "}
                             <TextPDF style={styles.bold}>Subtype:</TextPDF> {selectedSubtype || "----"} |{" "}
                             <TextPDF style={styles.bold}>Alignment:</TextPDF> {selectedAlignment || "----"}
                         </TextPDF>
-                        <TextPDF style={styles.subtitle}>
+                        <TextPDF style={styles.text}>
                             <TextPDF style={styles.bold}>Armor Class:</TextPDF> {selectedArmorClass || "----"} (
                             {selectedArmorType || "----"}) |{" "}
                             <Text style={styles.bold}>Hit Dice:</Text> {numHitDice ? `${numHitDice}d${selectedSize ? `${hitDiceValue} + ${constitutionMod ? constitutionMod : "----"}` : "----"}` : "----"}
                         </TextPDF>
-                        <TextPDF style={styles.subtitle}>
+                        <TextPDF style={styles.text}>
                             <TextPDF style={styles.bold}>Speed:</TextPDF> Base {baseSpeed} ft. {flySpeed > 0 && `| Fly ${flySpeed} ft.`} {swimSpeed > 0 && `| Swim ${swimSpeed} ft.`} {climbSpeed > 0 && `| Climb ${climbSpeed} ft.`} {burrowSpeed > 0 && `| Burrow ${burrowSpeed} ft.`}
                         </TextPDF>
-                        <TextPDF style={styles.subtitle}>
+                        <TextPDF style={styles.text}>
                             <TextPDF style={styles.bold}>STR:</TextPDF> {strength} ({strengthMod}) |{" "}
                             <TextPDF style={styles.bold}>DEX:</TextPDF> {dexterity} ({dexterityMod}) |{" "}
                             <TextPDF style={styles.bold}>CON:</TextPDF> {constitution} ({constitutionMod})
                         </TextPDF>
-                        <TextPDF style={styles.subtitle}>
+                        <TextPDF style={styles.text}>
                             <TextPDF style={styles.bold}>INT:</TextPDF> {intelligence} ({intelligenceMod}) |{" "}
                             <TextPDF style={styles.bold}>WIS:</TextPDF> {wisdom} ({wisdomMod}) |{" "}
                             <TextPDF style={styles.bold}>CHA:</TextPDF> {charisma} ({charismaMod})
                         </TextPDF>
-                        <TextPDF style={styles.subtitle}>
+                        <TextPDF style={styles.text}>
                             <TextPDF style={styles.bold}>Saving Throws:</TextPDF>{" "}
                             {strengthThrow && `STR +${strengthMod}, `}
                             {dexterityThrow && `DEX +${dexterityMod}, `}
@@ -183,31 +190,31 @@ const CreatureCreator: React.FC = () => {
                             {wisdomThrow && `WIS +${wisdomMod}, `}
                             {charismaThrow && `CHA +${charismaMod}, `}
                         </TextPDF>
-                        <TextPDF style={styles.subtitle}>
+                        <TextPDF style={styles.text}>
                             <TextPDF style={styles.bold}>Skills:</TextPDF>{" "}
                             {Object.entries(selectedSkills).map(([skill, level]) => (
                                 <span key={skill}>
-                                            {skill}: {level} |{" "}
-                                        </span>
+                                {skill}: {level} |{" "}
+                            </span>
                             ))}
                         </TextPDF>
-                        <TextPDF style={styles.subtitle}>
+                        <TextPDF style={styles.text}>
                             <TextPDF style={styles.bold}>Damage Vulnerabilities:</TextPDF>{" "}
                             {selectedDamageVulnerabilities.join(", ") || "None"}
                         </TextPDF>
-                        <TextPDF style={styles.subtitle}>
+                        <TextPDF style={styles.text}>
                             <TextPDF style={styles.bold}>Damage Resistances:</TextPDF>{" "}
                             {selectedDamageResistances.join(", ") || "None"}
                         </TextPDF>
-                        <TextPDF style={styles.subtitle}>
+                        <TextPDF style={styles.text}>
                             <TextPDF style={styles.bold}>Damage Immunities:</TextPDF>{" "}
                             {selectedDamageImmunities.join(", ") || "None"}
                         </TextPDF>
-                        <TextPDF style={styles.subtitle}>
+                        <TextPDF style={styles.text}>
                             <TextPDF style={styles.bold}>Condition Immunities:</TextPDF>{" "}
                             {selectedConditionImmunities.join(", ") || "None"}
                         </TextPDF>
-                        <TextPDF style={styles.subtitle}>
+                        <TextPDF style={styles.text}>
                             <TextPDF style={styles.bold}>Senses:</TextPDF>{" "}
                             {blindsight && "Blindsight, "}
                             {darkvision && "Darkvision, "}
@@ -215,11 +222,11 @@ const CreatureCreator: React.FC = () => {
                             {truesight && "Truesight, "}
                             {passivePerception && "Passive Perception"}
                         </TextPDF>
-                        <TextPDF style={styles.subtitle}>
+                        <TextPDF style={styles.text}>
                             <TextPDF style={styles.bold}>Challenge Rating:</TextPDF> {challengeRating}
                         </TextPDF>
                     </View>
-                    <View style={styles.section}>
+                    <View style={styles.image}>
                         <ImagePDF
                             src="https://nextui.org/images/card-example-4.jpeg"
                         />
