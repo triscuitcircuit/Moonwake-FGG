@@ -3,7 +3,7 @@
     "module": "esnext",
     "esModuleInterop": true,
     "target": "es2022",
-    "types": ["vite/client"],
+    "types": ["vite/client", "node"],
     "noImplicitAny": true,
     "moduleResolution": "node",
     "sourceMap": true,

@@ -18,7 +18,7 @@ const theme = createTheme({
 interface Props {
     searchQuery: string;
 }
-// todo if searchQuery is "" or &gAND=true or &gAND=false - don't display the page changing stuff
+
 const CreatureDatabase = ({ searchQuery }: Props) => {
 
     const connection = new Connection("http://localhost:8080/api/gasymo_game_system_monster?" + searchQuery);
