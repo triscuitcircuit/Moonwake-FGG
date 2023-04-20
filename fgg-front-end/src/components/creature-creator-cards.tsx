@@ -9,6 +9,7 @@ interface AttributeInputProps {
     name: string;
     value: string;
     setValue: (value: string) => void;
+    testID: string;
 }
 
 interface SpeedInputProps {
@@ -41,7 +42,7 @@ export const StartNew: React.FC<Props> = ({ onButtonClick }) => (
         <Card.Divider />
         <Card.Footer>
             <Row justify="center">
-                <Button size="sm" onPress={onButtonClick}>Start</Button>
+                <Button size="sm" onPress={onButtonClick} data-testid="start-button">Start</Button>
             </Row>
         </Card.Footer>
     </Card>
@@ -251,6 +252,7 @@ export const SpeedInput: React.FC<SpeedInputProps> = ({name, setSpeed}) => {
         >
             <Text h5>{name}</Text>
             <Input
+                aria-label={`${name} speed input`}
                 type="number"
                 placeholder="----"
                 size="lg"
@@ -263,7 +265,7 @@ export const SpeedInput: React.FC<SpeedInputProps> = ({name, setSpeed}) => {
     );
 }
 
-export const AttributeInput: React.FC<AttributeInputProps> = ({name, value, setValue}) => {
+export const AttributeInput: React.FC<AttributeInputProps> = ({name, value, setValue, testID}) => {
 
     return (
         <div
@@ -278,18 +280,18 @@ export const AttributeInput: React.FC<AttributeInputProps> = ({name, value, setV
         >
             <Text h5>{name}</Text>
             <Dropdown>
-                <Dropdown.Button flat css={{ width: "100%"}}>
+                <Dropdown.Button flat css={{ width: "100%"}} data-testid={testID}>
                     {value}
                 </Dropdown.Button>
                 <Dropdown.Menu
-                    aria-label="${name} attribute menu"
+                    aria-label={`${name} dropdown`}
                     disallowEmptySelection
                     selectionMode="single"
                     css={{ maxHeight: "400px", overflow: "auto" }}
                     onAction={setValue}
                 >
                     {[...Array(100)].map((_, i) => (
-                        <Dropdown.Item key={i}>
+                        <Dropdown.Item key={i} textValue={`${i}`}>
                             {i}
                         </Dropdown.Item>
                     ))}
@@ -334,7 +336,7 @@ export const ChallengeRatingInput: React.FC<ChallengeRatingProps> = ({ value, se
                     onAction={setChallengeRating}
                 >
                     {dropdownItems.map((item) => (
-                        <Dropdown.Item key={item.key}>
+                        <Dropdown.Item key={item.key} textValue={item.key}>
                             {item.key}
                         </Dropdown.Item>
                     ))}

@@ -19,7 +19,7 @@ function App() {
                   <Routes>
                       <Route path="/" element={<HomeDemo />} />
                       <Route path="/creature-creator" element={<CreatureCreator />} />
-                      <Route path="/creature-database" element={<CreatureDatabase searchQuery={''}/>} />
+                      <Route path="/creature-database" element={<CreatureDatabase searchQuery={''} />} />
                       <Route path="/search_and_filter" element={<SearchAndFilter />} />
                   </Routes>
               </Router>

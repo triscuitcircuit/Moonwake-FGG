@@ -12,8 +12,8 @@ export const Footer: React.FC<FooterProps> = ({ clientLogo, yourLogo }) => {
         <footer className="footer">
             <div className="footer-content">
                 <div className="logo-section">
-                    <img src={yourLogo} alt="Your Company Logo" className="logo1"/>
-                    <img src={clientLogo} alt="Client Company Logo" className="logo"/>
+                    <img src={yourLogo} alt="Moonwake" className="logo1"/>
+                    <img src={clientLogo} alt="Frog God Games" className="logo" data-testid="frog-god-games"/>
                 </div>
 
                 <div className="links-section">
@@ -21,11 +21,11 @@ export const Footer: React.FC<FooterProps> = ({ clientLogo, yourLogo }) => {
                 </div>
 
                 <div className="social-section">
-                    <a href="https://www.facebook.com/frog.god.games/" target="_blank" rel="noopener noreferrer"><FaFacebook /></a>
-                    <a href="https://www.instagram.com/froggodgames/" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
-                    <a href="https://twitter.com/FrogGodGames" target="_blank" rel="noopener noreferrer"><FaTwitter /></a>
-                    <a href="https://discord.com/invite/froggodgames" target="_blank" rel="noopener noreferrer"><FaDiscord /></a>
-                    <a href="https://www.youtube.com/channel/UCybT0_3FM4iVfqE8b8-eFLg" target="_blank" rel="noopener noreferrer"><FaYoutube /></a>
+                    <a href="https://www.facebook.com/frog.god.games/" target="_blank" rel="noopener noreferrer" data-testid="facebook"><FaFacebook /></a>
+                    <a href="https://www.instagram.com/froggodgames/" target="_blank" rel="noopener noreferrer" data-testid="instagram"><FaInstagram /></a>
+                    <a href="https://twitter.com/FrogGodGames" target="_blank" rel="noopener noreferrer" data-testid="twitter"><FaTwitter /></a>
+                    <a href="https://discord.com/invite/froggodgames" target="_blank" rel="noopener noreferrer" data-testid="discord"><FaDiscord /></a>
+                    <a href="https://www.youtube.com/channel/UCybT0_3FM4iVfqE8b8-eFLg" target="_blank" rel="noopener noreferrer" data-testid="youtube"><FaYoutube /></a>
                 </div>
             </div>
         </footer>

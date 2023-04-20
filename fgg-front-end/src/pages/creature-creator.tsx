@@ -24,8 +24,8 @@ import {Connection} from "../Database/Connection";
 import './creature-creator.css';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import AdminPanel from "../components/AdminPanel";
-import { Document, Page, View, Text as TextPDF, StyleSheet, PDFDownloadLink, Image as ImagePDF } from "@react-pdf/renderer";
+// import AdminPanel from "../components/AdminPanel";
+import CreaturePDF from "../components/CreaturePDF";
 
 const theme = createTheme({
     type: "dark",
@@ -114,128 +114,6 @@ const CreatureCreator: React.FC = () => {
     const [showAllToasts, setShowAllToasts] = useState<boolean>(false);
     const [showDivBorders, setShowDivBorders] = useState<boolean>(false);
 
-    const styles = StyleSheet.create({
-        creature_container: {
-            display: "flex",
-            flexDirection: "row",
-        },
-        stat_block: {
-            flex: 1,
-            padding: 20,
-            border: "1px solid black",
-        },
-        title: {
-            paddingTop: 20,
-            fontSize: 24,
-            textAlign: "center",
-        },
-        subtitle: {
-            fontSize: 18,
-        },
-        bold: {
-            fontWeight: "bold",
-        },
-        text: {
-            fontSize: 11,
-        },
-        image: {
-            flex: 1,
-            padding: 20,
-            border: "1px solid black",
-        },
-        container: {
-            flexDirection: "column",
-        },
-        inLine: {
-            flex: 1,
-        }
-    });
-
-    const CreaturePDF = () => (
-        <Document>
-            <Page size="A4" style={styles.container}>
-                <TextPDF style={styles.title}>{name || "Unnamed Creature"}</TextPDF>
-                <View style={styles.creature_container}>
-                    <View style={styles.stat_block}>
-                        <TextPDF style={styles.text}>
-                            <TextPDF style={styles.bold}>Size:</TextPDF> {selectedSize || "----"} |{" "}
-                            <TextPDF style={styles.bold}>Type:</TextPDF> {selectedType || "----"} |{" "}
-                            <TextPDF style={styles.bold}>Subtype:</TextPDF> {selectedSubtype || "----"} |{" "}
-                            <TextPDF style={styles.bold}>Alignment:</TextPDF> {selectedAlignment || "----"}
-                        </TextPDF>
-                        <TextPDF style={styles.text}>
-                            <TextPDF style={styles.bold}>Armor Class:</TextPDF> {selectedArmorClass || "----"} (
-                            {selectedArmorType || "----"}) |{" "}
-                            <Text style={styles.bold}>Hit Dice:</Text> {numHitDice ? `${numHitDice}d${selectedSize ? `${hitDiceValue} + ${constitutionMod ? constitutionMod : "----"}` : "----"}` : "----"}
-                        </TextPDF>
-                        <TextPDF style={styles.text}>
-                            <TextPDF style={styles.bold}>Speed:</TextPDF> Base {baseSpeed} ft. {flySpeed > 0 && `| Fly ${flySpeed} ft.`} {swimSpeed > 0 && `| Swim ${swimSpeed} ft.`} {climbSpeed > 0 && `| Climb ${climbSpeed} ft.`} {burrowSpeed > 0 && `| Burrow ${burrowSpeed} ft.`}
-                        </TextPDF>
-                        <TextPDF style={styles.text}>
-                            <TextPDF style={styles.bold}>STR:</TextPDF> {strength} ({strengthMod}) |{" "}
-                            <TextPDF style={styles.bold}>DEX:</TextPDF> {dexterity} ({dexterityMod}) |{" "}
-                            <TextPDF style={styles.bold}>CON:</TextPDF> {constitution} ({constitutionMod})
-                        </TextPDF>
-                        <TextPDF style={styles.text}>
-                            <TextPDF style={styles.bold}>INT:</TextPDF> {intelligence} ({intelligenceMod}) |{" "}
-                            <TextPDF style={styles.bold}>WIS:</TextPDF> {wisdom} ({wisdomMod}) |{" "}
-                            <TextPDF style={styles.bold}>CHA:</TextPDF> {charisma} ({charismaMod})
-                        </TextPDF>
-                        <TextPDF style={styles.text}>
-                            <TextPDF style={styles.bold}>Saving Throws:</TextPDF>{" "}
-                            {strengthThrow && `STR +${strengthMod}, `}
-                            {dexterityThrow && `DEX +${dexterityMod}, `}
-                            {constitutionThrow && `CON +${constitutionMod}, `}
-                            {intelligenceThrow && `INT +${intelligenceMod}, `}
-                            {wisdomThrow && `WIS +${wisdomMod}, `}
-                            {charismaThrow && `CHA +${charismaMod}, `}
-                        </TextPDF>
-                        <TextPDF style={styles.text}>
-                            <TextPDF style={styles.bold}>Skills:</TextPDF>{" "}
-                            {Object.entries(selectedSkills).map(([skill, level]) => (
-                                <span key={skill}>
-                                {skill}: {level} |{" "}
-                            </span>
-                            ))}
-                        </TextPDF>
-                        <TextPDF style={styles.text}>
-                            <TextPDF style={styles.bold}>Damage Vulnerabilities:</TextPDF>{" "}
-                            {selectedDamageVulnerabilities.join(", ") || "None"}
-                        </TextPDF>
-                        <TextPDF style={styles.text}>
-                            <TextPDF style={styles.bold}>Damage Resistances:</TextPDF>{" "}
-                            {selectedDamageResistances.join(", ") || "None"}
-                        </TextPDF>
-                        <TextPDF style={styles.text}>
-                            <TextPDF style={styles.bold}>Damage Immunities:</TextPDF>{" "}
-                            {selectedDamageImmunities.join(", ") || "None"}
-                        </TextPDF>
-                        <TextPDF style={styles.text}>
-                            <TextPDF style={styles.bold}>Condition Immunities:</TextPDF>{" "}
-                            {selectedConditionImmunities.join(", ") || "None"}
-                        </TextPDF>
-                        <TextPDF style={styles.text}>
-                            <TextPDF style={styles.bold}>Senses:</TextPDF>{" "}
-                            {blindsight && "Blindsight, "}
-                            {darkvision && "Darkvision, "}
-                            {tremorsense && "Tremorsense, "}
-                            {truesight && "Truesight, "}
-                            {passivePerception && "Passive Perception"}
-                        </TextPDF>
-                        <TextPDF style={styles.text}>
-                            <TextPDF style={styles.bold}>Challenge Rating:</TextPDF> {challengeRating}
-                        </TextPDF>
-                    </View>
-                    <View style={styles.image}>
-                        <ImagePDF
-                            src="https://nextui.org/images/card-example-4.jpeg"
-                        />
-                    </View>
-                </View>
-            </Page>
-        </Document>
-    );
-
     const toggleToastVisibility = () => {
         setShowToast(!showToast);
     }
@@ -296,14 +174,6 @@ const CreatureCreator: React.FC = () => {
         }
     }
 
-    useEffect(() => {
-        console.log("Blindsight: " + blindsight);
-        console.log("Darkvision: " + darkvision);
-        console.log("Tremorsense: " + tremorsense);
-        console.log("Truesight: " + truesight);
-        console.log("Passive Perception: " + passivePerception);
-    }, [blindsight, darkvision, tremorsense, truesight, passivePerception]);
-
     const handleButtonClick = () => {
         setIsClicked(!isClicked);
     };
@@ -315,43 +185,6 @@ const CreatureCreator: React.FC = () => {
     const handlePreviewButtonClick = () => {
         setPreviewCreature(!previewCreature);
     }
-
-
-    /* ---------------------------------------------------------------------------------- */
-    /* handleSaveToPdfClick() is called under Preview Container */
-    /* ---------------------------------------------------------------------------------- */
-
-    /*
-    function handleSaveToPdfClick() {
-        const doc = new jsPDF();
-
-        // ignore certain elements when generating PDF
-        const specialElementHandlers = {
-            '#ignorePDF': (element, renderer) => true,
-        };
-
-        // get the HTML content of the creature container
-        const container = document.querySelector('.creature-container');
-        const source = container.innerHTML;
-
-        // convert HTML to PDF using html2pdf() method
-        html2pdf().from(source).set({ 'elementHandlers': specialElementHandlers }).save('creature.pdf');
-    }
-    */
-
-    // const handleSaveToPdfClick = () => {
-    //     const doc = new jsPDF();
-    //
-    //     // Get the creature container element and add it to the PDF document
-    //     const creatureContainer = document.getElementById('creature-container');
-    //     doc.html(creatureContainer, {
-    //         callback: () => {
-    //             // Save the PDF document
-    //             doc.save('creature.pdf');
-    //         },
-    //     });
-    // };
-
 
     /* ---------------------------------------------------------------------------------- */
     /* setSetters is called by the attributeInput component to set the value and modifier */
@@ -514,14 +347,14 @@ const CreatureCreator: React.FC = () => {
         if (intelligence != "----" && selectedAlignment != "----" || showAllToasts) {
             if (parseInt(intelligence) < 5 && selectedAlignment != "unaligned") {
                 toast.error(
-                    <>
+                    <div data-testid={"unaligned-toast"}>
                         <p>
                             <b>Your creature has a low Intelligence.</b>
                         </p>
                         <p>
                             Many creatures with an Intelligence less than 5 are unaligned
                         </p>
-                    </>, { style: { width: "400px", translate: "-50px" } });
+                    </div>, { style: { width: "400px", translate: "-50px" } });
             }
             if (parseInt(intelligence) > 4 && selectedAlignment == "unaligned" || showAllToasts) {
                 toast.error(
@@ -560,7 +393,7 @@ const CreatureCreator: React.FC = () => {
                             <ul>
                                 <li>
                                     A swarm’s attack often does half as many dice of damage if it has half of its hit points or fewer.
-                                    In addition, a Swarm typically doesn’t add its Strength or Dexterity modifier to its damage. For example:
+                                    In addition, a Swarm typically does not add its Strength or Dexterity modifier to its damage. For example:
                                 </li>
                                 <ul>
                                     <li>
@@ -920,7 +753,7 @@ const CreatureCreator: React.FC = () => {
     useEffect(() => {
         if (selectedSize == "Huge" || showAllToasts) {
             toast.error(
-                <>
+                <div data-testid="huge-toast">
                     <p>
                         <b>Your creature has size Huge.</b>
                     </p>
@@ -928,7 +761,7 @@ const CreatureCreator: React.FC = () => {
                     <p>
                         <b>Siege Monster.</b> The [creature] deals double damage to objects and structures.
                     </p>
-                </>
+                </div>, { toastId: "huge-toast" }
             );
         }
     }, [selectedSize, showAllToasts]);
@@ -993,8 +826,8 @@ const CreatureCreator: React.FC = () => {
 
         {isClicked && !previewCreature &&
           <Container md className={showDivBorders ? "showBorders" : ''}>
-              <AdminPanel toggleToastVisibility={toggleToastVisibility} displayAllToasts={displayAllToasts}
-                          toggleDivBorders={toggleDivBorders} />
+              {/*<AdminPanel toggleToastVisibility={toggleToastVisibility} displayAllToasts={displayAllToasts}*/}
+              {/*            toggleDivBorders={toggleDivBorders} />*/}
               <div
                 style={{
                     display: "flex",
@@ -1029,12 +862,13 @@ const CreatureCreator: React.FC = () => {
                   >
                       <Text h3 css={{ flex: "1" }}>Name:</Text>
                       <Input
-                        bordered
-                        color="primary"
-                        placeholder="Creature Name"
-                        size="lg"
-                        onChange={e => setName(e.target.value)}
-                        css={{ flex: "3" }}
+                          aria-label={"Creature Name Input"}
+                          bordered
+                          color="primary"
+                          placeholder="Creature Name"
+                          size="lg"
+                          onChange={e => setName(e.target.value)}
+                          css={{ flex: "3" }}
                       />
                       <div
                         style={{
@@ -1086,7 +920,7 @@ const CreatureCreator: React.FC = () => {
 
                           <Text h5>Size:</Text>
                           <Dropdown>
-                              <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
+                              <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }} data-testid="size-dropdown">
                                   {selectedSize + (sizeItems.find((item: { key: string; }) => item.key === selectedSize)?.hitDiceValue ?
                                     " (d" + sizeItems.find((item: { key: string; }) => item.key === selectedSize)?.hitDiceValue + ")" : "")}
                               </Dropdown.Button>
@@ -1100,7 +934,7 @@ const CreatureCreator: React.FC = () => {
                               >
                                   {/*@ts-ignore*/}
                                   {({ key, name }) => (
-                                    <Dropdown.Item key={key}>
+                                    <Dropdown.Item key={key} textValue={name}>
                                         {name}
                                     </Dropdown.Item>
                                   )}
@@ -1123,7 +957,7 @@ const CreatureCreator: React.FC = () => {
 
                           <Text h5>Type:</Text>
                           <Dropdown>
-                              <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
+                              <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }} data-testid="type-dropdown">
                                   {selectedType}
                               </Dropdown.Button>
                               <Dropdown.Menu
@@ -1137,7 +971,7 @@ const CreatureCreator: React.FC = () => {
                               >
                                   {/*@ts-ignore*/}
                                   {({ key, name }) => (
-                                    <Dropdown.Item key={key} css={{ tt: "capitalize" }}>
+                                    <Dropdown.Item key={key} css={{ tt: "capitalize" }} textValue={name}>
                                         {name}
                                     </Dropdown.Item>
                                   )}
@@ -1160,7 +994,7 @@ const CreatureCreator: React.FC = () => {
 
                           <Text h5>Subtype:</Text>
                           <Dropdown>
-                              <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
+                              <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }} data-testid="subtype-dropdown">
                                   {selectedSubtype}
                               </Dropdown.Button>
                               <Dropdown.Menu
@@ -1173,7 +1007,7 @@ const CreatureCreator: React.FC = () => {
                               >
                                   {/*@ts-ignore*/}
                                   {({ key, name }) => (
-                                    <Dropdown.Item key={key}>
+                                    <Dropdown.Item key={key} textValue={name}>
                                         {name}
                                     </Dropdown.Item>
                                   )}
@@ -1196,7 +1030,7 @@ const CreatureCreator: React.FC = () => {
 
                           <Text h5>Alignment:</Text>
                           <Dropdown>
-                              <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }}>
+                              <Dropdown.Button flat css={{ tt: "capitalize", width: "100%" }} data-testid="alignment-dropdown">
                                   {selectedAlignment}
                               </Dropdown.Button>
                               <Dropdown.Menu
@@ -1210,7 +1044,7 @@ const CreatureCreator: React.FC = () => {
                               >
                                   {/*@ts-ignore*/}
                                   {({ key, name }) => (
-                                    <Dropdown.Item key={key}>
+                                    <Dropdown.Item key={key} textValue={name}>
                                         {name}
                                     </Dropdown.Item>
                                   )}
@@ -1234,7 +1068,7 @@ const CreatureCreator: React.FC = () => {
 
                       <Text h4 css={{ flex: "1" }}>Armor Class:</Text>
                       <Dropdown>
-                          <Dropdown.Button flat css={{ flex: "2" }}>
+                          <Dropdown.Button flat css={{ flex: "2" }} data-testid="armor-class-dropdown">
                               {selectedArmorClass + " + (" + dexterityMod + ")"}
                           </Dropdown.Button>
                           <Dropdown.Menu
@@ -1246,7 +1080,7 @@ const CreatureCreator: React.FC = () => {
                           >
                               {/* loop 30 times creating a new dropdown item with the values 1-30*/}
                               {[...Array(30)].map((x, i) => (
-                                <Dropdown.Item key={i + 1}>
+                                <Dropdown.Item key={i + 1} textValue={`${i+1}`}>
                                     {i + 1}
                                 </Dropdown.Item>
                               ))}
@@ -1259,7 +1093,7 @@ const CreatureCreator: React.FC = () => {
 
                       <Text h4 css={{ flex: "1", textAlign: "center" }}>Armor Type:</Text>
                       <Dropdown>
-                          <Dropdown.Button flat css={{ flex: "2" }}>
+                          <Dropdown.Button flat css={{ flex: "2" }} data-testid="armor-type-dropdown">
                               {selectedArmorType}
                           </Dropdown.Button>
                           <Dropdown.Menu
@@ -1273,7 +1107,7 @@ const CreatureCreator: React.FC = () => {
                           >
                               {/*@ts-ignore*/}
                               {({ key, name }) => (
-                                <Dropdown.Item key={key}>
+                                <Dropdown.Item key={key} textValue={name}>
                                     {name}
                                 </Dropdown.Item>
                               )}
@@ -1286,7 +1120,7 @@ const CreatureCreator: React.FC = () => {
 
                       <Text h4 css={{ flex: "1", textAlign: "center" }}>Language:</Text>
                       <Dropdown>
-                          <Dropdown.Button flat css={{ flex: "2", tt: "capitalize" }}>
+                          <Dropdown.Button flat css={{ flex: "2", tt: "capitalize" }} data-testid="language-dropdown">
                               {selectedLanguage}
                           </Dropdown.Button>
                           <Dropdown.Menu
@@ -1300,7 +1134,7 @@ const CreatureCreator: React.FC = () => {
                           >
                               {/*@ts-ignore*/}
                               {({ key, name }) => (
-                                <Dropdown.Item key={key}>
+                                <Dropdown.Item key={key} textValue={name}>
                                     {name}
                                 </Dropdown.Item>
                               )}
@@ -1363,55 +1197,55 @@ const CreatureCreator: React.FC = () => {
                       </div>
                   </div>
                   <div
-                    style={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        flexDirection: "column",
-                        width: "100%",
-                        marginTop: "2%",
-                        paddingBottom: "2%",
-                        borderBottom: "3px solid #fff",
-                    }}
+                      style={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          flexDirection: "column",
+                          width: "100%",
+                          marginTop: "2%",
+                          paddingBottom: "2%",
+                          borderBottom: "3px solid #fff",
+                      }}
                   >
                       <Text h3>Attributes:</Text>
                       <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "space-around",
-                            alignItems: "center",
-                            width: "100%",
-                        }}
+                          style={{
+                              display: "flex",
+                              justifyContent: "space-around",
+                              alignItems: "center",
+                              width: "100%",
+                          }}
                       >
                           <Grid.Container gap={2} justify="space-around">
                               <Grid sm={4}>
                                   <AttributeInput name={"Strength"} value={strength} setValue={(value) => {
                                       setSetters(parseInt(value), setStrength, setStrengthMod)
-                                  }} />
+                                  }} testID={"strength"} />
                               </Grid>
                               <Grid sm={4}>
                                   <AttributeInput name={"Dexterity"} value={dexterity} setValue={(value) => {
                                       setSetters(parseInt(value), setDexterity, setDexterityMod)
-                                  }} />
+                                  }} testID={"dexterity"}/>
                               </Grid>
                               <Grid sm={4}>
                                   <AttributeInput name={"Constitution"} value={constitution} setValue={(value) => {
                                       setSetters(parseInt(value), setConstitution, setConstitutionMod)
-                                  }} />
+                                  }} testID={"constitution"}/>
                               </Grid>
                               <Grid sm={4}>
                                   <AttributeInput name={"Intelligence"} value={intelligence} setValue={(value) => {
                                       setSetters(parseInt(value), setIntelligence, setIntelligenceMod)
-                                  }} />
+                                  }} testID={"intelligence"}/>
                               </Grid>
                               <Grid sm={4}>
                                   <AttributeInput name={"Wisdom"} value={wisdom} setValue={(value) => {
                                       setSetters(parseInt(value), setWisdom, setWisdomMod)
-                                  }} />
+                                  }} testID={"wisdom"}/>
                               </Grid>
                               <Grid sm={4}>
                                   <AttributeInput name={"Charisma"} value={charisma} setValue={(value) => {
                                       setSetters(parseInt(value), setCharisma, setCharismaMod)
-                                  }} />
+                                  }} testID={"charisma"}/>
                               </Grid>
                           </Grid.Container>
                       </div>
@@ -1474,14 +1308,24 @@ const CreatureCreator: React.FC = () => {
                                         width: "100%",
                                     }}
                                   >
-                                      <Checkbox css={{ flex: "1", marginBottom: "5%" }}
-                                                onChange={setStrengthThrow}>STR</Checkbox>
-                                      <Tooltip isDisabled={strengthThrow}
-                                               content={"Select saving throw to enable modifier"} color={"primary"}
-                                               hideArrow>
-                                          <Input disabled={!strengthThrow} type={"number"} bordered
-                                                 status={!strengthThrow ? "error" : "primary"} labelPlaceholder={"STR"}
-                                                 css={{ flex: "1" }} />
+                                      <Checkbox
+                                          css={{ flex: "1", marginBottom: "5%" }}
+                                          onChange={setStrengthThrow}
+                                      >
+                                          STR
+                                      </Checkbox>
+                                      <Tooltip
+                                          isDisabled={strengthThrow}
+                                          content={"Select saving throw to enable modifier"} color={"primary"}
+                                          hideArrow
+                                      >
+                                          <Input
+                                              disabled={!strengthThrow}
+                                              type={"number"}
+                                              bordered
+                                              status={!strengthThrow ? "error" : "primary"}
+                                              labelPlaceholder={"STR"}
+                                              css={{ flex: "1" }} />
                                       </Tooltip>
                                   </div>
                               </Grid>
@@ -1493,14 +1337,25 @@ const CreatureCreator: React.FC = () => {
                                         width: "100%",
                                     }}
                                   >
-                                      <Checkbox css={{ flex: "1", marginBottom: "5%" }}
-                                                onChange={setDexterityThrow}>DEX</Checkbox>
-                                      <Tooltip isDisabled={dexterityThrow}
-                                               content={"Select saving throw to enable modifier"} color={"primary"}
-                                               hideArrow>
-                                          <Input disabled={!dexterityThrow} type={"number"} bordered
-                                                 status={!dexterityThrow ? "error" : "primary"} labelPlaceholder={"DEX"}
-                                                 css={{ flex: "1" }} />
+                                      <Checkbox
+                                          css={{ flex: "1", marginBottom: "5%" }}
+                                          onChange={setDexterityThrow}
+                                      >
+                                            DEX
+                                      </Checkbox>
+                                      <Tooltip
+                                          isDisabled={dexterityThrow}
+                                          content={"Select saving throw to enable modifier"}
+                                          color={"primary"}
+                                          hideArrow
+                                      >
+                                          <Input
+                                              disabled={!dexterityThrow}
+                                              type={"number"}
+                                              bordered
+                                              status={!dexterityThrow ? "error" : "primary"}
+                                              labelPlaceholder={"DEX"}
+                                              css={{ flex: "1" }} />
                                       </Tooltip>
                                   </div>
                               </Grid>
@@ -1617,27 +1472,29 @@ const CreatureCreator: React.FC = () => {
                                     <Table.Cell>{skill.name}</Table.Cell>
                                     <Table.Cell>
                                         <Checkbox
-                                          isSelected={selectedSkills[skill.name] === "proficient"}
-                                          onChange={() =>
-                                            handleCheckboxChange(skill, "proficient")
-                                          }
+                                            aria-label={`Proficient checkbox for ${skill.name}`}
+                                            isSelected={selectedSkills[skill.name] === "proficient"}
+                                            onChange={() =>
+                                                handleCheckboxChange(skill, "proficient")
+                                            }
                                         />
                                     </Table.Cell>
                                     <Table.Cell>
                                         <Checkbox
-                                          isSelected={selectedSkills[skill.name] === "expertise"}
-                                          onChange={() =>
-                                            handleCheckboxChange(skill, "expertise")
-                                          }
+                                            aria-label={`Expertise checkbox for ${skill.name}`}
+                                            isSelected={selectedSkills[skill.name] === "expertise"}
+                                            onChange={() =>
+                                                handleCheckboxChange(skill, "expertise")
+                                            }
                                         />
                                     </Table.Cell>
                                     <Table.Cell>
                                         {
                                             selectedSkills[skill.name] === "proficient"
-                                              ? findMod(skill.relatedAbName) + " + " + proficiencyBonus + " = " + (findMod(skill.relatedAbName) + proficiencyBonus)
-                                              : selectedSkills[skill.name] === "expertise"
-                                                ? findMod(skill.relatedAbName) + " x 2 + " + proficiencyBonus + " = " + (findMod(skill.relatedAbName) * 2 + proficiencyBonus)
-                                                : "-----"
+                                                ? findMod(skill.relatedAbName) + " + " + proficiencyBonus + " = " + (findMod(skill.relatedAbName) + proficiencyBonus)
+                                                : selectedSkills[skill.name] === "expertise"
+                                                    ? findMod(skill.relatedAbName) + " x 2 + " + proficiencyBonus + " = " + (findMod(skill.relatedAbName) * 2 + proficiencyBonus)
+                                                    : "-----"
                                         }
                                     </Table.Cell>
                                 </Table.Row>
@@ -1706,14 +1563,14 @@ const CreatureCreator: React.FC = () => {
                       </Checkbox.Group>
                       <Text h3 css={{ marginTop: "2%" }}>Senses: </Text>
                       <Table
-                        bordered
-                        compact
-                        shadow={false}
-                        aria-label={"Senses selection table"}
-                        css={{
-                            flex: "1",
-                            height: "auto",
-                        }}
+                          bordered
+                          compact
+                          shadow={false}
+                          aria-label={"Senses selection table"}
+                          css={{
+                              flex: "1",
+                              height: "auto",
+                          }}
                       >
                           <Table.Header>
                               <Table.Column>SENSES</Table.Column>
@@ -1722,26 +1579,27 @@ const CreatureCreator: React.FC = () => {
                           </Table.Header>
                           <Table.Body>
                               {senses.map((sense: { name: string, distance: number }, index: React.Key) => (
-                                <Table.Row key={index}>
-                                    <Table.Cell>
-                                        <Checkbox
-                                          onChange={() => handleSenseChange(sense)}
-                                        >
-                                            {sense.name}
-                                        </Checkbox>
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                        <Input
-                                          type={"number"}
-                                          labelRight={"ft."}
-                                        />
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                        <Checkbox>
-                                            Limited by range if checked
-                                        </Checkbox>
-                                    </Table.Cell>
-                                </Table.Row>
+                                  <Table.Row key={index}>
+                                      <Table.Cell>
+                                          <Checkbox onChange={() => handleSenseChange(sense)}
+                                          >
+                                              {sense.name}
+                                          </Checkbox>
+                                      </Table.Cell>
+                                      <Table.Cell>
+                                          <Input
+                                              aria-label={`Distance input for ${sense.name}`}
+                                              value={sense.distance}
+                                              type={"number"}
+                                              labelRight={"ft."}
+                                          />
+                                      </Table.Cell>
+                                      <Table.Cell>
+                                          <Checkbox>
+                                              Limited by range if checked
+                                          </Checkbox>
+                                      </Table.Cell>
+                                  </Table.Row>
                               ))}
                           </Table.Body>
                       </Table>
@@ -1851,13 +1709,52 @@ const CreatureCreator: React.FC = () => {
                         <div style={{display: 'flex', justifyContent: 'flex-start'}}>
                             <Button onPress={handlePreviewButtonClick}>Go Back</Button>
                             <Spacer x={0.5} />
-                            <Button>
-                                <PDFDownloadLink document={<CreaturePDF />} fileName="creature.pdf" style={{ color: "white" }}>
-                                    {({ blob, url, loading, error }) =>
-                                        loading ? 'Loading document...' : 'Download as PDF'
-                                    }
-                                </PDFDownloadLink>
-                            </Button>
+                            <CreaturePDF
+                                filename={`${name}.pdf`}
+                                name={name}
+                                selectedSize={selectedSize}
+                                selectedType={selectedType}
+                                selectedSubtype={selectedSubtype}
+                                selectedAlignment={selectedAlignment}
+                                selectedArmorClass={selectedArmorClass}
+                                selectedArmorType={selectedType}
+                                numHitDice={numHitDice}
+                                hitDiceValue={hitDiceValue}
+                                baseSpeed={baseSpeed}
+                                flySpeed={flySpeed}
+                                swimSpeed={swimSpeed}
+                                climbSpeed={climbSpeed}
+                                burrowSpeed={burrowSpeed}
+                                strength={strength}
+                                strengthMod={strengthMod}
+                                dexterity={dexterity}
+                                dexterityMod={dexterityMod}
+                                constitution={constitution}
+                                constitutionMod={constitutionMod}
+                                intelligence={intelligence}
+                                intelligenceMod={intelligenceMod}
+                                wisdom={wisdom}
+                                wisdomMod={wisdomMod}
+                                charisma={charisma}
+                                charismaMod={charismaMod}
+                                strengthThrow={strengthThrow}
+                                dexterityThrow={dexterityThrow}
+                                constitutionThrow={constitutionThrow}
+                                intelligenceThrow={intelligenceThrow}
+                                wisdomThrow={wisdomThrow}
+                                charismaThrow={charismaThrow}
+                                selectedSkills={selectedSkills}
+                                selectedDamageVulnerabilities={selectedDamageVulnerabilities}
+                                selectedDamageResistances={selectedDamageResistances}
+                                selectedDamageImmunities={selectedDamageImmunities}
+                                selectedConditionImmunities={selectedConditionImmunities}
+                                blindsight={blindsight}
+                                darkvision={darkvision}
+                                tremorsense={tremorsense}
+                                truesight={truesight}
+                                passivePerception={passivePerception}
+                                challengeRating={challengeRating}
+                            />
                         </div>
                     </div>
                     <div className="creature-image-container">
