@@ -171,11 +171,23 @@ async function getAll(req, res) {
         }
     }
 
+    let m_sizeIsSize = false;
+    if (m_size === "tiny" || m_size === "Tiny" || m_size === "small" || m_size === "Small" || m_size === "medium"
+        || m_size === "Medium" || m_size === "large" || m_size === "Large" || m_size === "huge" || m_size === "Huge"
+        || m_size === "gargantuan" || m_size === "Gargantuan"){
+        m_sizeIsSize = true;
+    }
+
+    let m_sizeIsNotSize = false;
+    if (m_sizeIsSize === false && m_ac){
+        m_sizeIsNotSize = true;
+    }
+
     let displayContent = [
         hp ? { [Op.or]: generateRangeContent("Hit Points ", '$MODI_MONSTER_DISPLAYs.MODI_PRINT_TEXT$',
                 parseInt(hp_arr[0]), parseInt(hp_arr[1]))} : null,
         // MODI_MONSTER_DISPLAYs.MODI_TEXT holds many things, allowing user to use that field for misc. values
-        m_size ? {[Op.or]: generateCapitalizations(m_size, "$MODI_MONSTER_DISPLAYs.MODI_TEXT$")} : null
+        m_sizeIsNotSize ? {[Op.or]: generateCapitalizations(m_size, "$MODI_MONSTER_DISPLAYs.MODI_TEXT$")} : null
     ];
     let displayContentExists = false;
     for(let i=0; i< displayContent.length; i++){
@@ -193,6 +205,7 @@ async function getAll(req, res) {
         name1 ? { [Op.or]: generateCapitalizations(name1, "GASYMO_DISPLAY_NAME")} : null,     // OR's together
         m_ac ? { GASYMO_ARMOR_CLASS : {[Op.between]: [m_ac_arr[0], m_ac_arr[1]]} } : null,
         author ? {[Op.or]: generateCapitalizations(author, "$GACO_GAME_COMPANY.GACO_NAME$")} : null,
+        m_sizeIsSize ? {[Op.or]: generateCapitalizations(m_size, "$SZ_SIZE.SZ_DISPLAY_NAME$")} : null,
         attbContentExists ? {[Op.or]: attbContent} : null,
         displayContentExists ? {[Op.or]: displayContent} : null
     ];
