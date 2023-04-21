@@ -163,11 +163,24 @@ async function getAll(req, res) {
                 parseInt(wis_arr[0]), parseInt(wis_arr[1]))} : null,
         chr ? { [Op.or]: generateRangeContent("CHA ", '$MOAB_MONSTER_ATTRIBUTEs.MOAB_DISPLAY_TEXT$',
                 parseInt(chr_arr[0]), parseInt(chr_arr[1]))} : null
-    ] // if user is not searching for these values, list will be all null
+    ]; // if user is not searching for these values, list will be all null
     let attbContentExists = false;
     for(let i = 0; i < attbContent.length; i++){
         if(attbContent[i] != null){
             attbContentExists = true;
+        }
+    }
+
+    let displayContent = [
+        hp ? { [Op.or]: generateRangeContent("Hit Points ", '$MODI_MONSTER_DISPLAYs.MODI_PRINT_TEXT$',
+                parseInt(hp_arr[0]), parseInt(hp_arr[1]))} : null,
+        // MODI_MONSTER_DISPLAYs.MODI_TEXT holds many things, allowing user to use that field for misc. values
+        m_size ? {[Op.or]: generateCapitalizations(m_size, "$MODI_MONSTER_DISPLAYs.MODI_TEXT$")} : null
+    ];
+    let displayContentExists = false;
+    for(let i=0; i< displayContent.length; i++){
+        if(displayContent[i] != null){
+            displayContentExists = true;
         }
     }
 
@@ -179,12 +192,9 @@ async function getAll(req, res) {
         // (ex): find the results of Ape OR ape OR APE OR aPe, etc
         name1 ? { [Op.or]: generateCapitalizations(name1, "GASYMO_DISPLAY_NAME")} : null,     // OR's together
         m_ac ? { GASYMO_ARMOR_CLASS : {[Op.between]: [m_ac_arr[0], m_ac_arr[1]]} } : null,
-        hp ? { [Op.or]: generateRangeContent("Hit Points ", '$MODI_MONSTER_DISPLAYs.MODI_PRINT_TEXT$',
-                parseInt(hp_arr[0]), parseInt(hp_arr[1]))} : null,
-        // MODI_MONSTER_DISPLAYs.MODI_TEXT holds many things, allowing user to use that field for misc. values
-        m_size ? {[Op.or]: generateCapitalizations(m_size, "$MODI_MONSTER_DISPLAYs.MODI_TEXT$")} : null,
         author ? {[Op.or]: generateCapitalizations(author, "$GACO_GAME_COMPANY.GACO_NAME$")} : null,
-        attbContentExists ? {[Op.or]: attbContent} : null
+        attbContentExists ? {[Op.or]: attbContent} : null,
+        displayContentExists ? {[Op.or]: displayContent} : null
     ];
 
     // OR or AND the content into the where statement depending on if global AND is toggled on or off
