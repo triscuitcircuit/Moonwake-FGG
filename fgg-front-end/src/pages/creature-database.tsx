@@ -146,6 +146,9 @@ const CreatureDatabase = ({ searchQuery }: Props) => {
                                     }>
                                         <Table.Cell>
                                             <Tooltip
+                                                css={{
+                                                    zIndex: 99999
+                                                }}
                                                 content=
                                                     {item.MOAB_MONSTER_ATTRIBUTEs.map((item_as: { MOAB_ID: React.Key; MOAB_DISPLAY_TEXT: string }) => (item_as.MOAB_DISPLAY_TEXT))}>
                                                 {item.GASYMO_DISPLAY_NAME}
@@ -182,13 +185,18 @@ const CreatureDatabase = ({ searchQuery }: Props) => {
                                 display: "flex",
                                 justifyContent: "center",
                                 alignItems: "center",
+                                width: "100%",
+                                height: "100vh",
+                                padding: 0,
+                                margin: 0
                             }}
                         >
-                            <Progress
-                                indeterminated
-                                value={50}
+                            <Loading
+                                style={{
+                                    width: "50px",
+                                    height: "50px",
+                                }}
                                 color="secondary"
-                                status="secondary"
                             />
                         </div>
                     </Grid.Container>
