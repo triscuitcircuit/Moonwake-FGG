@@ -6,20 +6,10 @@ const { Op } = require("sequelize");
 // to make searching for name case insensitive
 // returns a list of sequelize commands matching each capitalization against GASYMO_DISPLAY_NAME
 function generateCapitalizations(str, column) {
-    let result = [];
-    let count = Math.pow(2, str.length); // total number of combinations
-
-    for (let i = 0; i < count; i++) {
-        let current = "";
-        for (let j = 0; j < str.length; j++) {
-            if ((i & Math.pow(2, j))) {
-                current += str[j].toUpperCase();
-            } else {
-                current += str[j].toLowerCase();
-            }
-        }
-        result.push(current);
-    }
+    const lower = str.toLowerCase();
+    const upper = str.toUpperCase();
+    const capitalized = str.replace(/\b\w/g, (match) => match.toUpperCase()); // regex, capitalizes each word
+    let result = [str, lower, upper, capitalized];
 
     let nameORs = [];       // list of sequelize commands on the names to make searching for name case insensitive
     for (let i = 0; i < result.length; i++){
@@ -145,12 +135,12 @@ async function getAll(req, res) {
     ];
 
     // need to OR together the attributes that use the same column since ANDing them wouldn't make sense
-    // TODO: now stuff gets thru when it shouldn't now tho
+    // TODO: foricbly ORed (which is not ideal)
     // fix by counting? looking for 3 attributes = 3 things should show up?
     // HOWEVER - users can still tell when a creature doesn't meet their critera because the stat that
     // doesn't match their search won't show up on the preview (kinda - its inconsistent)
     // Ex: searching for STR 18 and CON 21 - results show "Goblin" with only STR 18 displayed in preview: CON !=21
-    let attbContent = [ //might be this?? todo check
+    let attbContent = [
         str ? { [Op.or]: generateRangeContent("STR ", '$MOAB_MONSTER_ATTRIBUTEs.MOAB_DISPLAY_TEXT$',
                 parseInt(str_arr[0]), parseInt(str_arr[1]))} : null,
         dex ? { [Op.or]: generateRangeContent("DEX ", '$MOAB_MONSTER_ATTRIBUTEs.MOAB_DISPLAY_TEXT$',
@@ -179,7 +169,7 @@ async function getAll(req, res) {
     }
 
     let m_sizeIsNotSize = false;
-    if (m_sizeIsSize === false && m_ac){
+    if (m_sizeIsSize === false && m_size){
         m_sizeIsNotSize = true;
     }
 
@@ -189,6 +179,7 @@ async function getAll(req, res) {
         // MODI_MONSTER_DISPLAYs.MODI_TEXT holds many things, allowing user to use that field for misc. values
         m_sizeIsNotSize ? {[Op.or]: generateCapitalizations(m_size, "$MODI_MONSTER_DISPLAYs.MODI_TEXT$")} : null
     ];
+
     let displayContentExists = false;
     for(let i=0; i< displayContent.length; i++){
         if(displayContent[i] != null){
@@ -206,8 +197,12 @@ async function getAll(req, res) {
         m_ac ? { GASYMO_ARMOR_CLASS : {[Op.between]: [m_ac_arr[0], m_ac_arr[1]]} } : null,
         author ? {[Op.or]: generateCapitalizations(author, "$GACO_GAME_COMPANY.GACO_NAME$")} : null,
         m_sizeIsSize ? {[Op.or]: generateCapitalizations(m_size, "$SZ_SIZE.SZ_DISPLAY_NAME$")} : null,
+        hp && m_sizeIsSize ? { [Op.or]: generateRangeContent("Hit Points ", '$MODI_MONSTER_DISPLAYs.MODI_PRINT_TEXT$',
+                parseInt(hp_arr[0]), parseInt(hp_arr[1]))} : null,
+        hp && !m_size ? { [Op.or]: generateRangeContent("Hit Points ", '$MODI_MONSTER_DISPLAYs.MODI_PRINT_TEXT$',
+                parseInt(hp_arr[0]), parseInt(hp_arr[1]))} : null,
         attbContentExists ? {[Op.or]: attbContent} : null,
-        displayContentExists ? {[Op.or]: displayContent} : null
+        displayContentExists && m_sizeIsNotSize ? {[Op.or]: displayContent} : null // hp uses same column name, OR on
     ];
 
     // OR or AND the content into the where statement depending on if global AND is toggled on or off
